@@ -10957,3 +10957,7 @@ body {
   color: inherit;
 }
 
+.register-page #captcha + img {
+  cursor: pointer;
+}
+

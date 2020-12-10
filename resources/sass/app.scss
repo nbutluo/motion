@@ -59,3 +59,9 @@ body {
     }
   }
 }
+
+.register-page {
+  #captcha + img {
+    cursor: pointer;
+  }
+}
