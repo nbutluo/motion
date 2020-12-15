@@ -32,9 +32,9 @@
                      <span>用户管理</span>
                  </a>
                  <ul class="treeview-menu">
-                     <li class=""><a href="#"><i class="fa   fa-list-ul"></i> 用户列表</a></li>
-                     <li class=""><a href=""><i class="fa fa-book"></i>用户管理-图文</a></li>
-                     <li class=""><a href=""><i class="fa fa-video-camera"></i>用户管理-视频</a></li>
+                     <li class=""><a href="{{ route('user.index') }}"><i class="fa fa-list-ul"></i> 用户列表</a></li>
+                     <li class=""><a href="#"><i class="fa fa-book"></i>用户管理-图文</a></li>
+                     <li class=""><a href="#"><i class="fa fa-video-camera"></i>用户管理-视频</a></li>
                  </ul>
              </li>
              <li class="header">视频</li>

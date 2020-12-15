@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-\Illuminate\Support\Facades\Route::get('/', "Home\PagesController@root");
+// 网站首页
+Route::get('/', "Home\PagesController@root")->name('root');
 
 // Auth::routes();
 
@@ -41,3 +42,4 @@ Route::get('email/resend', 'Auth\VerificationController@resend')->name('verifica
 
 // 后台相关
 Route::resource('admin', 'Admin\IndexController');
+Route::resource('user', 'Admin\UsersController');
