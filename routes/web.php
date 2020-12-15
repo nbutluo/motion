@@ -42,4 +42,4 @@ Route::get('email/resend', 'Auth\VerificationController@resend')->name('verifica
 
 // 后台相关
 Route::resource('admin', 'Admin\IndexController');
-Route::resource('user', 'Admin\UsersController');
+Route::resource('user', 'Common\UsersController');

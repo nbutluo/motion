@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Common;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -15,7 +15,9 @@ class UsersController extends Controller
         $users = User::paginate(10);
         $levels = Level::get();
         $counts = $user->count();
-        return view('admin.users.index', compact('users', 'levels', 'counts'));
+        $activateds = $user->activateds();
+        $inactivateds = $user->inactivateds();
+        return view('admin.users.index', compact('users', 'levels', 'counts', 'activateds', 'inactivateds'));
     }
 
     /**
