@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@yield('title','Motion-Admin')</title>
+    <link href="{{ mix('css/admin.css') }}" rel="stylesheet">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -32,7 +33,7 @@
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
-    <div class="wrapper">
+    <div class="wrapper {{ route_class() }}-page">
 
         @include('admin.layouts._header')
 
@@ -95,6 +96,7 @@
     <script src="/adminlte/dist/js/pages/dashboard.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="/adminlte/dist/js/demo.js"></script>
+    @yield('script')
 </body>
 
 </html>
