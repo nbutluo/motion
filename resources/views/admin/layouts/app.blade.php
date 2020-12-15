@@ -34,29 +34,30 @@
 
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper {{ route_class() }}-page">
+        <header class="main-header">
+            @include('admin.layouts._header')
+        </header>
 
-        @include('admin.layouts._header')
+        <aside class="main-sidebar">
+            @include('admin.layouts._sidebar')
+        </aside>
 
-        @include('admin.layouts._sidebar')
-
-        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <section class="content-header">
                 <h2>@yield('header-title')</h2>
             </section>
 
-            <!-- Main content -->
             <section class="content">
                 @yield('content')
-
             </section>
         </div>
-        @include('admin.layouts._footer')
 
+        <footer class="main-footer">
+            @include('admin.layouts._footer')
+        </footer>
 
         <div class="control-sidebar-bg"></div>
     </div>
-    <!-- ./wrapper -->
 
     <!-- jQuery 3 -->
     <script src="/adminlte/bower_components/jquery/dist/jquery.min.js"></script>
