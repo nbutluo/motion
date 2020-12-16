@@ -8,7 +8,7 @@ use App\User;
 class Apply extends Model
 {
     protected $fillable = [
-        'user_id', 'cureent_level', 'apply_reason', 'is_audit'
+        'user_id', 'apply_reason', 'is_audit'
     ];
 
     public function user()

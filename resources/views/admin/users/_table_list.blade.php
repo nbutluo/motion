@@ -18,10 +18,19 @@
                     <tr>
                         <td>{{ $user->id }}</td>
                         <td>{{ $user->name }}</td>
-                        <td><a href="mailto:{{ $user->email }}"><i class="fa fa-envelope"></i>&nbsp;{{ $user->email }}</a></p>
+                        <td>
+                            <a href="mailto:{{ $user->email }}"><i class="fa fa-envelope"></i>&nbsp;{{ $user->email }}</a>
                         </td>
                         <td>{{ $user->level_name($user->level) }}</td>
-                        <td><span class="label label-success">最高等级</span></td>
+                        <td>
+                            @if($user->apply_status)
+                            <span class="label label-warning"> 申请中</span>
+                            @elseif($user->level ==2)
+                            <span class="label label-success"> 最高等级</span>
+                            @else
+                            <span class="label label-info"> 未申请</span>
+                            @endif
+                        </td>
                         <td>
                             <span class="{{ $user->email_verified_at  ? 'label label-success' : 'label label-danger' }}">
                                 {{ $user->status($user->email_verified_at) }}
@@ -30,8 +39,10 @@
                         <td><a href=" https:/www.baidu.com" target="_blank">查看详情</a> </td>
                         <td><a href="https:/www.baidu.com" target="_blank">查看详情</a> </td>
                         <td>
-                            <a href="" class="btn-edit">
-                                <i class="fa fa-edit"></i>编辑
+                            <a href="{{ route('user.edit', $user->id) }}">
+                                <button type="button" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-edit"></i> 编辑
+                                </button>
                             </a>
                         </td>
                     </tr>

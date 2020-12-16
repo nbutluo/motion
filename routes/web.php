@@ -41,5 +41,8 @@ Route::get('email/resend', 'Auth\VerificationController@resend')->name('verifica
 
 
 // 后台相关
-Route::resource('admin', 'Admin\IndexController');
+Route::resource('admin', 'Admin\IndexController', ['only' => ['index']]);
 Route::resource('user', 'Common\UsersController');
+
+// 权限申请
+Route::resource('apply', 'Common\AppliesController', ['only' => ['create', 'store']]);

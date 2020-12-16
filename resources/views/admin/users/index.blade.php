@@ -34,16 +34,5 @@
 
         </div>
     </div>
-
-
-    @include('admin.layouts._modal')
-    @section('script')
-    <script>
-        $('.btn-edit').click(function() {
-            $('#modal-default').modal('show');
-            return false;
-        })
-    </script>
-    @endsection
 </div>
 @endsection

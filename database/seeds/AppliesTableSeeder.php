@@ -12,6 +12,6 @@ class AppliesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Apply::class)->times(100)->create();
+        factory(Apply::class)->times(10)->create();
     }
 }

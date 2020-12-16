@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Level;
+use App\Models\Apply;
 
 class User extends Authenticatable
 {
@@ -55,5 +56,17 @@ class User extends Authenticatable
     public function activateds()
     {
         return $this->where('email_verified_at', '!=', 'null')->count();
+    }
+
+    // 用户与申请表的模型关联
+    public  function apply()
+    {
+        return $this->hasMany(Apply::class);
+    }
+
+    public function levels()
+    {
+        $levels = Level::get();
+        return  $levels;
     }
 }
