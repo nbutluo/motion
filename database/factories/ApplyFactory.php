@@ -14,13 +14,11 @@ $factory->define(Apply::class, function (Faker $faker) {
     // 为创建时间传参，意为最大不超过 $updated_at，因为创建时间需永远比更改时间要早
     $created_at = $faker->dateTimeThisMonth($updated_at);
 
-    $previous_level = $faker->randomElement([1, 2, 3]);
     return [
         'user_id' => random_int(1, 100),
-        'previous_level' =>  $faker->randomElement([1, 2, 3]),
-        'apply_level' =>  $faker->randomElement([1, 2, 3]),
+        'cureent_level' =>  $faker->randomElement([1, 2, 3]),
         'apply_reason' => $faker->text(),
-        'is_audit' => $faker->randomElement([1, 2, 3]),
+        'is_audit' => $faker->randomElement([0, 1]),
         'created_at' => $created_at,
         'updated_at' => $updated_at,
     ];

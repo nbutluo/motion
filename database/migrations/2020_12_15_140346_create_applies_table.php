@@ -16,10 +16,9 @@ class CreateAppliesTable extends Migration
         Schema::create('applies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned()->index();
-            $table->enum('previous_level', [0, 1, 2])->nullable()->comment('之前权限');
-            $table->enum('apply_level', [0, 1, 2])->nullable(false)->comment('申请权限等级');
+            $table->enum('cureent_level', [0, 1, 2])->nullable()->comment('之前权限');
             $table->text('apply_reason')->nullable()->comment('申请理由');
-            $table->enum('is_audit', [0, 1, 2])->default(0)->comment('审核状态');
+            $table->tinyInteger('is_audit')->default(0)->comment('是否审核');
             $table->timestamps();
         });
     }
