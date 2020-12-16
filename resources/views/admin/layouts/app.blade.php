@@ -48,6 +48,7 @@
             </section>
 
             <section class="content">
+                @include('shared._messages')
                 @yield('content')
             </section>
         </div>
