@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->tinyInteger('level')->default(0)->comment('用户等级');
             $table->rememberToken()->comment('记住我');
+            $table->tinyInteger('apply_status')->default(0)->comment('授权申请状态');
             $table->timestamps();
         });
     }
