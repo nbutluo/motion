@@ -15,7 +15,7 @@ $factory->define(Apply::class, function (Faker $faker) {
     $created_at = $faker->dateTimeThisMonth($updated_at);
 
     return [
-        'user_id' => random_int(1, 10),
+        'user_id' => $faker->numberBetween(1, 10),
         'apply_reason' => $faker->text(),
         // 'is_audit' => $faker->randomElement([0, 1]),
         'created_at' => $created_at,
