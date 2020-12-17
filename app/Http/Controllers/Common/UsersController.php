@@ -13,21 +13,8 @@ class UsersController extends Controller
 
     public function index(Request $request, User $user, Level $level)
     {
-        $users = User::paginate(10);
 
-        $query = $user->query();
-        if (isset($request->level)) {
-            $query->where('level', '=', $request->level);
-            $users = $query->paginate(10);
-        }
-
-        if (isset($request->apply_status)) {
-            if ($request->apply_status == 2) {
-                $query->where('level', '=', $request->apply_status);
-            }
-            $query->where('apply_status', '=', $request->apply_status);
-            $users = $query->paginate(10);
-        }
+        $users = $user->filter($request->all())->paginate(10);
 
         $levels = Level::get();
         $counts = $user->count();

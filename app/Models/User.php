@@ -7,10 +7,12 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Level;
 use App\Models\Apply;
+use EloquentFilter\Filterable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use Filterable;
 
 
     protected $fillable = [
