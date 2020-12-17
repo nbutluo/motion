@@ -11,9 +11,24 @@ use App\Models\Apply;
 class UsersController extends Controller
 {
 
-    public function index(User $user, Level $level)
+    public function index(Request $request, User $user, Level $level)
     {
         $users = User::paginate(10);
+
+        $query = $user->query();
+        if (isset($request->level)) {
+            $query->where('level', '=', $request->level);
+            $users = $query->paginate(10);
+        }
+
+        if (isset($request->apply_status)) {
+            if ($request->apply_status == 2) {
+                $query->where('level', '=', $request->apply_status);
+            }
+            $query->where('apply_status', '=', $request->apply_status);
+            $users = $query->paginate(10);
+        }
+
         $levels = Level::get();
         $counts = $user->count();
         $activateds = $user->activateds();
@@ -77,12 +92,18 @@ class UsersController extends Controller
     {
         // 更新用户 level
         $user->level = $request->level;
-        // 更新用户 apply_status 为 0 表示申请中
+        // 将用户的 apply_status 初始化为 0 表示申请中
         $user->apply_status = 0;
+
+        // 如果提交的用户权限为最高，则将用户 apply_status 也升级为最高
+        if ($user->level == 2) {
+            $user->apply_status = 2;
+        }
         $user->update();
 
         // 更新 applies 表 已审核
         $apply->where('id', $request->apply_id)->update(['is_audit' => 1]);
+
         return redirect()->route('user.index')->with('success', '更新成功');
     }
 

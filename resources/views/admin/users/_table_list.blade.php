@@ -23,9 +23,9 @@
                         </td>
                         <td>{{ $user->level_name($user->level) }}</td>
                         <td>
-                            @if($user->apply_status)
+                            @if($user->apply_status == 1)
                             <span class="label label-warning"> 申请中</span>
-                            @elseif($user->level ==2)
+                            @elseif($user->apply_status == 2)
                             <span class="label label-success"> 最高等级</span>
                             @else
                             <span class="label label-info"> 未申请</span>
