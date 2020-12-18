@@ -43,6 +43,17 @@ Route::get('email/resend', 'Auth\VerificationController@resend')->name('verifica
 // 后台相关
 Route::resource('admin', 'Admin\IndexController', ['only' => ['index']]);
 Route::resource('user', 'Common\UsersController');
-
 // 权限申请
 Route::resource('apply', 'Common\AppliesController', ['only' => ['create', 'store']]);
+
+
+// 后台登录相关
+Route::get('admin/login', 'Admin\LoginController@showLoginForm')->name('admin.login');
+Route::post('admin/login', 'Admin\LoginController@login')->name('admin.login');
+Route::post('admin/logout', 'Admin\LoginController@logout')->name('admin.logout');
+
+
+Route::group(['middleware' => 'admin.login'], function () {
+    Route::resource('admin', 'Admin\IndexController', ['only' => ['index']]);
+    Route::resource('user', 'Common\UsersController');
+});
