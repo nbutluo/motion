@@ -8,6 +8,11 @@ use App\Http\Controllers\Controller;
 
 class IndexController extends Controller
 {
+    public function __construct()
+    {
+        return $this->middleware('admin.login', ['except' => 'logout']);
+    }
+
     public function index()
     {
         return view('admin.indexs.index');

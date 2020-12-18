@@ -53,7 +53,9 @@ Route::post('admin/login', 'Admin\LoginController@login')->name('admin.login');
 Route::post('admin/logout', 'Admin\LoginController@logout')->name('admin.logout');
 
 
-Route::group(['middleware' => 'admin.login'], function () {
-    Route::resource('admin', 'Admin\IndexController', ['only' => ['index']]);
-    Route::resource('user', 'Common\UsersController');
-});
+// Route::group(['middleware' => 'admin.login'], function () {
+//     Route::resource('admin', 'Admin\IndexController', ['only' => ['index']]);
+//     Route::resource('user', 'Common\UsersController');
+// });
+Route::resource('admin', 'Admin\IndexController', ['only' => ['index']]);
+Route::resource('user', 'Common\UsersController');

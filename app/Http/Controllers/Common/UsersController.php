@@ -10,6 +10,10 @@ use App\Models\Apply;
 
 class UsersController extends Controller
 {
+    public function __construct()
+    {
+        return $this->middleware('admin.login');
+    }
 
     public function index(Request $request, User $user, Level $level)
     {
