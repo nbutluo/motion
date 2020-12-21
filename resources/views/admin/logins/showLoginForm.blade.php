@@ -33,25 +33,15 @@
             <form action="{{ route('admin.login' )}}" method="post">
                 @csrf
                 <div class="form-group has-feedback">
-                    <input type="text" name="name" class="form-control" placeholder="用户名">
+                    <input type="text" name="name" class="form-control" placeholder="用户名" value="{{ old('name') }}">
                 </div>
                 <div class="form-group has-feedback">
                     <input type="password" name="password" class="form-control" placeholder="密码">
                 </div>
                 <div class="row">
-                    <div class="col-xs-8">
-                        <div class="checkbox icheck">
-                            <label class="">
-                                <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false" style="position: relative;">
-                                    <input type="checkbox" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-                                记住我
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-xs-4">
+                    <div class="col-xs-12">
                         <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
                     </div>
-                </div>
             </form>
         </div>
     </div>
