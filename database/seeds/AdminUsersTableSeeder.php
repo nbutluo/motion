@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 Use Illuminate\Support\Facades\Hash;
+use App\Model\User\AdminUser;
 
 class AdminUsersTableSeeder extends Seeder
 {
@@ -14,7 +15,8 @@ class AdminUsersTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('admin_users')->insert([
+
+        AdminUser::create([
             'username' => 'root',
             'password' => Hash::make('123456'),
             'api_token' => hash('sha256', Str::random(60)),

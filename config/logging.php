@@ -89,6 +89,12 @@ return [
             'driver' => 'errorlog',
             'level' => 'debug',
         ],
+
+        //login log
+        'login_log' => [
+            'driver' => 'monolog',
+            'handler' => App\Http\Controllers\User\log\loginHandle::class,
+        ],
     ],
 
 ];

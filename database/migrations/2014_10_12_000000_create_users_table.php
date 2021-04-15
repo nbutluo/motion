@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateUsersTable extends Migration
 {
@@ -18,18 +19,20 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('username')->unique()->comment('用户名');
             $table->string('password')->comment('密码');
-            $table->string('nickname')->comment('');
-            $table->tinyInteger('user_leverl')->comment('');
-            $table->tinyInteger('sex')->comment('');
-            $table->timestamp('birth')->comment('');
-            $table->string('email')->comment('');
-            $table->string('phone')->comment('');
-            $table->string('province')->comment('');
-            $table->string('city')->comment('');
-            $table->string('area')->comment('');
-            $table->string('company_url')->comment('');
+            $table->string('nickname')->default('')->comment('');
+            $table->tinyInteger('user_leverl')->default(0)->comment('用户等级：0普通用户，1一级用户，2二级用户');
+            $table->tinyInteger('sex')->default(0)->comment('性别：0女，1男');
+            $table->string('birth')->default('')->comment('生日');
+            $table->string('email')->default('')->comment('email');
+            $table->string('phone')->default('')->comment('');
+            $table->string('province')->default('')->comment('');
+            $table->string('city')->default('')->comment('');
+            $table->string('area')->default('')->comment('');
+            $table->string('company_url')->default('')->comment('');
             $table->rememberToken();
-            $table->string('api_token', 80)->unique()->nullable()->default(null);
+            $table->string('api_token', 80)->unique();
+            $table->softDeletes();
+            $table->timestamp('last_login')->comment('上次登录时间')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
         });
     }
