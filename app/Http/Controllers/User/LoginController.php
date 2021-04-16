@@ -17,7 +17,7 @@ class LoginController extends Controller
     public function Login(Request $request)
     {
         $data = $this->checkParams($request);
-//        var_dump($data);die;
+
         $configuration = Configuration::pluck('val','key');
         if ($configuration['login_log'] == 1){
             $uid = isset($data['data']['user']['id']) ? $data['data']['user']['id'] : 0;
@@ -38,7 +38,6 @@ class LoginController extends Controller
         $loginLog->method = $method;
         $loginLog->user_agent = $userAgent;
         $loginLog->message = $message;
-        $loginLog->login_time = Carbon::now();
         $loginLog->save();
     }
 
@@ -67,17 +66,24 @@ class LoginController extends Controller
         $user = Users::where('username',$data['username'])->first();
 
         if (isset($user) && Hash::check($data['password'],$user['password'])) {
-            $result['code'] = '200';
-            $user->api_token = $this->CreateNewToken($user['id']);
-            $user->save();
-            $result['data']['user'] = $user->toArray();
-            $result['data']['message'] = 'login sucessfal';
+            if (isset($user['deleted_at'])) {
+                $result['code'] = '4001';
+                $result['data']['message'] = 'user is be delete';
+                $result['data']['user']['uid'] = 'user is be delete';
+            } else {
+                $result['code'] = '200';
+                $user->api_token = $this->CreateNewToken($user['id']);
+                $user->save();
+                $result['data']['user'] = $user->toArray();
+                $result['data']['message'] = 'login sucessfal';
+            }
         } else {
             if (!isset($user)) {
                 $result['code'] = '4001';
                 $result['data']['message'] = 'user is not esixst!';
             } else {
                 $result['code'] = '4001';
+                $result['data']['user']['id'] = $user['id'];
                 $result['data']['message'] = 'password is wrong!';
             }
 

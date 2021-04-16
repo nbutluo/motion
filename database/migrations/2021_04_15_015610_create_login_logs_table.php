@@ -22,8 +22,8 @@ class CreateLoginLogsTable extends Migration
             $table->string('method')->default('')->comment('请求方式');
             $table->string('user_agent')->default('')->comment('UserAgent');
             $table->string('message')->default('')->comment('登录状态信息');
-            $table->timestamp('login_time')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登陆时间');
-            $table->timestamp('logout_time')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登出时间');
+//            $table->timestamp('login_time')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登陆时间');
+//            $table->timestamp('logout_time')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登出时间');
             $table->timestamps();
         });
     }
