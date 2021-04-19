@@ -21,4 +21,13 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'user'], function () {
     Route::post('register','User\RegisterController@create')->name('users.register');
     Route::post('login','User\LoginController@Login')->name('users.login');
+
+    Route::group(['middleware' => 'token'], function () {
+        Route::get('denglu/{id}/{token}','User\LoginController@denglu')->name('user.denglu');
+    });
+});
+
+Route::group(['prefix' => 'website'], function () {
+    Route::get('getseo','WebsiteController@getSeo')->name('website.seo');
+
 });

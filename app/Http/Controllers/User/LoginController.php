@@ -69,7 +69,7 @@ class LoginController extends Controller
             if (isset($user['deleted_at'])) {
                 $result['code'] = '4001';
                 $result['data']['message'] = 'user is be delete';
-                $result['data']['user']['uid'] = 'user is be delete';
+                $result['data']['user']['id'] = $user['id'];
             } else {
                 $result['code'] = '200';
                 $user->api_token = $this->CreateNewToken($user['id']);
@@ -100,5 +100,10 @@ class LoginController extends Controller
         $user->save();
 
         return $user->api_token;
+    }
+
+    public function denglu($id)
+    {
+        var_dump($id);
     }
 }
