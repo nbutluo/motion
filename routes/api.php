@@ -31,3 +31,5 @@ Route::group(['prefix' => 'website'], function () {
     Route::get('getseo','WebsiteController@getSeo')->name('website.seo');
 
 });
+ Route::get('categories','CategoriesController@getCategories')->name('category.get');
+ Route::get('footer-links','FooterLinksController@getLinks')->name('footer.links');
