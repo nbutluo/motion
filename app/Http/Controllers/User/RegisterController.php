@@ -2,26 +2,20 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\User\Users;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Http\Controllers\ApiController;
+use Exception;
 
-class RegisterController extends Controller
+class RegisterController extends ApiController
 {
     public function create(Request $request)
     {
-        $result = [];
-//        $validata = $request->validate([
-//            'username' => 'required|string|max:255',
-//            'password' => 'required|string|min:8|confirmed|max:255',
-//        ]);
-//        return $validata;
-        $checkResult = $this->checkParams($request);
+        try {
+            $this->checkParams($request);
 
-        if (empty($checkResult)) {
             $users = new Users;
             $users->username = $request->username;
             $users->password = Hash::make($request->password);
@@ -30,39 +24,33 @@ class RegisterController extends Controller
             if ($userSave) {
                 $result['code'] = 200;
                 $result['data']['message'] = 'register successful!';
+                return $this->success('register successful!','200');
+            }else {
+                throw new Exception('registration failed','4002');
             }
-        } else {
-            $result = $checkResult ;
+        } catch (Exception $exception) {
+            return $this->fail($exception->getMessage(),$exception->getCode());
         }
-        return json_encode($result);
     }
 
     protected function checkParams($data)
     {
-        $result = [];
-
         $user = Users::where('username',$data['username'])->first();
+
         if ($user) {
-            $result['code'] = '4001';
-            $result['data']['message'] = 'username has exists';
+            throw new Exception('username has exists','4001');
         }
 
         if ($data['password'] != $data['password_confirmation']) {
-            $result['code'] = '4001';
-            $result['data']['message'] = 'password is not same';
-            return $result;
+            throw new Exception('password is not same','4001');
         }
+
         $unsearch = ['script','(select','select(','update','delete','Mr.','http','sleep(','delay \'','order by','chr(','onload','insert','XMLType','--','=','test','include','src','print','md5'];
         foreach ($unsearch as $un) {
             if (strpos(strtolower($data['username']),$un) !== false || strpos(strtolower($data['password']),$un)) {
-                $result['code'] = '4001';
-                $result['data']['message'] = 'username or password is unlawful';
-                return $result;
+                throw new Exception('username or password is unlawful','4001');
                 break;
             }
         }
-
-
-        return $result;
     }
 }

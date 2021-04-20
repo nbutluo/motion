@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\log\Ipserver;
 use App\Model\User\Users;
 use Illuminate\Http\Request;
@@ -11,19 +10,25 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Model\Config\Configuration;
 use App\Model\User\LoginLog;
+use App\Http\Controllers\ApiController;
+use Exception;
 
-class LoginController extends Controller
+class LoginController extends ApiController
 {
     public function Login(Request $request)
     {
-        $data = $this->checkParams($request);
+        try {
+            $data = $this->checkParams($request);
 
-        $configuration = Configuration::pluck('val','key');
-        if ($configuration['login_log'] == 1){
-            $uid = isset($data['data']['user']['id']) ? $data['data']['user']['id'] : 0;
-            $this->addlogin($data['data']['message'],$uid);
+            $configuration = Configuration::pluck('val','key');
+            if ($configuration['login_log'] == 1){
+                $uid = isset($data['user']['id']) ? $data['user']['id'] : 0;
+                $this->addlogin($data['message'],$uid);
+            }
+            return $this->success('登陆成功',$data['user']);
+        } catch (Exception $exception) {
+            return $this->fail($exception->getMessage(),$exception->getCode());
         }
-        return $data;
     }
 
     protected function addlogin($message,$uid)
@@ -38,7 +43,10 @@ class LoginController extends Controller
         $loginLog->method = $method;
         $loginLog->user_agent = $userAgent;
         $loginLog->message = $message;
-        $loginLog->save();
+        $savelog =  $loginLog->save();
+        if (!$savelog) {
+            throw new exception('save login log fail' ,'4002');
+        }
     }
 
     /**
@@ -49,17 +57,12 @@ class LoginController extends Controller
     {
         $result = [];
         if ($data['username'] == '' || $data['password'] == '') {
-            $result['code'] = '4001';
-            $result['data']['message'] = 'username or password is empty';
-            return $result;
+            throw new Exception('username or password is empty','4001');
         }
         $unsearch = ['script','(select','select(','update','delete','Mr.','http','sleep(','delay \'','order by','chr(','onload','insert','XMLType','--','=','test','include','src','print','md5'];
         foreach ($unsearch as $un) {
             if (strpos(strtolower($data['username']),$un) !== false || strpos(strtolower($data['password']),$un)) {
-                $result['code'] = '4001';
-                $result['data']['message'] = 'username or password is unlawful';
-                return $result;
-                break;
+                throw new Exception('username or password is unlawful','4001');
             }
         }
 
@@ -67,24 +70,18 @@ class LoginController extends Controller
 
         if (isset($user) && Hash::check($data['password'],$user['password'])) {
             if (isset($user['deleted_at'])) {
-                $result['code'] = '4001';
-                $result['data']['message'] = 'user is be delete';
-                $result['data']['user']['id'] = $user['id'];
+                throw new Exception('user has be delete','4001');
             } else {
-                $result['code'] = '200';
                 $user->api_token = $this->CreateNewToken($user['id']);
                 $user->save();
-                $result['data']['user'] = $user->toArray();
-                $result['data']['message'] = 'login sucessfal';
+                $result['user'] = $user->toArray();
+                $result['message'] = 'login sucessfal';
             }
         } else {
             if (!isset($user)) {
-                $result['code'] = '4001';
-                $result['data']['message'] = 'user is not esixst!';
+                throw new Exception('user is not esixst!','4001');
             } else {
-                $result['code'] = '4001';
-                $result['data']['user']['id'] = $user['id'];
-                $result['data']['message'] = 'password is wrong!';
+                throw new Exception('password is wrong!','4001');
             }
 
         }
@@ -97,13 +94,11 @@ class LoginController extends Controller
         $user->last_login = Carbon::now();
 
         $user->api_token = Hash::make(Str::random(60));
-        $user->save();
-
+        $saveToken = $user->save();
+        if (!$saveToken) {
+            throw new Exception('create token fail','4002');
+        }
         return $user->api_token;
     }
 
-    public function denglu($id)
-    {
-        var_dump($id);
-    }
 }
