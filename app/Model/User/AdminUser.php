@@ -3,6 +3,7 @@
 namespace App\Model\User;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * App\Model\User\AdminUser
@@ -30,5 +31,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AdminUser extends Model
 {
+    use HasRoles;
     protected $table = 'admin_users';
 }
