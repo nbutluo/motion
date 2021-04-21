@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Model\Categories;
 use Exception;
+use App\Http\Controllers\ApiController;
 
 class CategoriesController extends ApiController
 {
