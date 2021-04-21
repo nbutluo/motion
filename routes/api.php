@@ -31,5 +31,11 @@ Route::group(['prefix' => 'website'], function () {
     Route::get('getseo','WebsiteController@getSeo')->name('website.seo');
 
 });
- Route::get('categories','CategoriesController@getCategories')->name('category.get');
- Route::get('footer-links','FooterLinksController@getLinks')->name('footer.links');
+
+Route::get('categories','CategoriesController@getCategories')->name('category.get');
+Route::get('footer-links','FooterLinksController@getLinks')->name('footer.links');
+
+Route::group(['namespace' => 'Api'], function () {
+    Route::get('about-us','AboutUsController@getAboutUsInfo')->name('about_us.info');
+});
+
