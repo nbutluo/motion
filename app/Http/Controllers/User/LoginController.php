@@ -25,7 +25,7 @@ class LoginController extends ApiController
                 $uid = isset($data['user']['id']) ? $data['user']['id'] : 0;
                 $this->addlogin($data['message'],$uid);
             }
-            return $this->success('登陆成功',$data['user']);
+            return $this->success('successful',$data['user']);
         } catch (Exception $exception) {
             return $this->fail($exception->getMessage(),$exception->getCode());
         }
@@ -41,6 +41,7 @@ class LoginController extends ApiController
         $loginLog->uid = $uid;
         $loginLog->ip = $ip;
         $loginLog->method = $method;
+        $loginLog->type = 1;
         $loginLog->user_agent = $userAgent;
         $loginLog->message = $message;
         $savelog =  $loginLog->save();
@@ -75,7 +76,7 @@ class LoginController extends ApiController
                 $user->api_token = $this->CreateNewToken($user['id']);
                 $user->save();
                 $result['user'] = $user->toArray();
-                $result['message'] = 'login sucessfal';
+                $result['message'] = 'login sucessful';
             }
         } else {
             if (!isset($user)) {

@@ -20,6 +20,7 @@ class CreateLoginLogsTable extends Migration
             $table->integer('uid')->default(0)->comment('用户id');
             $table->ipAddress('ip')->default('127.0.0.1')->comment('登录IP地址');
             $table->string('method')->default('')->comment('请求方式');
+            $table->tinyInteger('type')->default(1)->comment('用户类型：1前端用户，2管理员');
             $table->string('user_agent')->default('')->comment('UserAgent');
             $table->string('message')->default('')->comment('登录状态信息');
 //            $table->timestamp('login_time')->default(DB::raw('CURRENT_TIMESTAMP'))->comment('登陆时间');

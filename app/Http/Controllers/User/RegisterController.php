@@ -18,6 +18,7 @@ class RegisterController extends ApiController
 
             $users = new Users;
             $users->username = $request->username;
+            $users->email = $request->username;
             $users->password = Hash::make($request->password);
             $users->api_token = Hash::make(Str::random(60));
             $userSave = $users->save();
