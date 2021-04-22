@@ -27,4 +27,6 @@ return array(
     'b6ec61354e97f32c0ae683041c78392a' => $vendorDir . '/scrivo/highlight.php/HighlightUtilities/functions.php',
     'ed962a97bd972bc82007176b647d4e36' => $vendorDir . '/facade/ignition/src/helpers.php',
     '377b22b161c09ed6e5152de788ca020a' => $vendorDir . '/spatie/laravel-permission/src/helpers.php',
+    '1f9e54d362959b6a1a8e882d41880168' => $baseDir . '/app/Helper/helpers.php',
+    'ed1f9f51790add345f619f658e4c3125' => $baseDir . '/app/Helper/constants.php',
 );

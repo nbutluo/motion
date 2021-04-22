@@ -38,6 +38,10 @@
         "classmap": [
             "database/seeds",
             "database/factories"
+        ],
+        "files": [
+            "app/Helper/helpers.php",
+            "app/Helper/constants.php"
         ]
     },
     "autoload-dev": {
