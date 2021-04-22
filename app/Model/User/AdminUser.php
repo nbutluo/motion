@@ -2,10 +2,10 @@
 
 namespace App\Model\User;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
-class AdminUser extends Model
+class AdminUser extends Authenticatable
 {
     use HasRoles;
     protected $table = 'admin_users';

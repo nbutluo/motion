@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreatePermissionTables extends Migration
 {
@@ -30,7 +31,7 @@ class CreatePermissionTables extends Migration
             $table->tinyInteger('is_menu')->default(0)->comment('是否为菜单：1 是，0 否 ');
             $table->timestamps();
         });
-        \DB::statement("ALTER TABLE `".$tableNames['permissions']."` comment '权限表'");
+        DB::statement("ALTER TABLE `".$tableNames['permissions']."` comment '权限表'");
 
         Schema::create($tableNames['roles'], function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -40,7 +41,7 @@ class CreatePermissionTables extends Migration
             $table->string('display_name');
             $table->timestamps();
         });
-        \DB::statement("ALTER TABLE `".$tableNames['roles']."` comment '角色表'");
+        DB::statement("ALTER TABLE `".$tableNames['roles']."` comment '角色表'");
 
         Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use ($tableNames, $columnNames) {
             $table->engine = 'InnoDB';
@@ -58,7 +59,7 @@ class CreatePermissionTables extends Migration
             $table->primary(['permission_id', $columnNames['model_morph_key'], 'model_type'],
                 'model_has_permissions_permission_model_type_primary');
         });
-        \DB::statement("ALTER TABLE `".$tableNames['model_has_permissions']."` comment '用户-权限中间表'");
+        DB::statement("ALTER TABLE `".$tableNames['model_has_permissions']."` comment '用户-权限中间表'");
 
         Schema::create($tableNames['model_has_roles'], function (Blueprint $table) use ($tableNames, $columnNames) {
             $table->engine = 'InnoDB';
@@ -76,7 +77,7 @@ class CreatePermissionTables extends Migration
             $table->primary(['role_id', $columnNames['model_morph_key'], 'model_type'],
                 'model_has_roles_role_model_type_primary');
         });
-        \DB::statement("ALTER TABLE `".$tableNames['model_has_roles']."` comment '用户-角色中间表'");
+        DB::statement("ALTER TABLE `".$tableNames['model_has_roles']."` comment '用户-角色中间表'");
 
         Schema::create($tableNames['role_has_permissions'], function (Blueprint $table) use ($tableNames) {
             $table->engine = 'InnoDB';
@@ -95,7 +96,7 @@ class CreatePermissionTables extends Migration
 
             $table->primary(['permission_id', 'role_id']);
         });
-        \DB::statement("ALTER TABLE `".$tableNames['role_has_permissions']."` comment '角色-权限中间表'");
+        DB::statement("ALTER TABLE `".$tableNames['role_has_permissions']."` comment '角色-权限中间表'");
 
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
