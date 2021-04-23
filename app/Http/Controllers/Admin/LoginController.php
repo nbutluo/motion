@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Model\User\AdminUser;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 
 class LoginController extends Controller
@@ -110,6 +111,19 @@ class LoginController extends Controller
     public function redirectTo()
     {
         return URL::route('admin.layout');
+    }
+
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        //缓存配置信息
+        $configuration = Configuration::pluck('val','key');
+
+        //删除所有session信息
+        $request->session()->invalidate();
+
+        return Redirect::to(URL::route('admin.user.loginForm')) ?: redirect('/');
     }
 
     protected function guard()

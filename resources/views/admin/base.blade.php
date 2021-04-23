@@ -7,13 +7,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">>
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/admin/layuiadmin/style/admin.css" media="all">
+{{--    <link rel="stylesheet" href="/static/css/chris.css" media="all">--}}
     @yield('css')
     <script src="/static/js/jquery-3.5.1.min.js"></script>
 </head>
 <body>
 
-<div id="layui-admin-content" class="layui-fluid" style="display: none">
+<div id="layui-admin-content" class="layui-fluid" style="display: block">
     @yield('content')
 </div>
 

@@ -33,6 +33,10 @@ Route::group(['middleware' => ['auth']], function () {
 Route::group(['prefix' => 'user'], function() {
     Route::get('login','Admin\LoginController@showLoginForm')->name('admin.user.loginForm');
     Route::post('logindata','Admin\LoginController@login')->name('admin.user.login');
+    Route::get('logout', 'Admin\LoginController@logout')->name('admin.user.logout')->middleware('auth');
+    //修改密码
+    Route::get('change_my_password_form', 'Admin\PasswordController@changeMyPasswordForm')->name('admin.user.changeMyPasswordForm')->middleware('auth');
+    Route::post('change_my_password', 'Admin\PasswordController@changeMyPassword')->name('admin.user.changeMyPassword')->middleware('auth');
 });
 
 //Route::group(['middleware' => ['auth']], function () {

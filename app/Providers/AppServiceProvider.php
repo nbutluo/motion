@@ -25,5 +25,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(250);
+
+        //全局分配当前登录用户
+        view()->composer('*', function ($view)
+        {
+            $view->with('currentUser', auth()->user());
+        });
     }
 }
