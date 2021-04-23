@@ -20,5 +20,9 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
+
+
+        // 临时取消 CSRF 限制
+        'admin/website-seo-update'
     ];
 }

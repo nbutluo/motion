@@ -41,4 +41,17 @@ class SystemConfig extends Model
         return array_key_exists($key, $seo_v) ? $seo_v[$key] : $seo_constants[$key];
     }
 
+    public function updateSeo($data)
+    {
+        $res = [];
+        foreach ($data as $k => $v) {
+            if (SystemConfig::where('identifier', $k)->first()) {
+                $res[$k] = SystemConfig::where('identifier', $k)->update(['value' => $v]);
+            } else {
+                $res[$k] = SystemConfig::insert(['identifier' => $k, 'value' => $v]);
+            }
+        }
+        return $res;
+    }
+
 }

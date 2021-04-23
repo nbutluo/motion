@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,10 @@ Route::group(['prefix' => 'user'], function() {
     Route::get('change_my_password_form', 'Admin\PasswordController@changeMyPasswordForm')->name('admin.user.changeMyPasswordForm')->middleware('auth');
     Route::post('change_my_password', 'Admin\PasswordController@changeMyPassword')->name('admin.user.changeMyPassword')->middleware('auth');
 });
+
+// seo 获取与更新
+Route::get('website-seo', 'Admin\SystemConfigController@getSeoInfo');
+Route::post('website-seo-update', 'Admin\SystemConfigController@updateSeoConfig');
 
 //Route::group(['middleware' => ['auth']], function () {
 //    //后台布局
