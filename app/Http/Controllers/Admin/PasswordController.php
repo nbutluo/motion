@@ -16,12 +16,16 @@ class PasswordController extends Controller
 
     public function changeMyPassword(Request $request)
     {
-        $data = $request->all(['old_password','new_password','new_password_confirmation']);
-        echo '<pre>';var_dump(auth()->user()->toArray());
-        var_dump($request->toArray());
-//        return Redirect::back()->withErrors('密码不正确');
-//        $data = $request
-        var_dump(Hash::check($request['old_password'],auth()->user()->password));
-
+        if (!Hash::check($request['old_password'],auth()->user()->password)) {
+            return Redirect::back()->withErrors('your password is wrong!');
+        }
+        try {
+            $user = auth()->user();
+            $user->password = bcrypt($request['new_password']);
+            $user->save();
+            return Redirect::back()->with(['success' => 'Password reset complete']);
+        } catch(\Exception $exception) {
+            return Redirect::back()->witherrors('Password reset failed');
+        }
     }
 }
