@@ -11,29 +11,51 @@ class Blog extends Model
     protected $primaryKey = 'post_id';
 
     //考虑到性能问题，通常$columns我们不以*号为值。可传入需要查询的字段替代。这里只做演示。无此要求
-    public function paginate($perPage = null, $columns = ['*'], $page = null, $pageName = 'page')
+    public function paginate($perPage = null, $columns = ['*'], $page = null, $pageName = 'page', $where = [])
     {
         $page = $page ?: Paginator::resolveCurrentPage($pageName);
 
         $perPage = $perPage ?: $this->model->getPerPage();
 
-        $results = ($total = $this->toBase()->getCountForPagination())
-            ? $this->forPage($page, $perPage)->get($columns)
-            : $this->model->newCollection();
+        if ($total = $this->toBase()->getCountForPagination()) {
+            $results = $this->forPage($page, $perPage)->where($where)->get($columns);
+        } else {
+            $results = $this->model->newCollection();
+        }
+
         $pages = ceil($total / $perPage);
         $result = ['total' => $total, 'current_page' => $page, 'page_size' => $perPage, 'pages' => $pages, 'list' => $results];
         return $result;
     }
 
-    public function getPageList($page, $pageSize)
+    public function getPageList($page, $pageSize, $selects = ['*'])
     {
-        return $this->paginate($pageSize, ['*'], $page, 'page');
+        return $this->paginate($pageSize, $selects, $page, 'page');
+    }
+
+    public function getCategoryPostList($category_id, $page, $pageSize)
+    {
+        $where = [
+            'category_id' => $category_id
+        ];
+        $select = ['post_id', 'title', 'identifier', 'content', 'views_count', 'short_content', 'category_id'];
+        return $this->paginate($pageSize, $select, $page, 'page', $where);
     }
 
     public function getFind($id)
     {
         if ($this->where('post_id', $id)->first()) {
             return $this->where('post_id', $id)->first()->toArray();
+        } else {
+            return [];
+        }
+    }
+
+    public function getSelectFind($id)
+    {
+        if ($this->where('post_id', $id)->first()) {
+            return $this->select('post_id', 'title', 'meta_title', 'meta_keywords', 'meta_description', 'content', 'views_count', 'category_id')
+                ->where('post_id', $id)->first()->toArray();
         } else {
             return [];
         }

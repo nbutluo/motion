@@ -37,5 +37,9 @@ Route::group(['namespace' => 'Api'], function () {
     });
 
     Route::get('blog-list','BlogController@getList')->name('blog.list');
+    Route::get('blog/{id}','BlogController@getDetail')->name('blog.detail');
+    Route::get('blog/category-list','BlogController@getCategoryList')->name('blog.category-list');
+    Route::get('category/blog-list','BlogController@getCategoriesBlog')->name('category.blog-list');
+
 });
 

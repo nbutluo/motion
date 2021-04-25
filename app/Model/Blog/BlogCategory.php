@@ -24,6 +24,11 @@ class BlogCategory extends Model
         return $result;
     }
 
+    public function getPageList($page, $pageSize)
+    {
+        return $this->paginate($pageSize, ['*'], $page, 'page');
+    }
+
     public function getFind($id)
     {
         if ($this->where('category_id', $id)->first()) {
@@ -49,5 +54,11 @@ class BlogCategory extends Model
         } else {
             return false;
         }
+    }
+
+    public function getCategoriesInHome()
+    {
+        // is_active \ include_in_menu \ position DESC
+        return $this->select('category_id', 'title', 'identifier', 'content', 'position')->where('is_active', '1')->where('include_in_menu', '1')->orderBy('position', 'DESC')->get()->toArray();
     }
 }
