@@ -35,5 +35,7 @@ Route::group(['namespace' => 'Api'], function () {
         Route::get('getseo','WebsiteController@getSeo')->name('website.seo');
 
     });
+
+    Route::get('blog-list','BlogController@getList')->name('blog.list');
 });
 

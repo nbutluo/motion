@@ -23,6 +23,8 @@ class VerifyCsrfToken extends Middleware
 
 
         // 临时取消 CSRF 限制
-        'admin/website-seo-update'
+        'admin/website-seo-update',
+        'admin/blog-add',
+        'admin/blog-update'
     ];
 }

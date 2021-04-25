@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Model\SystemConfig;
 use Illuminate\Http\Request;
-use App\Model\WebsiteSeo;
 use App\Http\Controllers\ApiController;
 use Exception;
 
