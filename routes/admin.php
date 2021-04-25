@@ -55,6 +55,8 @@ Route::group(['namespace' => 'Admin'], function () {
     Route::get('blog/category/{id}', 'BlogCategoryController@getCategory');
     Route::post('blog-category-add', 'BlogCategoryController@addCategory');
     Route::post('blog-category-update', 'BlogCategoryController@updateCategory');
+
+    Route::post('blog-category-contact', 'BlogController@contactPostCategory');
 });
 
 //Route::group(['middleware' => ['auth']], function () {

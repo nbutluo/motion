@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
-use App\Model\Blog\Blog;
 use App\Model\Blog\BlogCategory;
 use Illuminate\Http\Request;
 
@@ -43,7 +42,7 @@ class BlogCategoryController extends AdminController
             'is_active' => $is_active,
         ];
 
-        $data = app(Blog::class)->addPost($params);
+        $data = app(BlogCategory::class)->addCategory($params);
 
         if ($data) {
             return $this->success('success', $data);
@@ -55,9 +54,7 @@ class BlogCategoryController extends AdminController
     public function updateCategory(Request $request)
     {
         $id = $request->input('category_id');
-        if (empty($id)) {
-            return $this->fail('参数错误，缺少博客分类ID', 4001);
-        }
+        if (empty($id)) return $this->fail('参数错误，缺少博客分类ID', 4001);
 
         $params = [];
         if ($content = $request->input('title')) {
@@ -70,7 +67,7 @@ class BlogCategoryController extends AdminController
             $params['include_in_menu'] = $content;
         }
 
-        $data = app(Blog::class)->updatePost($id, $params);
+        $data = app(BlogCategory::class)->updateCategory($id, $params);
 
         if ($data) {
             return $this->success('更新成功');
