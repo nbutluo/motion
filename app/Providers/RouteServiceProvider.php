@@ -81,6 +81,7 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => $this->namespace
         ],function(){
             require base_path('routes/admin.php');
+            require base_path('routes/admin-system.php');
         });
     }
 }

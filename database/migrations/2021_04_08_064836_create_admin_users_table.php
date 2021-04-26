@@ -16,10 +16,11 @@ class CreateAdminUsersTable extends Migration
         Schema::create('admin_users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
-            $table->string('username');
-            $table->string('nickname');
-            $table->string('email');
-            $table->string('password');
+            $table->string('username')->default('')->unique()->comment('用户名');
+            $table->string('nickname')->default('')->comment('昵称');
+            $table->string('email')->default('')->comment('邮箱');
+            $table->string('phone')->default('')->comment('电话号码');
+            $table->string('password')->comment('密码');
             $table->rememberToken();
             $table->string('api_token', 80)->unique()->nullable()->default(null);
             $table->softDeletes();

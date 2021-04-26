@@ -5,8 +5,8 @@
         <div class="layui-card-header">
             <h2>change password</h2>
         </div>
-        <div class="layui-cart-body">
-            <form action="{{route("admin.user.changeMyPassword")}}" method="post">
+        <div class="layui-card-body">
+            <form class="layui-form" action="{{route("admin.user.changeMyPassword")}}" method="post">
                 {{csrf_field()}}
                 <div class="layui-form-item">
                     <label for="" class="layui-form-label">原密码</label>

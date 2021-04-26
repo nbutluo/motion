@@ -113,7 +113,7 @@ class AdminUsersTableSeeder extends Seeder
                 'name' => 'information',
                 'display_name' => '资讯管理',
                 'route' => '',
-                'icon' => 'layui-icon-red',
+                'icon' => 'layui-icon-release',
                 'child' => [
                     [
                         'name' => 'information.category',
@@ -176,7 +176,7 @@ class AdminUsersTableSeeder extends Seeder
                     $role->givePermissionTo($p2);
                     //为用户添加权限
                     $user->givePermissionTo($p2);
-                    if (isset($pem2p['child'])) {
+                    if (isset($pem2['child'])) {
                         foreach ($pem2['child'] as $pem3) {
                             $p3 = \App\Model\Permission::create([
                                 'name' => $pem3['name'],

@@ -38,6 +38,9 @@ Route::group(['prefix' => 'user'], function() {
     //修改密码
     Route::get('change_my_password_form', 'Admin\PasswordController@changeMyPasswordForm')->name('admin.user.changeMyPasswordForm')->middleware('auth');
     Route::post('change_my_password', 'Admin\PasswordController@changeMyPassword')->name('admin.user.changeMyPassword')->middleware('auth');
+    //个人资料
+    Route::get('information_form', 'Admin\InformationController@myForm')->name('admin.user.myForm')->middleware('auth');
+    Route::post('information_update','Admin\InformationController@infoUpdate')->name('admin.user.infoUpdate')->middleware('auth');
 });
 
 Route::group(['namespace' => 'Admin'], function () {
