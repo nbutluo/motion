@@ -59,10 +59,10 @@
 <div class="layadmin-user-login">
     <div class="layadmin-user-login-main">
         <div class="layadmin-user-login-header">
-            <h2>Backstage management</h2>
-            <p>Backstage management system, for internal use only</p>
+            <h2>LoctekMotion Admin System</h2>
+{{--            <p>Backstage management system, for internal use only</p>--}}
         </div>
-        <form class="layui-form" action="{{route('admin.user.login')}}" method="post">
+        <form class="layui-form" action="{{route('admin.user.login-post')}}" method="post">
             {{csrf_field()}}
             <div class="layui-form-item" pane>
                 <label class="layui-form-label layui-icon layui-icon-username" ></label>

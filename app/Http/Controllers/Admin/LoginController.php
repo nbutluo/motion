@@ -123,7 +123,7 @@ class LoginController extends Controller
         //删除所有session信息
         $request->session()->invalidate();
 
-        return Redirect::to(URL::route('admin.user.loginForm')) ?: redirect('/');
+        return Redirect::to(URL::route('admin.user.login')) ?: redirect('/');
     }
 
     protected function guard()

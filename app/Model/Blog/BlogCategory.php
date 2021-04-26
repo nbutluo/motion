@@ -61,4 +61,10 @@ class BlogCategory extends Model
         // is_active \ include_in_menu \ position DESC
         return $this->select('category_id', 'title', 'identifier', 'content', 'position')->where('is_active', '1')->where('include_in_menu', '1')->orderBy('position', 'DESC')->get()->toArray();
     }
+
+    // 更新激活状态
+    public function updateActiveStatus($ids, $status = 1)
+    {
+        return $this->whereIn('category_id', $ids)->update(['is_active' => $status]);
+    }
 }

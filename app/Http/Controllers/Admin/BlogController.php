@@ -4,21 +4,41 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
 use App\Model\Blog\Blog;
+use App\Model\Blog\BlogCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\URL;
 
 class BlogController extends AdminController
 {
+
+    public function index()
+    {
+        $categories = BlogCategory::where('is_active', 1)->orderBy('position', 'asc')->get();
+        return view('admin.blog.index', compact('categories'));
+    }
+
     public function getList(Request $request)
     {
         $page = $request->input('page', 1);
         $pageSize = $request->input('pageSize', 10);
-        $data = app(Blog::class)->getPageList($page, $pageSize);
 
-        if ($data) {
-            return $this->success('success', $data);
-        } else {
-            return $this->fail('failure', 500, []);
-        }
+        $res = app(Blog::class)->getPageList($page, $pageSize);
+
+        return response()->json([
+            'code' => 0,
+            'msg' => '获取成功',
+            'count' => $res['total'],
+            'data' => $res['list'],
+        ]);
+    }
+
+    public function create()
+    {
+        //分类
+        $categories = BlogCategory::where('is_active', 1)->orderBy('position', 'asc')->get();
+
+        return view('admin.blog.create', compact('categories'));
     }
 
     public function getPost($post_id)
@@ -33,7 +53,7 @@ class BlogController extends AdminController
         $short_content = $request->input('short_content', '');
         $is_active = $request->input('is_active', 0);
         $title = $request->input('title', '');
-        if (empty($title)) return $this->fail('参数错误，缺少博客标题', 4001);
+        if (empty($title)) return redirect::back()->withErrors('添加失败，缺少标题');
 
         $params = [
             'title' => $title,
@@ -46,24 +66,35 @@ class BlogController extends AdminController
         if ($category_id = $request->input('category_id')) {
             $params['category_id'] = $category_id;
         }
+        if ($keywords = $request->input('keywords')) {
+            $params['keywords'] = $keywords;
+        }
 
-        $data = app(Blog::class)->addPost($params);
-
-        if ($data) {
-            return $this->success('success', $data);
-        } else {
-            return $this->fail('failure', 500, []);
+        try {
+            app(Blog::class)->addPost($params);
+            return redirect::to(URL::route('admin.blog.article'))->with(['success' => '添加成功']);
+        } catch (\Exception $exception) {
+            return redirect::back()->withErrors('添加失败');
         }
     }
 
-    public function updatePost(Request $request)
+    public function edit($id)
     {
-        $id = $request->input('post_id');
-        if (empty($id)) return $this->fail('参数错误，缺少博客ID', 4001);
+        //文章
+        $post = Blog::findOrFail($id);
+        //分类
+        $categories = BlogCategory::where('is_active', 1)->orderBy('position', 'asc')->get();
+
+        return view('admin.blog.edit', compact('post', 'categories'));
+    }
+
+    public function update($id, Request $request)
+    {
+        if (empty($id)) return redirect::back()->withErrors('参数错误，缺少ID');
 
         $params = [];
-        if ($content = $request->input('title')) {
-            $params['title'] = $content;
+        if ($title = $request->input('title')) {
+            $params['title'] = $title;
         }
         if ($content = $request->input('content')) {
             $params['content'] = $content;
@@ -71,42 +102,37 @@ class BlogController extends AdminController
         if ($short_content = $request->input('short_content')) {
             $params['short_content'] = $short_content;
         }
-        if ($content = $request->input('is_active')) {
-            $params['is_active'] = $content;
-        }
-        if ($content = $request->input('show_in_home')) {
-            $params['show_in_home'] = $content;
-        }
         if ($category_id = $request->input('category_id')) {
             $params['category_id'] = $category_id;
         }
+        if ($keywords = $request->input('keywords')) {
+            $params['keywords'] = $keywords;
+        }
 
-        $data = app(Blog::class)->updatePost($id, $params);
+        // 首页显示状态 1、是 2、否
+        $params['show_in_home'] = $request->input('show_in_home', 1);
+        $params['is_active'] = $request->input('is_active', 1);
 
-        if ($data) {
-            return $this->success('更新成功');
-        } else {
-            return $this->fail('failure', 500);
+        try {
+            app(Blog::class)->updatePost($id, $params);
+            return redirect::to(URL::route('admin.blog.article'))->with(['success' => '更新成功']);
+        } catch (\Exception $exception) {
+            return redirect::back()->withErrors('更新失败');
         }
     }
 
-    public function contactPostCategory(Request $request)
+    public function disable(Request $request)
     {
-        $id = $request->input('post_id');
-        if (empty($id)) return $this->fail('参数错误，缺少博客ID', 4001);
+        $ids = $request->input('ids');
+        if (empty($ids)) return $this->fail('参数错误，缺少ID', 4001);
 
-        $category_id = $request->input('category_id');
-        if (empty($id)) return $this->fail('参数错误，缺少博客分类ID', 4001);
+        $status = (int)$request->input('status', 0);
 
-        $params = [
-            'category_id' => $category_id
-        ];
-        $data = app(Blog::class)->updatePost($id, $params);
-
-        if ($data) {
-            return $this->success('博客分类关联更新成功');
-        } else {
-            return $this->fail('failure', 500);
+        try {
+            app(Blog::class)->updateActiveStatus($ids, $status);
+            return response()->json(['code' => 0, 'msg' => '状态修改成功']);
+        } catch (\Exception $e) {
+            return response()->json(['code' => 1, 'msg' => '状态修改失败', 'data' => $e->getMessage()]);
         }
     }
 

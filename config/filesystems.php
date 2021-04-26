@@ -64,6 +64,23 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        // 任务目录
+        'task' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/task'),
+            'url' => env('APP_URL').'/storage/task',
+            'visibility' => 'public',
+        ],
+
+        // 上传 tmp 目录
+        'tmp' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/tmp'),
+            'url' => env('APP_URL').'/storage/tmp',
+            'visibility' => 'public',
+        ],
+
+
     ],
 
 ];

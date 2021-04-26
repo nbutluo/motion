@@ -32,8 +32,8 @@ Route::group(['middleware' => ['auth']], function () {
 |--------------------------------------------------------------------------
 */
 Route::group(['prefix' => 'user'], function() {
-    Route::get('login','Admin\LoginController@showLoginForm')->name('admin.user.loginForm');
-    Route::post('logindata','Admin\LoginController@login')->name('admin.user.login');
+    Route::get('login','Admin\LoginController@showLoginForm')->name('admin.user.login');
+    Route::post('logindata','Admin\LoginController@login')->name('admin.user.login-post');
     Route::get('logout', 'Admin\LoginController@logout')->name('admin.user.logout')->middleware('auth');
     //修改密码
     Route::get('change_my_password_form', 'Admin\PasswordController@changeMyPasswordForm')->name('admin.user.changeMyPasswordForm')->middleware('auth');
@@ -44,22 +44,31 @@ Route::group(['prefix' => 'user'], function() {
 });
 
 Route::group(['namespace' => 'Admin'], function () {
-    // seo 获取与更新
-//    Route::get('website-seo', 'SystemConfigController@getSeoInfo');
-//    Route::post('website-seo-update', 'SystemConfigController@updateSeoConfig');
+    Route::post('upload', 'UploadController@upload')->name('admin.upload');
+});
+
+Route::group(['namespace' => 'Admin'], function () {
 
     // blog 系列接口
-    Route::get('blog-list', 'BlogController@getList');
+    Route::get('blog-index', 'BlogController@index')->name('admin.blog.article');
+    Route::get('blog-list', 'BlogController@getList')->name('admin.blog.article.data');
     Route::get('blog/{id}', 'BlogController@getPost');
-    Route::post('blog-add', 'BlogController@addPost');
-    Route::post('blog-update', 'BlogController@updatePost');
-    // blog分类 系列接口
-    Route::get('blog-category-list', 'BlogCategoryController@getList');
-    Route::get('blog/category/{id}', 'BlogCategoryController@getCategory');
-    Route::post('blog-category-add', 'BlogCategoryController@addCategory');
-    Route::post('blog-category-update', 'BlogCategoryController@updateCategory');
+    Route::get('blog-create', 'BlogController@create')->name('admin.blog.article.create');
+    Route::post('blog/create', 'BlogController@addPost')->name('admin.blog.article.create-post');
+    Route::get('blog/{id}/edit', 'BlogController@edit')->name('admin.blog.article.edit');
+    Route::post('blog/{id}/update', 'BlogController@update')->name('admin.blog.article.update');
+    Route::delete('blog/disable', 'BlogController@disable')->name('admin.blog.article.disable');
 
-    Route::post('blog-category-contact', 'BlogController@contactPostCategory');
+    // blog分类 系列接口
+    Route::get('blog-category-index', 'BlogCategoryController@index')->name('admin.blog.category');
+    Route::get('blog/category/list', 'BlogCategoryController@getList')->name('admin.blog.category.data');
+    Route::get('blog/category/{id}', 'BlogCategoryController@getCategory');
+    Route::get('blog/category/create', 'BlogCategoryController@create')->name('admin.blog.category.create');
+    Route::post('blog/category/add', 'BlogCategoryController@addCategory')->name('admin.blog.category.create-post');
+    Route::get('blog/category/{id}/edit', 'BlogCategoryController@edit')->name('admin.blog.category.edit');
+    Route::post('blog/category/{id}/update', 'BlogCategoryController@update')->name('admin.blog.category.update');
+    Route::delete('blog/category/disable', 'BlogCategoryController@disable')->name('admin.blog.category.disable');;
+
 });
 
 //Route::group(['middleware' => ['auth']], function () {

@@ -90,4 +90,10 @@ class Blog extends Model
             return false;
         }
     }
+
+    // 更新激活状态
+    public function updateActiveStatus($ids, $status = 1)
+    {
+        return $this->whereIn('post_id', $ids)->update(['is_active' => $status]);
+    }
 }
