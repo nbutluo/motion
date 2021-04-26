@@ -52,3 +52,17 @@ Route::group(['middleware' => 'permission:system.role'], function () {
     Route::get('role/{id}/permission','Admin\User\RoleController@permission')->name('admin.role.permission')->middleware('permission:system.role.permission');
     Route::put('role/{id}/assignPermission','Admin\User\RoleController@assignPermission')->name('admin.role.assignPermission')->middleware('permission:system.role.permission');
 });
+
+//站点设置
+Route::group(['middleware' => 'permission:system.website_seo'],function () {
+    Route::get('website_seo','Admin\SystemConfigController@index')->name('admin.website_seo');
+    Route::get('website_seo/data','Admin\SystemConfigController@data')->name('admin.website_seo.data');
+    //新增
+    Route::get('website_seo/create','Admin\SystemConfigController@create')->name('admin.website_seo.create')->middleware('permission:system.website_seo.create');
+    Route::post('website_seo/store','Admin\SystemConfigController@store')->name('admin.website_seo.store')->middleware('permission:system.website_seo.create');
+    //编辑
+    Route::get('website_seo/{id}/edit','Admin\SystemConfigController@edit')->name('admin.website_seo.edit')->middleware('permission:system.website_seo.edit');
+    Route::put('website_seo/{id}/update','Admin\SystemConfigController@update')->name('admin.website_seo.update')->middleware('permission:system.website_seo.edit');
+    //删除
+    Route::delete('website_seo/destroy','Admin\SystemConfigController@destroy')->name('admin.website_seo.destroy')->middleware('permission:system.website_seo.destroy');
+});

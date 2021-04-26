@@ -45,8 +45,8 @@ Route::group(['prefix' => 'user'], function() {
 
 Route::group(['namespace' => 'Admin'], function () {
     // seo 获取与更新
-    Route::get('website-seo', 'SystemConfigController@getSeoInfo');
-    Route::post('website-seo-update', 'SystemConfigController@updateSeoConfig');
+//    Route::get('website-seo', 'SystemConfigController@getSeoInfo');
+//    Route::post('website-seo-update', 'SystemConfigController@updateSeoConfig');
 
     // blog 系列接口
     Route::get('blog-list', 'BlogController@getList');

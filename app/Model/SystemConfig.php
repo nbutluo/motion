@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SystemConfig extends Model
 {
     protected $table = 'system_config';
+    protected $fillable = ['identifier','value'];
 
     public function getWebsiteSeo()
     {

@@ -39,6 +39,16 @@ class AdminUsersTableSeeder extends Seeder
                 'icon' => 'layui-icon-set',
                 'child' => [
                     [
+                        'name' => 'system.website_seo',
+                        'display_name' => '站点设置',
+                        'route' => 'admin.website_seo',
+                        'child' => [
+                            ['name' => 'system.website_seo.create','display_name' => '添加seo','route' => 'admin.website_seo.create'],
+                            ['name' => 'system.website_seo.edit','display_name' => '编辑seo','route' => 'admin.website_seo.edit'],
+                            ['name' => 'system.website_seo.destroy','display_name' => '删除seo','route' => 'admin.website_seo.destroy'],
+                        ],
+                    ],
+                    [
                         'name' => 'system.user',
                         'display_name' => '用户管理',
                         'route' => 'admin.user',
