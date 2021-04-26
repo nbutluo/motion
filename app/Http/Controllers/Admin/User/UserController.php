@@ -16,11 +16,20 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+    /**
+     * 用户管理主页
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         return view('admin.user.index');
     }
 
+    /**
+     * 获取列表数据
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function data(Request $request)
     {
         $users = AdminUser::paginate($request->get('limit',30));
@@ -33,15 +42,23 @@ class UserController extends Controller
         return Response::json($data);
     }
 
+    /**
+     * 创建用户表单
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create()
     {
         return view('admin.user.create');
     }
 
+    /**
+     * 创建用户
+     * @param UserCreateRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(UserCreateRequest $request)
     {
         $data = $request->all();
-//        var_dump($data);
         try {
             AdminUser::create([
                 'username' => $data['username'],
@@ -69,6 +86,11 @@ class UserController extends Controller
 //
 //    }
 
+    /**
+     * 分配角色表单
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function role($id)
     {
         $user = AdminUser::findOrFail($id);
@@ -79,6 +101,12 @@ class UserController extends Controller
         return view('admin.user.role',compact('roles','user'));
     }
 
+    /**
+     * 分配角色操作
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function assignRole(Request $request,$id)
     {
         $user = AdminUser::findOrFail($id);
@@ -91,18 +119,23 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * 分配权限
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function permission($id)
     {
         $user = AdminUser::findOrFail($id);
         $permissions = Permission::with('allChilds')->where('parent_id',0)->get();
         foreach ($permissions as $p1) {
-            $p1->own = $user->hasDirectPermission($p1->id) ? 'checked' : '';
+            $p1->own = $user->hasPermissionto($p1->id) ? 'checked' : '';
             if ($p1->childs->isNotEmpty()) {
                 foreach ($p1->childs as $p2) {
-                    $p2->own = $user->hasDirectPermission($p2->id) ? 'checked' : '' ;
+                    $p2->own = $user->hasPermissionto($p2->id) ? 'checked' : '' ;
                     if ($p2->childs->isNotEmpty()) {
                         foreach ($p2->childs as $p3) {
-                            $p3->own = $user->hasDirectPermission($p3->id) ? 'checked' : '';
+                            $p3->own = $user->hasPermissionto($p3->id) ? 'checked' : '';
                         }
                     }
                 }
@@ -111,18 +144,29 @@ class UserController extends Controller
         return view('admin.user.permission',compact('user','permissions'));
     }
 
+    /**
+     * 分配权限操作
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function assignpermission(Request $request,$id)
     {
         $user = AdminUser::findOrFail($id);
         $permissions = $request->get('permissions',[]);
         try{
             $user->syncPermissions($permissions);
-            return Redirect::to(URL::route('admin.user.permission',['id' => $id]))->with(['success'=>'更新成功']);
+            return Redirect::to(URL::route('admin.user'))->with(['success'=>'更新成功']);
         }catch (\Exception $exception){
             return Redirect::back()->withErrors('更新失败');
         }
     }
 
+    /**
+     * 删除用户
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy(Request $request)
     {
         $ids = $request->get('ids');

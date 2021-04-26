@@ -38,5 +38,17 @@ Route::group(['middleware' => ['auth', 'permission:system']],function() {
 
 //角色管理
 Route::group(['middleware' => 'permission:system.role'], function () {
-    Route::get('role','Admin/RoleController@index')->name('admin.role');
+    Route::get('role','Admin\User\RoleController@index')->name('admin.role');
+    Route::get('role/data','Admin\User\RoleController@data')->name('admin.role.data');
+    //创建角色
+    Route::get('role/create','Admin\User\RoleController@create')->name('admin.role.create')->middleware('permission:system.role.create');
+    Route::post('role/store','Admin\User\RoleController@store')->name('admin.role.store')->middleware('permission:system.role.create');
+    //删除角色
+    Route::delete('role/destroy','Admin\User\RoleController@destroy')->name('admin.role.destroy')->middleware('permission:system.role.destroy');
+    //编辑角色
+    Route::get('role/{id}/edit','Admin\User\RoleController@edit')->name('admin.role.edit')->middleware('permission:system.role.edit');
+    Route::put('role/{id}/update','Admin\User\RoleController@update')->name('admin.role.update')->middleware('permission:system.role.edit');
+    //权限
+    Route::get('role/{id}/permission','Admin\User\RoleController@permission')->name('admin.role.permission')->middleware('permission:system.role.permission');
+    Route::put('role/{id}/assignPermission','Admin\User\RoleController@assignPermission')->name('admin.role.assignPermission')->middleware('permission:system.role.permission');
 });
