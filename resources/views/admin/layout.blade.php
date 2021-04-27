@@ -62,6 +62,7 @@
                         <cite>{{auth()->user()->nickname ?: auth()->user()->username}}</cite>
                     </a>
                     <dl class="layui-nav-child">
+                        <dd><a lay-href="{{route('admin.user.myForm')}}">个人资料</a></dd>
                         <dd><a lay-href="{{route('admin.user.changeMyPasswordForm')}}">修改密码</a></dd>
                         <dd><a href="{{route('admin.user.logout')}}">退出</a></dd>
                     </dl>
