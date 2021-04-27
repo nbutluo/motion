@@ -4,24 +4,14 @@
     <div class="layui-card">
         <div class="layui-card-header layuiadmin-card-header-auto">
             <div class="layui-btn-group ">
-{{--                @can('information.article.destroy')--}}
-{{--                    <button class="layui-btn layui-btn-sm layui-btn-danger" id="listDelete">删 除</button>--}}
-{{--                @endcan--}}
-                @can('information.article.create')
-                    <a class="layui-btn layui-btn-sm" href="{{route('admin.blog.article.create')}}">添 加</a>
-                @endcan
+
             </div>
             <div class="layui-form">
                 <div class="layui-input-inline">
-                    <select name="category_id" lay-verify="required" id="category_id">
-                        <option value="">请选择分类</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->category_id }}">{{ $category->title }}</option>
-                        @endforeach
-                    </select>
+                    <input type="text" name="name" id="name" placeholder="请输入名称" class="layui-input">
                 </div>
                 <div class="layui-input-inline">
-                    <input type="text" name="title" id="title" placeholder="请输入文章标题" class="layui-input">
+                    <input type="text" name="email" id="email" placeholder="请输入邮箱" class="layui-input">
                 </div>
                 <button class="layui-btn" id="searchBtn">搜 索</button>
             </div>
@@ -30,12 +20,8 @@
             <table id="dataTable" lay-filter="dataTable"></table>
             <script type="text/html" id="options">
                 <div class="layui-btn-group">
-                    @can('information.article.edit')
-                        <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
-                    @endcan
-                    @can('information.article.destroy')
-                        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">禁用</a>
-                    @endcan
+                    <a class="layui-btn layui-btn-sm" lay-event="edit">查看</a>
+{{--                    <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>--}}
                 </div>
             </script>
             <script type="text/html" id="thumb">
@@ -45,15 +31,12 @@
                 </a>
                 @{{#  } }}
             </script>
-            <script type="text/html" id="category">
-                @{{ d.category.title }}
-            </script>
         </div>
     </div>
 @endsection
 
 @section('script')
-    @can('information.article')
+{{--    @can('contact.list')--}}
         <script>
             layui.use(['layer', 'table', 'form'], function () {
                 var $ = layui.jquery;
@@ -65,21 +48,18 @@
                     elem: '#dataTable'
                     , autoSort: false
                     , height: 500
-                    , url: "{{ route('admin.blog.article.data') }}" //数据接口
+                    , url: "{{ route('admin.contact.data') }}"
                     , page: true //开启分页
                     , cols: [[ //表头
                         {checkbox: true, fixed: true}
-                        , {field: 'post_id', title: 'ID', sort: true, width: 80}
-                        , {field: 'category_id', title: '分类', toolbar: '#category'}
-                        , {field: 'title', title: '标题'}
-                        , {field: 'identifier', title: '标识', toolbar: '#thumb', width: 100}
-                        , {field: 'keywords', title: '关键词'}
-                        , {field: 'is_active', title: '是否启用', templet: function (res) {return (res.is_active == 0) ? "否" : "是";}}
-                        , {field: 'show_in_home', title: '首页显示', width: 250, templet: function (res) {return (res.show_in_home == 0) ? "否" : "是";}}
-                        , {field: 'views_count', title: '浏览量'}
-                        , {field: 'created_at', title: '创建时间'}
-                        , {field: 'updated_at', title: '更新时间'}
-                        , {fixed: 'right',title: '操作', width: 140, align: 'center', toolbar: '#options'}
+                        , {field: 'id', title: 'ID', sort: true, width: 80}
+                        , {field: 'name', title: '名称'}
+                        , {field: 'email', title: '邮箱'}
+                        , {field: 'phone', title: '联系方式'}
+                        , {field: 'identity', title: '身份'}
+                        , {field: 'remark', title: '留言内容'}
+                        , {field: 'created_at', title: '提交时间'}
+                        , {fixed: 'right', width: 140, align: 'center', toolbar: '#options'}
                     ]]
                 });
 
@@ -88,25 +68,25 @@
                     var data = obj.data //获得当前行数据
                         , layEvent = obj.event; //获得 lay-event 对应的值
                     if (layEvent === 'del') {
-                        layer.confirm('确认禁用吗？', function (index) {
-                            layer.close(index);
-                            var load = layer.load();
-                            $.post("{{ route('admin.blog.article.disable') }}", {
-                                _method: 'delete',
-                                ids: [data.post_id]
-                            }, function (res) {
-                                layer.close(load);
-                                if (res.code == 0) {
-                                    layer.msg(res.msg, {icon: 1}, function () {
-                                        // obj.del();
-                                    })
-                                } else {
-                                    layer.msg(res.msg, {icon: 2})
-                                }
-                            });
-                        });
+                        {{--layer.confirm('确认禁用吗？', function (index) {--}}
+                        {{--    layer.close(index);--}}
+                        {{--    var load = layer.load();--}}
+                        {{--    $.post("{{ route('admin.blog.article.disable') }}", {--}}
+                        {{--        _method: 'delete',--}}
+                        {{--        ids: [data.post_id]--}}
+                        {{--    }, function (res) {--}}
+                        {{--        layer.close(load);--}}
+                        {{--        if (res.code == 0) {--}}
+                        {{--            layer.msg(res.msg, {icon: 1}, function () {--}}
+                        {{--                // obj.del();--}}
+                        {{--            })--}}
+                        {{--        } else {--}}
+                        {{--            layer.msg(res.msg, {icon: 2})--}}
+                        {{--        }--}}
+                        {{--    });--}}
+                        {{--});--}}
                     } else if (layEvent === 'edit') {
-                        location.href = '/admin/blog/' + data.post_id + '/edit';
+                        location.href = '/admin/contact/detail/' + data.id;
                     }
                 });
 
@@ -143,16 +123,16 @@
                 {{--    }--}}
                 {{--});--}}
 
-                //搜索
+                // //搜索
                 $("#searchBtn").click(function () {
-                    var catId = $("#category_id").val();
-                    var title = $("#title").val();
+                    var email = $("#email").val();
+                    var name = $("#name").val();
                     dataTable.reload({
-                        where: {category_id: catId, title: title},
+                        where: {email: email, name: name},
                         page: {curr: 1}
                     })
                 })
             })
         </script>
-    @endcan
+{{--    @endcan--}}
 @endsection

@@ -47,29 +47,13 @@ Route::group(['namespace' => 'Admin'], function () {
     Route::post('upload', 'UploadController@upload')->name('admin.upload');
 });
 
-//Route::group(['namespace' => 'Admin'], function () {
-//
-//    // blog 系列接口
-//    Route::get('blog-index', 'BlogController@index')->name('admin.blog.article');
-//    Route::get('blog-list', 'BlogController@getList')->name('admin.blog.article.data');
-//    Route::get('blog/{id}', 'BlogController@getPost');
-//    Route::get('blog-create', 'BlogController@create')->name('admin.blog.article.create');
-//    Route::post('blog/create', 'BlogController@addPost')->name('admin.blog.article.create-post');
-//    Route::get('blog/{id}/edit', 'BlogController@edit')->name('admin.blog.article.edit');
-//    Route::post('blog/{id}/update', 'BlogController@update')->name('admin.blog.article.update');
-//    Route::delete('blog/disable', 'BlogController@disable')->name('admin.blog.article.disable');
-//
-//    // blog分类 系列接口
-//    Route::get('blog-category-index', 'BlogCategoryController@index')->name('admin.blog.category');
-//    Route::get('blog/category/list', 'BlogCategoryController@getList')->name('admin.blog.category.data');
-//    Route::get('blog/category/{id}', 'BlogCategoryController@getCategory');
-//    Route::get('blog/category/create', 'BlogCategoryController@create')->name('admin.blog.category.create');
-//    Route::post('blog/category/add', 'BlogCategoryController@addCategory')->name('admin.blog.category.create-post');
-//    Route::get('blog/category/{id}/edit', 'BlogCategoryController@edit')->name('admin.blog.category.edit');
-//    Route::post('blog/category/{id}/update', 'BlogCategoryController@update')->name('admin.blog.category.update');
-//    Route::delete('blog/category/disable', 'BlogCategoryController@disable')->name('admin.blog.category.disable');;
-//
-//});
+Route::group(['namespace' => 'Admin'], function () {
+
+    Route::get('contact/index', 'ContactUsController@index')->name('admin.contact');
+    Route::get('contact/list', 'ContactUsController@getList')->name('admin.contact.data');
+    Route::get('contact/detail/{id}', 'ContactUsController@detail')->name('admin.contact.detail');
+
+});
 
 //Route::group(['middleware' => ['auth']], function () {
 //    //后台布局

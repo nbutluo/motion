@@ -21,9 +21,9 @@ class BlogController extends AdminController
     public function getList(Request $request)
     {
         $page = $request->input('page', 1);
-        $pageSize = $request->input('pageSize', 10);
+        $limit = $request->input('limit', 10);
 
-        $res = app(Blog::class)->getPageList($page, $pageSize);
+        $res = app(Blog::class)->getPageList($page, $limit);
 
         return response()->json([
             'code' => 0,
