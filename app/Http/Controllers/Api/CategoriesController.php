@@ -15,23 +15,29 @@ class CategoriesController extends ApiController
             $data = [];
             $categories = Categories::where('status', 1)->orderBy('parent_id', 'ASC')->orderBy('sort', 'ASC')->get();
             foreach ($categories as $category_key => $category) {
+                $newData = [];
                 if ($category->parent_id == 0) {
-                    $data[$category->id]['category_name'] = $category->category_name;
-                    $data[$category->id]['sort'] = $category->sort;
+                    $newData['category_name'] = $category->category_name;
+                    $newData['sort'] = $category->sort;
                     foreach ($categories as $category_title) {
+                        $list2 = [];
                         if ($category_title->parent_id == $category->id) {
-                            $data[$category->id][$category_title->id]['title'] = $category_title->category_name;
-                            $data[$category->id][$category_title->id]['sort'] = $category_title->sort;
+                            $list2['title'] = $category_title->category_name;
+                            $list2['sort'] = $category_title->sort;
+                            $list3 = [];
                             foreach ($categories as $category_label) {
                                 if ($category_label->parent_id == $category_title->id) {
-                                    $data[$category->id][$category_title->id][] = [
+                                    $list3[] = [
                                         'label' => $category_label->category_name,
                                         'sort' => $category_label->sort,
                                     ];
                                 }
                             }
+                            (!empty($list3)) ? $list2['child'] = $list3 : '';
+                            $newData['child'][] = $list2;
                         }
                     }
+                    $data[] = $newData;
                 }
             }
 

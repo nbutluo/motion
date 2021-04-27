@@ -16,14 +16,23 @@ class FooterLinksController extends ApiController
             $links = FooterLinks::orderBy('parent_id','ASC')->orderBy('sort','ASC')->get();
             if (!empty($links->toArray())) {
                 foreach ($links as $link) {
+                    $newData = [];
                     if ($link->parent_id == 0) {
-                        $data[$link->id]['label'] =  $link->label;
-                        $data[$link->id]['value'] =  $link->value;
-                        $data[$link->id]['sort'] =  $link->sort;
-                    } else {
-                        $data[$link->parent_id][$link->id]['label'] = $link->label;
-                        $data[$link->parent_id][$link->id]['value'] = $link->value;
-                        $data[$link->parent_id][$link->id]['sort'] = $link->sort;
+                        $newData['label'] =  $link->label;
+                        $newData['value'] =  $link->value;
+                        $newData['sort'] =  $link->sort;
+                        $list = [];
+                        foreach ($links as $li) {
+                            if ($li->parent_id == $link->id) {
+                                $list[] = [
+                                    'label' => $link->label,
+                                    'value' => $link->value,
+                                    'sort' => $link->sort,
+                                ];
+                            }
+                        }
+                        $newData['child'] = $list;
+                        $data[] = $newData;
                     }
                 }
             } else {
