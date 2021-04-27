@@ -127,12 +127,12 @@ class AdminUsersTableSeeder extends Seeder
                 'child' => [
                     [
                         'name' => 'information.category',
-                        'display_name' => '分类管理',
-                        'route' => 'admin.category',
+                        'display_name' => 'bolg分类管理',
+                        'route' => 'admin.blog.category',
                         'child' => [
-                            ['name' => 'information.category.create', 'display_name' => '添加分类','route'=>'admin.category.create'],
-                            ['name' => 'information.category.edit', 'display_name' => '编辑分类','route'=>'admin.category.edit'],
-                            ['name' => 'information.category.destroy', 'display_name' => '删除分类','route'=>'admin.category.destroy'],
+                            ['name' => 'information.category.create', 'display_name' => '添加bolg分类','route'=>'admin.category.create'],
+                            ['name' => 'information.category.edit', 'display_name' => '编辑bolg分类','route'=>'admin.category.edit'],
+                            ['name' => 'information.category.destroy', 'display_name' => '删除bolg分类','route'=>'admin.category.destroy'],
                         ]
                     ],
                     [
@@ -147,12 +147,12 @@ class AdminUsersTableSeeder extends Seeder
                     ],
                     [
                         'name' => 'information.article',
-                        'display_name' => '文章管理',
-                        'route' => 'admin.article',
+                        'display_name' => 'blog文章管理',
+                        'route' => 'admin.blog.article',
                         'child' => [
-                            ['name' => 'information.article.create', 'display_name' => '添加文章','route'=>'admin.article.create'],
-                            ['name' => 'information.article.edit', 'display_name' => '编辑文章','route'=>'admin.article.edit'],
-                            ['name' => 'information.article.destroy', 'display_name' => '删除文章','route'=>'admin.article.destroy'],
+                            ['name' => 'information.article.create', 'display_name' => '添加blog文章','route'=>'admin.blog.article.create'],
+                            ['name' => 'information.article.edit', 'display_name' => '编辑blog文章','route'=>'admin.blog.article.edit'],
+                            ['name' => 'information.article.destroy', 'display_name' => '删除blog文章','route'=>'admin.blog.article.destroy'],
                         ]
                     ],
                 ],

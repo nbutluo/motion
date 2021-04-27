@@ -53,11 +53,11 @@ class BlogCategoryController extends AdminController
 
         $params = [
             'title' => $title,
+            'keywords' => $request->input('keywords', ''),
             'content' => $request->input('content', ''),
             'is_active' => $request->input('is_active', 0),
             'position' => $request->input('position', '0')
         ];
-
         try {
             app(BlogCategory::class)->addCategory($params);
             return redirect::to(URL::route('admin.blog.category'))->with(['success' => '添加成功']);

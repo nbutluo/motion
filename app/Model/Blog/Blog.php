@@ -9,6 +9,7 @@ class Blog extends Model
 {
     protected $table = 'blog_post';
     protected $primaryKey = 'post_id';
+    protected $fillable = ['title'];
 
     //考虑到性能问题，通常$columns我们不以*号为值。可传入需要查询的字段替代。这里只做演示。无此要求
     public function paginate($perPage = null, $columns = ['*'], $page = null, $pageName = 'page', $where = [])
@@ -20,7 +21,8 @@ class Blog extends Model
         if ($total = $this->toBase()->getCountForPagination()) {
             $results = $this->forPage($page, $perPage)->where($where)->get($columns);
         } else {
-            $results = $this->model->newCollection();
+//            $results = $this->model->newCollection();
+            $results = '';
         }
 
         $pages = ceil($total / $perPage);

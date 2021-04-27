@@ -19,7 +19,6 @@ class CreateBlogCategoryTable extends Migration
             $table->string('title')->nullable()->comment('Category Title');
             $table->text('keywords')->nullable()->comment('Category Meta Keywords');
             $table->string('identifier',100)->nullable()->comment('Category String Identifier');
-            $table->string('content_heading')->nullable()->comment('Category Content Heading');
             $table->mediumText('content')->nullable()->comment('Category Content');
             $table->string('path')->nullable()->comment('Category Path');
             $table->smallInteger('position')->default(0)->comment('Category Position');

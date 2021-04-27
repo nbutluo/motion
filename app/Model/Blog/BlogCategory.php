@@ -9,6 +9,7 @@ class BlogCategory extends Model
 {
     protected $table = 'blog_category';
     protected $primaryKey = 'category_id';
+    protected $fillable = ['title'];
 
     public function paginate($perPage = null, $columns = ['*'], $page = null, $pageName = 'page')
     {
@@ -18,7 +19,7 @@ class BlogCategory extends Model
 
         $results = ($total = $this->toBase()->getCountForPagination())
             ? $this->forPage($page, $perPage)->get($columns)
-            : $this->model->newCollection();
+            : '';
         $pages = ceil($total / $perPage);
         $result = ['total' => $total, 'current_page' => $page, 'page_size' => $perPage, 'pages' => $pages, 'list' => $results];
         return $result;
