@@ -42,7 +42,6 @@ class SystemConfigController extends Controller
             $data['seo_default_title'] = $request->seo_default_title;
             $data['seo_default_description'] = $request->seo_default_description;
             $data['seo_default_globle'] = $request->seo_default_globle;
-            SystemConfig::create();
             foreach ($data as $key => $value) {
                 SystemConfig::create([
                     'identifier' => $key,
