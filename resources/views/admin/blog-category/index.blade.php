@@ -47,7 +47,7 @@
                         , {field: 'is_active', title: '是否启用', templet: function (res) {return (res.is_active == 0) ? "否" : "是";}}
                         , {field: 'created_at', title: '创建时间'}
                         , {field: 'updated_at', title: '更新时间'}
-                        , {fixed: 'right', width: 260, align: 'center', toolbar: '#options'}
+                        , {fixed: 'right',title: '操作', width: 260, align: 'center', toolbar: '#options'}
                     ]],
                     //数据渲染完的回调
                     // done: function () {

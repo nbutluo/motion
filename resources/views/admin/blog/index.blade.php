@@ -74,11 +74,12 @@
                         , {field: 'title', title: '标题'}
                         , {field: 'identifier', title: '标识', toolbar: '#thumb', width: 100}
                         , {field: 'keywords', title: '关键词'}
+                        , {field: 'is_active', title: '是否启用', templet: function (res) {return (res.is_active == 0) ? "否" : "是";}}
                         , {field: 'show_in_home', title: '首页显示', width: 250, templet: function (res) {return (res.show_in_home == 0) ? "否" : "是";}}
                         , {field: 'views_count', title: '浏览量'}
                         , {field: 'created_at', title: '创建时间'}
                         , {field: 'updated_at', title: '更新时间'}
-                        , {fixed: 'right', width: 140, align: 'center', toolbar: '#options'}
+                        , {fixed: 'right',title: '操作', width: 140, align: 'center', toolbar: '#options'}
                     ]]
                 });
 

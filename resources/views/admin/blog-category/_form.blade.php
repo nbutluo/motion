@@ -36,6 +36,13 @@
 </div>
 
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">分类内容</label>
+    <div class="layui-input-inline">
+        <input type="text" name="content" value="{{ $category->content ?? '' }}" placeholder="请输入分类内容" class="layui-input" >
+    </div>
+</div>
+
+<div class="layui-form-item">
     <label for="" class="layui-form-label">是否启用</label>
     <div class="layui-input-inline">
         <select name="is_active">
