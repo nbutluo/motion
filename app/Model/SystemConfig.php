@@ -18,12 +18,17 @@ class SystemConfig extends Model
             'keywords' => $this->getSeoValue($seo_v, 'seo_default_keywords'),
             'title' => $this->getSeoValue($seo_v, 'seo_default_title'),
             'description' => $this->getSeoValue($seo_v, 'seo_default_description'),
+            'footer_phone' => $this->getSeoValue($seo_v, 'footer_phone'),
+            'footer_fax' => $this->getSeoValue($seo_v, 'footer_fax'),
+            'contact_us_email' => $this->getSeoValue($seo_v, 'contact_us_email'),
+            'contact_us_telephone' => $this->getSeoValue($seo_v, 'contact_us_telephone'),
+            'contact_us_base_infomation' => $this->getSeoValue($seo_v, 'contact_us_base_infomation'),
         ];
     }
 
     public function getDefaultSeo()
     {
-        return SystemConfig::whereIn('identifier', ['seo_default_keywords', 'seo_default_title', 'seo_default_description', 'seo_default_globle'])->get()->pluck('value', 'identifier');
+        return SystemConfig::whereIn('identifier', ['seo_default_keywords', 'seo_default_title', 'seo_default_description', 'seo_default_globle','footer_phone','footer_fax','contact_us_email','contact_us_telephone','contact_us_base_infomation'])->get()->pluck('value', 'identifier');
     }
 
     public function seoConstants()
@@ -32,7 +37,12 @@ class SystemConfig extends Model
             'seo_default_keywords' => SEO_DEFAULT_KEYWORDS,
             'seo_default_title' => SEO_DEFAULT_TITLE,
             'seo_default_description' => SEO_DEFAULT_DESCRIPTION,
-            'seo_default_globle' => SEO_DEFAULT_GLOBLE
+            'seo_default_globle' => SEO_DEFAULT_GLOBLE,
+            'footer_phone' => FOOTER_PHONE,
+            'footer_fax' => FOOTER_FAX,
+            'contact_us_email' => CONTACT_US_EMAIL,
+            'contact_us_telephone' => CONTACT_US_TELEPHONE,
+            'contact_us_base_infomation' => CONTACT_US_BASE_INFOMATION,
         ];
     }
 

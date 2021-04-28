@@ -36,16 +36,18 @@ class SystemConfigController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->aystem_name == '') {
+        if ($request->system_name == '') {
             return Redirect::back()->withErrors('请选择配置类型');
+        } else {
+            $system = SystemConfig::where('identifier',$request->system_name)->first();
+
+            if (!empty($system)) {
+                return Redirect::back()->withErrors('该项已设置');
+            }
         }
         try {
             $data = [];
-//            $data['seo_default_keywords'] = $request->seo_default_keywords;
-//            $data['seo_default_title'] = $request->seo_default_title;
-//            $data['seo_default_description'] = $request->seo_default_description;
-//            $data['seo_default_globle'] = $request->seo_default_globle;
-            $data[$request->aystem_name] = $request->value;
+            $data[$request->system_name] = $request->value;
             foreach ($data as $key => $value) {
                 SystemConfig::create([
                     'identifier' => $key,
@@ -54,7 +56,6 @@ class SystemConfigController extends Controller
             }
             return Redirect::to(URL::route('admin.website_seo'))->with(['success'=>'添加成功']);
         } catch (\Exception $exception) {
-//            return Redirect::back()->withErrors($exception->getMessage());
             return Redirect::back()->withErrors('添加失败');
         }
     }

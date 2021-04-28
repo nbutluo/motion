@@ -16,17 +16,17 @@
                 <div class="layui-form-item">
                     <label for="" class="layui-form-label">配置类型</label>
                     <div class="layui-input-inline">
-                        <select name="aystem_name">
+                        <select name="system_name">
                             <option value="">---请选择---</option>
                                 <option value="seo_default_keywords">seo_default_keywords</option>
                                 <option value="seo_default_title">seo_default_title</option>
                                 <option value="seo_default_description">seo_default_description</option>
                                 <option value="seo_default_globle">seo_default_globle</option>
-                                <option value="footer-phone">footer-phone</option>
-                                <option value="footer-fax">footer-fax</option>
-                                <option value="contact-us-email">contact-us-email</option>
-                                <option value="contact-us-telephone">contact-us-telephone</option>
-                                <option value="contact-us-base-infomotion">contact-us-base-infomotion</option>
+                                <option value="footer_phone">footer_phone</option>
+                                <option value="footer_fax">footer_fax</option>
+                                <option value="contact_us_email">contact_us_email</option>
+                                <option value="contact_us_telephone">contact_us_telephone</option>
+                                <option value="contact_us_base_infomation">contact_us_base_infomation</option>
                         </select>
                     </div>
                 </div>
