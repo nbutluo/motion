@@ -25,9 +25,9 @@ class FooterLinksController extends ApiController
                         foreach ($links as $li) {
                             if ($li->parent_id == $link->id) {
                                 $list[] = [
-                                    'label' => $link->label,
-                                    'value' => $link->value,
-                                    'sort' => $link->sort,
+                                    'label' => $li->label,
+                                    'value' => $li->value,
+                                    'sort' => $li->sort,
                                 ];
                             }
                         }
