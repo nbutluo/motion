@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Model\Categories;
+use App\Model\MenuCategory;
 use Exception;
 use App\Http\Controllers\ApiController;
 
-class CategoriesController extends ApiController
+class MenuCategoryController extends ApiController
 {
     public function getCategories()
     {
         try {
             $data = [];
-            $categories = Categories::where('status', 1)->orderBy('parent_id', 'ASC')->orderBy('sort', 'ASC')->get();
+            $categories = MenuCategory::where('status', 1)->orderBy('parent_id', 'ASC')->orderBy('sort', 'ASC')->get();
             foreach ($categories as $category_key => $category) {
                 $newData = [];
                 if ($category->parent_id == 0) {

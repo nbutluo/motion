@@ -30,7 +30,7 @@ Route::group(['prefix' => 'user'], function () {
 Route::group(['namespace' => 'Api'], function () {
     Route::get('about-us','AboutUsController@getAboutUsInfo')->name('about-us.info');
     Route::post('contact-us','ContactUsController@contact')->name('contact-us.upload');
-    Route::get('categories','CategoriesController@getCategories')->name('category.get');
+    Route::get('categories','MenuCategoryController@getCategories')->name('category.get');
     Route::get('footer-links','FooterLinksController@getLinks')->name('footer.links');
     Route::group(['prefix' => 'website'], function () {
         Route::get('getseo','WebsiteController@getSeo')->name('website.seo');

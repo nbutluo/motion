@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Model\Categories;
+use App\Model\MenuCategory;
 
-class CategoriesTableSeeder extends Seeder
+class MenuCategoryTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -125,18 +125,18 @@ class CategoriesTableSeeder extends Seeder
             ],
         ];
         foreach ($datas as $data) {
-            $category = Categories::create([
+            $category = MenuCategory::create([
                 'category_name' => $data['category'],
             ]);
             if (isset($data['category_title']) && !empty($data['category_title'])) {
                 foreach ($data['category_title'] as $title) {
-                    $titleData = Categories::create([
+                    $titleData = MenuCategory::create([
                         'category_name' => $title['category_name'],
                         'parent_id' => $category->id,
                     ]);
                     if (isset($title['category_label']) && !empty($title['category_label'])) {
                         foreach ($title['category_label'] as $label) {
-                            Categories::create([
+                            MenuCategory::create([
                                 'category_name' => $label,
                                 'parent_id' => $titleData->id,
                             ]);

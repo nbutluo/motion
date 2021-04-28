@@ -24,7 +24,7 @@ class CreateContactTable extends Migration
             $table->string('country')->nullable()->comment('Country');
             $table->string('city')->nullable()->comment('City');
             $table->string('identity')->nullable()->comment('Identity');
-            $table->smallInteger('remark_option',6)->nullable()->comment('咨询选项');
+            $table->smallInteger('remark_option')->nullable()->comment('咨询选项');
             $table->text('remark')->nullable()->comment('留言内容');
             $table->softDeletes();
             $table->timestamps();
