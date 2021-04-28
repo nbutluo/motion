@@ -36,12 +36,16 @@ class SystemConfigController extends Controller
 
     public function store(Request $request)
     {
+        if ($request->aystem_name == '') {
+            return Redirect::back()->withErrors('请选择配置类型');
+        }
         try {
             $data = [];
-            $data['seo_default_keywords'] = $request->seo_default_keywords;
-            $data['seo_default_title'] = $request->seo_default_title;
-            $data['seo_default_description'] = $request->seo_default_description;
-            $data['seo_default_globle'] = $request->seo_default_globle;
+//            $data['seo_default_keywords'] = $request->seo_default_keywords;
+//            $data['seo_default_title'] = $request->seo_default_title;
+//            $data['seo_default_description'] = $request->seo_default_description;
+//            $data['seo_default_globle'] = $request->seo_default_globle;
+            $data[$request->aystem_name] = $request->value;
             foreach ($data as $key => $value) {
                 SystemConfig::create([
                     'identifier' => $key,

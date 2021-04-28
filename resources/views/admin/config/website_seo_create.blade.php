@@ -14,27 +14,45 @@
             <form class="layui-form" action="{{route('admin.website_seo.store')}}" method="post">
                 {{csrf_field()}}
                 <div class="layui-form-item">
-                    <label for="" class="layui-form-label">keywords</label>
+                    <label for="" class="layui-form-label">配置类型</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="seo_default_keywords" value="" lay-verify="required" placeholder="请输入keywords关键字" class="layui-input" >
+                        <select name="aystem_name">
+                            <option value="">---请选择---</option>
+                                <option value="seo_default_keywords">seo_default_keywords</option>
+                                <option value="seo_default_title">seo_default_title</option>
+                                <option value="seo_default_description">seo_default_description</option>
+                                <option value="seo_default_globle">seo_default_globle</option>
+                                <option value="footer-phone">footer-phone</option>
+                                <option value="footer-fax">footer-fax</option>
+                                <option value="contact-us-email">contact-us-email</option>
+                                <option value="contact-us-telephone">contact-us-telephone</option>
+                                <option value="contact-us-base-infomotion">contact-us-base-infomotion</option>
+                        </select>
                     </div>
                 </div>
+
+{{--                <div class="layui-form-item">--}}
+{{--                    <label for="" class="layui-form-label">keywords</label>--}}
+{{--                    <div class="layui-input-inline">--}}
+{{--                        <input type="text" name="seo_default_keywords" value="" lay-verify="required" placeholder="请输入keywords关键字" class="layui-input" >--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="layui-form-item">--}}
+{{--                    <label for="" class="layui-form-label">title</label>--}}
+{{--                    <div class="layui-input-inline">--}}
+{{--                        <input type="text" name="seo_default_title" value="" lay-verify="required" placeholder="请输入title信息" class="layui-input" >--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="layui-form-item">--}}
+{{--                    <label for="" class="layui-form-label">description</label>--}}
+{{--                    <div class="layui-input-inline">--}}
+{{--                        <input type="text" name="seo_default_description" value="" lay-verify="required" placeholder="请输入description信息" class="layui-input" >--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="layui-form-item">
-                    <label for="" class="layui-form-label">title</label>
+                    <label for="" class="layui-form-label"></label>
                     <div class="layui-input-inline">
-                        <input type="text" name="seo_default_title" value="" lay-verify="required" placeholder="请输入title信息" class="layui-input" >
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="" class="layui-form-label">description</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="seo_default_description" value="" lay-verify="required" placeholder="请输入description信息" class="layui-input" >
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="" class="layui-form-label">global class key</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="seo_default_globle" value="" placeholder="请输入全局clas前缀(可为空)" class="layui-input" >
+                        <input type="text" name="value" required value="" placeholder="请输入数据" class="layui-input" >
                     </div>
                 </div>
                 <div class="layui-form-item">
