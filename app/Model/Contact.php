@@ -33,7 +33,8 @@ class Contact extends Model
                 $results = $this->forPage($page, $perPage)->get($columns);
             }
         } else {
-            $results = $this->model->newCollection();
+//            $results = $this->model->newCollection();
+            $results = '';
         }
 
         $pages = ceil($total / $perPage);

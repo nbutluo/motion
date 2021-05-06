@@ -157,6 +157,51 @@ class AdminUsersTableSeeder extends Seeder
                     ],
                 ],
             ],
+            [
+                'name' => 'contact',
+                'display_name' => '联系内容管理',
+                'route' => '',
+                'icon' => 'layui-icon-chat',
+                'child' => [
+                    [
+                        'name' => 'contact.list',
+                        'display_name' => '联系列表管理',
+                        'route' => 'admin.contact.list',
+                        'child' => [
+                            ['name' => 'contact.list.edit', 'display_name' => '编辑联系信息','route'=>'admin.contact.edit'],
+                            ['name' => 'contact.list.destroy', 'display_name' => '删除联系信息','route'=>'admin.contact.destroy'],
+                        ]
+                    ],
+                ],
+            ],
+            [
+                'name' => 'catalog',
+                'display_name' => '产品管理',
+                'route' => '',
+                'icon' => 'layui-icon-list',
+                'child' => [
+                    [
+                        'name' => 'catalog.category',
+                        'display_name' => '产品分类管理',
+                        'route' => 'admin.catalog.category',
+                        'child' => [
+                            ['name' => 'catalog.category.create', 'display_name' => '新建分类','route'=>'admin.catalog.category.create'],
+                            ['name' => 'catalog.category.edit', 'display_name' => '编辑分类信息','route'=>'admin.catalog.category.edit'],
+                            ['name' => 'catalog.category.destroy', 'display_name' => '删除分类信息','route'=>'admin.catalog.category.destroy'],
+                        ]
+                    ],
+                    [
+                        'name' => 'catalog.product',
+                        'display_name' => '产品管理',
+                        'route' => 'admin.catalog.product',
+                        'child' => [
+                            ['name' => 'catalog.product.create', 'display_name' => '新建产品','route'=>'admin.catalog.product.create'],
+                            ['name' => 'catalog.product.edit', 'display_name' => '编辑产品','route'=>'admin.catalog.product.edit'],
+                            ['name' => 'catalog.product.destroy', 'display_name' => '删除产品','route'=>'admin.catalog.product.destroy'],
+                        ]
+                    ],
+                ],
+            ],
         ];
 
         foreach ($permissions as $pem1) {
