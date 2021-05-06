@@ -54,3 +54,23 @@ Route::group(['middleware' => ['auth', 'permission:information']],function() {
         });
     });
 });
+
+Route::group(['middleware' => ['auth', 'permission:faq']],function() {
+    Route::group(['middleware' => ['permission:faq.info']],function(){
+        Route::group(['namespace' => 'Admin'], function () {
+            Route::get('faq/index','FaqController@index')->name('admin.faq.info');
+            Route::get('faq/list','FaqController@data')->name('admin.faq.info.data');
+            //添加
+            Route::get('faq/create','FaqController@create')->name('admin.faq.create')->middleware('permission:faq.info.create');
+        });
+    });
+});
+
+//联系我们管理
+Route::group(['middleware' => ['auth', 'permission:contact']],function() {
+    Route::group(['middleware' => ['permission:contact.list']],function(){
+        Route::group(['namespace' => 'Admin'], function () {
+            Route::get('contact/index','ContactUsController@index')->name('admin.contact.list');
+        });
+    });
+});
