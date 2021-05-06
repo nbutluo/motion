@@ -43,7 +43,7 @@ class UploadController
                 'code' => 0,
                 'msg' => '上传成功',
                 'data' => $newFile,
-                'url' => '/uploads/local/' . $newFile,
+                'url' => '/uploads/' . $newFile,
             ];
         } else {
             $data['data'] = $file->getErrorMessage();

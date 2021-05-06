@@ -18,6 +18,32 @@ class ContactUsController extends ApiController
         $this->contactModel = $contactModel;
     }
 
+    public function baseInfo()
+    {
+        $base_identify = [
+
+        ];
+
+        $base_remark_option = [
+            '1' => [
+                'chinese' => '其他',
+                'english' => 'Other'
+            ],
+            '2' => [
+                'chinese' => '我想了解产品',
+                'english' => 'x'
+            ],
+            '3' => [
+                'chinese' => '成为代理合作伙伴',
+                'english' => 'xx'
+                ],
+            '4' => [
+                'chinese' => '项目合作',
+                'english' => 'xxx'
+            ]
+        ];
+    }
+
     public function contact(Request $request)
     {
         $name = $request->input('name');

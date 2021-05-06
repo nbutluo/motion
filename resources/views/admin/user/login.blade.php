@@ -76,13 +76,13 @@
                     <input type="password" name="password" required lay-verify="required" placeholder="please enter your password" autocomplete="off" class="layui-input">
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label layui-icon layui-icon-vercode"></label>
-                <div class="layui-input-block">
-                    <input type="text" name="captcha" id="captcha" placeholder="请输入验证码" autocomplete="off" class="layui-input admin-input admin-input-verify" value="">
-                    <canvas id="canvas" width="100" height="43" class="admin-captcha"></canvas>
-                </div>
-            </div>
+{{--            <div class="layui-form-item">--}}
+{{--                <label class="layui-form-label layui-icon layui-icon-vercode"></label>--}}
+{{--                <div class="layui-input-block">--}}
+{{--                    <input type="text" name="captcha" id="captcha" placeholder="请输入验证码" autocomplete="off" class="layui-input admin-input admin-input-verify" value="">--}}
+{{--                    <canvas id="canvas" width="100" height="43" class="admin-captcha"></canvas>--}}
+{{--                </div>--}}
+{{--            </div>--}}
             <div class="layui-form-item">
                 <div class="layui-input-block">
                     <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>

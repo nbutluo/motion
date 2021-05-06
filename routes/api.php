@@ -34,13 +34,18 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('footer-links','FooterLinksController@getLinks')->name('footer.links');
     Route::group(['prefix' => 'website'], function () {
         Route::get('getseo','WebsiteController@getSeo')->name('website.seo');
-
     });
 
     Route::get('blog-list','BlogController@getList')->name('blog.list');
     Route::get('blog/{id}','BlogController@getDetail')->name('blog.detail');
     Route::get('blog/category-list','BlogController@getCategoryList')->name('blog.category-list');
     Route::get('category/blog-list','BlogController@getCategoriesBlog')->name('category.blog-list');
+
+    Route::get('product/index','ProductController@index')->name('product.index');
+    Route::get('product/list','ProductController@getList')->name('product.list');
+    Route::get('product/info/{id}','ProductController@detail')->name('product.detail');
+
+    Route::get('product/category','ProductCategoryController@getList')->name('product.category.menu');
 
 });
 
