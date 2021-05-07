@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Model\Product\Category;
+use App\Model\Product\Product;
 use Illuminate\Http\Request;
 use App\Model\Question;
 use Illuminate\Support\Facades\Redirect;
@@ -30,12 +32,23 @@ class FaqController extends Controller
 
     public function create()
     {
-        return view('admin.faq.create');
+        return view('admin.faq.create',compact('category','products'));
     }
 
-    public function getCategory()
+    public function getData(Request $request,$type)
     {
-
+        if ($type == 1) {
+            $datas = Category::select(['id','name'])->where('level',1)->where('is_active',1)->get();
+        } elseif ($type == 2) {
+            $datas = Product::select(['id','name','sku'])->where('is_active',1)->get();
+        }
+        $data = [
+            'code' => 0,
+            'msg' => 'loading....',
+            'count' => $datas->total(),
+            'data' => $datas->items()
+        ];
+        return Response::json($data);
     }
 
     public function addQuestion(Request $request)

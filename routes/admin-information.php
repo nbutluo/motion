@@ -24,7 +24,7 @@ Route::group(['middleware' => ['auth', 'permission:information']],function() {
     Route::group(['middleware' => ['permission:information.category']], function() {
         Route::group(['namespace' => 'Admin'], function () {
             // blog分类 系列接口
-            Route::get('blog-category-index', 'BlogCategoryController@index')->name('admin.blog.category');
+            Route::get('blog/category/index', 'BlogCategoryController@index')->name('admin.blog.category');
             Route::get('blog/category/list', 'BlogCategoryController@getList')->name('admin.blog.category.data');
             Route::get('blog/category/{id}', 'BlogCategoryController@getCategory');
             //添加分类
@@ -43,10 +43,10 @@ Route::group(['middleware' => ['auth', 'permission:information']],function() {
     Route::group(['middleware' => ['permission:information.article']], function () {
         Route::group(['namespace' => 'Admin'], function () {
             // blog 系列接口
-            Route::get('blog-index', 'BlogController@index')->name('admin.blog.article');
-            Route::get('blog-list', 'BlogController@getList')->name('admin.blog.article.data');
+            Route::get('blog/index', 'BlogController@index')->name('admin.blog.article');
+            Route::get('blog/list', 'BlogController@getList')->name('admin.blog.article.data');
             Route::get('blog/{id}', 'BlogController@getPost');
-            Route::get('blog-create', 'BlogController@create')->name('admin.blog.article.create');
+            Route::get('blog/create', 'BlogController@create')->name('admin.blog.article.create');
             Route::post('blog/create', 'BlogController@addPost')->name('admin.blog.article.create-post');
             Route::get('blog/{id}/edit', 'BlogController@edit')->name('admin.blog.article.edit');
             Route::post('blog/{id}/update', 'BlogController@update')->name('admin.blog.article.update');
@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth', 'permission:information']],function() {
     });
 });
 
+//FAQ管理
 Route::group(['middleware' => ['auth', 'permission:faq']],function() {
     Route::group(['middleware' => ['permission:faq.info']],function(){
         Route::group(['namespace' => 'Admin'], function () {
@@ -62,6 +63,7 @@ Route::group(['middleware' => ['auth', 'permission:faq']],function() {
             Route::get('faq/list','FaqController@data')->name('admin.faq.info.data');
             //添加
             Route::get('faq/create','FaqController@create')->name('admin.faq.create')->middleware('permission:faq.info.create');
+            Route::post('faq/getData','FaqController@getData')->name('admin.faq.getData');
         });
     });
 });

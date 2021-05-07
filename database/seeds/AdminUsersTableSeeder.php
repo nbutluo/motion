@@ -42,6 +42,7 @@ class AdminUsersTableSeeder extends Seeder
                         'name' => 'system.website_seo',
                         'display_name' => '站点设置',
                         'route' => 'admin.website_seo',
+                        'is_menu' => 1,
                         'child' => [
                             ['name' => 'system.website_seo.create','display_name' => '添加seo','route' => 'admin.website_seo.create'],
                             ['name' => 'system.website_seo.edit','display_name' => '编辑seo','route' => 'admin.website_seo.edit'],
@@ -52,6 +53,7 @@ class AdminUsersTableSeeder extends Seeder
                         'name' => 'system.user',
                         'display_name' => '用户管理',
                         'route' => 'admin.user',
+                        'is_menu' => 1,
                         'child' => [
                             ['name' => 'system.user.create', 'display_name' => '添加用户','route'=>'admin.user.create'],
                             ['name' => 'system.user.edit', 'display_name' => '编辑用户','route'=>'admin.user.edit'],
@@ -64,6 +66,7 @@ class AdminUsersTableSeeder extends Seeder
                         'name' => 'system.role',
                         'display_name' => '角色管理',
                         'route' => 'admin.role',
+                        'is_menu' => 1,
                         'child' => [
                             ['name' => 'system.role.create', 'display_name' => '添加角色','route'=>'admin.role.create'],
                             ['name' => 'system.role.edit', 'display_name' => '编辑角色','route'=>'admin.role.edit'],
@@ -129,6 +132,7 @@ class AdminUsersTableSeeder extends Seeder
                         'name' => 'information.category',
                         'display_name' => 'bolg分类管理',
                         'route' => 'admin.blog.category',
+                        'is_menu' => 1,
                         'child' => [
                             ['name' => 'information.category.create', 'display_name' => '添加bolg分类','route'=>'admin.category.create'],
                             ['name' => 'information.category.edit', 'display_name' => '编辑bolg分类','route'=>'admin.category.edit'],
@@ -149,6 +153,7 @@ class AdminUsersTableSeeder extends Seeder
                         'name' => 'information.article',
                         'display_name' => 'blog文章管理',
                         'route' => 'admin.blog.article',
+                        'is_menu' => 1,
                         'child' => [
                             ['name' => 'information.article.create', 'display_name' => '添加blog文章','route'=>'admin.blog.article.create'],
                             ['name' => 'information.article.edit', 'display_name' => '编辑blog文章','route'=>'admin.blog.article.edit'],
@@ -167,9 +172,29 @@ class AdminUsersTableSeeder extends Seeder
                         'name' => 'contact.list',
                         'display_name' => '联系列表管理',
                         'route' => 'admin.contact.list',
+                        'is_menu' => 1,
                         'child' => [
                             ['name' => 'contact.list.edit', 'display_name' => '编辑联系信息','route'=>'admin.contact.edit'],
                             ['name' => 'contact.list.destroy', 'display_name' => '删除联系信息','route'=>'admin.contact.destroy'],
+                        ]
+                    ],
+                ],
+            ],
+            [
+                'name' => 'faq',
+                'display_name' => 'FAQ管理',
+                'route' => '',
+                'icon' => 'layui-icon-survey',
+                'child' => [
+                    [
+                        'name' => 'faq.info',
+                        'display_name' => 'FAQ列表管理',
+                        'route' => 'admin.faq.info',
+                        'is_menu' => 1,
+                        'child' => [
+                            ['name' => 'faq.info.create', 'display_name' => '新增答疑','route'=>'admin.faq.create'],
+                            ['name' => 'faq.info.edit', 'display_name' => '编辑答疑','route'=>'admin.faq.edit'],
+                            ['name' => 'faq.info.destroy', 'display_name' => '删除答疑','route'=>'admin.faq.destroy'],
                         ]
                     ],
                 ],
@@ -184,6 +209,7 @@ class AdminUsersTableSeeder extends Seeder
                         'name' => 'catalog.category',
                         'display_name' => '产品分类管理',
                         'route' => 'admin.catalog.category',
+                        'is_menu' => 1,
                         'child' => [
                             ['name' => 'catalog.category.create', 'display_name' => '新建分类','route'=>'admin.catalog.category.create'],
                             ['name' => 'catalog.category.edit', 'display_name' => '编辑分类信息','route'=>'admin.catalog.category.edit'],
@@ -194,6 +220,7 @@ class AdminUsersTableSeeder extends Seeder
                         'name' => 'catalog.product',
                         'display_name' => '产品管理',
                         'route' => 'admin.catalog.product',
+                        'is_menu' => 1,
                         'child' => [
                             ['name' => 'catalog.product.create', 'display_name' => '新建产品','route'=>'admin.catalog.product.create'],
                             ['name' => 'catalog.product.edit', 'display_name' => '编辑产品','route'=>'admin.catalog.product.edit'],
@@ -210,6 +237,7 @@ class AdminUsersTableSeeder extends Seeder
                 'name' => $pem1['name'],
                 'display_name' => $pem1['display_name'],
                 'route' => $pem1['route']??'',
+                'is_menu' => $pem1['is_menu']??0,
                 'icon' => $pem1['icon']??1,
             ]);
             //为角色添加权限
@@ -225,6 +253,7 @@ class AdminUsersTableSeeder extends Seeder
                         'display_name' => $pem2['display_name'],
                         'parent_id' => $p1->id,
                         'route' => $pem2['route']??1,
+                        'is_menu' => $pem2['is_menu']??0,
                         'icon' => $pem2['icon']??1,
                     ]);
                     //为角色添加权限
@@ -238,6 +267,7 @@ class AdminUsersTableSeeder extends Seeder
                                 'display_name' => $pem3['display_name'],
                                 'parent_id' => $p2->id,
                                 'route' => $pem3['route']??'',
+                                'is_menu' => $pem3['is_menu']??0,
                                 'icon' => $pem3['icon']??1,
                                 'type' => isset($pem2['type']) ? $pem2['type'] : 2,
                             ]);

@@ -1,12 +1,19 @@
 {{csrf_field()}}
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">分类</label>
+    <label for="" class="layui-form-label">范围</label>
+    <div class="layui-input-inline" id="scope" style="width:300px;">
+        <input type="radio" name="scope" lay-filter= "questiontype" value="0" title="所有" checked>
+        <input type="radio" name="scope" lay-filter= "questiontype" value="1" title="指定分类">
+        <input type="radio" name="scope" lay-filter= "questiontype" value="2" title="指定产品">
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">目标</label>
     <div class="layui-input-inline">
-        <select name="category_id">
+        <select name="goal">
             <option value="0"></option>
-{{--            @foreach($categories as $category)--}}
-{{--                <option value="{{ $category->category_id }}" @if(isset($post->category_id)&&$post->category_id==$category->category_id)selected @endif >{{ $category->title }}</option>--}}
-{{--            @endforeach--}}
+
         </select>
     </div>
 </div>
