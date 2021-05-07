@@ -3,11 +3,11 @@
 @section('content')
     <div class="layui-card">
         <div class="layui-card-header layuiadmin-card-header-auto">
-            <h2>添加产品</h2>
+            <h2>添加媒体资源</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.blog.article.create.post')}}" method="post" >
-                @include('admin.product._form')
+            <form class="layui-form" action="{{route('admin.medium.source.store')}}" method="post" >
+                @include('admin.medium._form')
             </form>
         </div>
     </div>
@@ -21,5 +21,5 @@
 </script>
 
 @section('script')
-    @include('admin.blog._js')
+    @include('admin.medium._js')
 @endsection
