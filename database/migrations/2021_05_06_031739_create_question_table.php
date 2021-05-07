@@ -22,6 +22,7 @@ class CreateQuestionTable extends Migration
             $table->string('title')->nullable()->comment('Title');
             $table->text('short_content')->nullable()->comment('Short Content');
             $table->mediumText('content')->nullable()->comment('Content');
+            $table->tinyInteger('is_active')->default(0)->comment('0:No 1:Yes');
             $table->softDeletes();
             $table->timestamps();
         });

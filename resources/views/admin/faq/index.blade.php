@@ -8,20 +8,14 @@
                     <a class="layui-btn layui-btn-sm" href="{{route('admin.faq.create')}}">添 加</a>
                 @endcan
             </div>
-            <div class="layui-form">
-                <div class="layui-input-inline">
-{{--                    <select name="category_id" lay-verify="required" id="category_id">--}}
-{{--                        <option value="">请选择分类</option>--}}
-{{--                        @foreach($categories as $category)--}}
-{{--                            <option value="{{ $category->category_id }}">{{ $category->title }}</option>--}}
-{{--                        @endforeach--}}
-{{--                    </select>--}}
-                </div>
-                <div class="layui-input-inline">
-                    <input type="text" name="title" id="title" placeholder="请输入答疑标题" class="layui-input">
-                </div>
-                <button class="layui-btn" id="searchBtn">搜 索</button>
-            </div>
+{{--            <div class="layui-form">--}}
+{{--                <div class="layui-input-inline">--}}
+{{--                </div>--}}
+{{--                <div class="layui-input-inline">--}}
+{{--                    <input type="text" name="title" id="title" placeholder="请输入答疑标题" class="layui-input">--}}
+{{--                </div>--}}
+{{--                <button class="layui-btn" id="searchBtn">搜 索</button>--}}
+{{--            </div>--}}
         </div>
         <div class="layui-card-body">
             <table id="dataTable" lay-filter="dataTable"></table>
@@ -30,21 +24,8 @@
                     @can('faq.info.edit')
                         <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
                     @endcan
-                    @can('faq.info.destroy')
-                        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">禁用</a>
-                    @endcan
                 </div>
             </script>
-{{--            <script type="text/html" id="thumb">--}}
-{{--                @{{#  if(d.thumb){ }}--}}
-{{--                <a href="@{{d.thumb}}" target="_blank" title="点击查看">--}}
-{{--                    <img src="@{{d.thumb}}" alt="" width="28" height="28">--}}
-{{--                </a>--}}
-{{--                @{{#  } }}--}}
-{{--            </script>--}}
-{{--            <script type="text/html" id="category">--}}
-{{--                @{{ d.category.title }}--}}
-{{--            </script>--}}
         </div>
     </div>
 @endsection
@@ -65,14 +46,15 @@
                     , url: "{{ route('admin.faq.info.data') }}" //数据接口
                     , page: true //开启分页
                     , cols: [[ //表头
-                        {checkbox: true, fixed: true}
-                        , {field: 'id', title: 'ID', sort: true, width: 80}
+                        // {checkbox: true, fixed: true},
+                        {field: 'id', title: 'ID', sort: true, width: 80}
                         , {field: 'user_id', title: '添加者'}
-                        , {field: 'category_id', title: '所属分类', toolbar: '#category'}
+                        , {field: 'category_id', title: '所属分类'}
                         , {field: 'product_id', title: '所属产品'}
                         , {field: 'title', title: '标题'}
                         , {field: 'short_content', title: '短描述', width: 100}
                         , {field: 'content', title: '正文'}
+                        , {field: 'is_active', title: '是否启用', templet: function (res) {return (res.is_active == 0) ? "否" : "是";}}
                         , {field: 'created_at', title: '创建时间'}
                         , {field: 'updated_at', title: '修改时间'}
                         , {fixed: 'right',title: '操作', width: 140, align: 'center', toolbar: '#options'}
@@ -102,19 +84,9 @@
                             });
                         });
                     } else if (layEvent === 'edit') {
-                        location.href = '/admin/blog/' + data.post_id + '/edit';
+                        location.href = data.id + '/edit';
                     }
                 });
-
-                //搜索
-                // $("#searchBtn").click(function () {
-                //     var catId = $("#category_id").val();
-                //     var title = $("#title").val();
-                //     dataTable.reload({
-                //         where: {category_id: catId, title: title},
-                //         page: {curr: 1}
-                //     })
-                // })
             })
         </script>
     @endcan

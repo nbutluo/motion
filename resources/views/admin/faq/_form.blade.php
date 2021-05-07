@@ -1,19 +1,43 @@
 {{csrf_field()}}
+{{--<div class="layui-form-item">--}}
+{{--    <label for="" class="layui-form-label">范围</label>--}}
+{{--    <div class="layui-input-inline" id="scope" style="width:300px;">--}}
+{{--        <input type="radio" name="scope" lay-filter= "questiontype" value="0" title="所有" checked>--}}
+{{--        <input type="radio" name="scope" lay-filter= "questiontype" value="1" title="指定分类">--}}
+{{--        <input type="radio" name="scope" lay-filter= "questiontype" value="2" title="指定产品">--}}
+{{--    </div>--}}
+{{--</div>--}}
+<input type="hidden" name="user_id" value="{{auth()->user()->id}}">
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">范围</label>
-    <div class="layui-input-inline" id="scope" style="width:300px;">
-        <input type="radio" name="scope" lay-filter= "questiontype" value="0" title="所有" checked>
-        <input type="radio" name="scope" lay-filter= "questiontype" value="1" title="指定分类">
-        <input type="radio" name="scope" lay-filter= "questiontype" value="2" title="指定产品">
+    <label for="" class="layui-form-label">所属分类</label>
+    <div class="layui-input-inline">
+        <select name="category_id">
+            <option value="{{$category->id}}">{{$category->name}}</option>
+            @foreach($categories as $cate)
+                <option value="{{$cate->id}}">{{$cate->name}}</option>
+            @endforeach
+        </select>
     </div>
 </div>
 
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">目标</label>
+    <label for="" class="layui-form-label">所属产品</label>
     <div class="layui-input-inline">
-        <select name="goal">
-            <option value="0"></option>
+        <select name="product_id">
+            <option value="{{$product->id}}"><span style="color:red;">{{$product->name}}</span></option>
+            @foreach($products as $pro)
+                <option value="{{$pro->id}}">{{$pro->name}}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
 
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">是否启用</label>
+    <div class="layui-input-block">
+        <select name="is_active">
+            <option value="0" @if(isset($question->is_active)&&$question->is_active==0)selected @endif>否</option>
+            <option value="1" @if(isset($question->is_active)&&$question->is_active==1)selected @endif>是</option>
         </select>
     </div>
 </div>
@@ -21,14 +45,14 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">标题</label>
     <div class="layui-input-block">
-        <input type="text" name="title" value="{{$post->title??old('title')}}" lay-verify="required" placeholder="请输入标题" class="layui-input" >
+        <input type="text" name="title" value="{{$question->title??old('title')}}" lay-verify="required" placeholder="请输入标题" class="layui-input" >
     </div>
 </div>
 
 <div class="layui-form-item">
     <label for="" class="layui-form-label">短描述</label>
     <div class="layui-input-block">
-        <textarea type="text" name="short_content" placeholder="短描述，可为空" class="layui-textarea" >{!! $post->short_content??old('short_content') !!}</textarea>
+        <textarea type="text" name="short_content" placeholder="短描述，可为空" class="layui-textarea" >{!! $question->short_content??old('short_content') !!}</textarea>
     </div>
 </div>
 
@@ -36,7 +60,7 @@
     <label for="" class="layui-form-label">内容</label>
     <div class="layui-input-block">
         <script id="container" name="content" type="text/plain" style="width: 98%">
-            {!! $post->content??old('content') !!}
+            {!! $question->content??old('content') !!}
         </script>
     </div>
 </div>

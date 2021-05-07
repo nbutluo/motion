@@ -63,7 +63,10 @@ Route::group(['middleware' => ['auth', 'permission:faq']],function() {
             Route::get('faq/list','FaqController@data')->name('admin.faq.info.data');
             //添加
             Route::get('faq/create','FaqController@create')->name('admin.faq.create')->middleware('permission:faq.info.create');
-            Route::post('faq/getData','FaqController@getData')->name('admin.faq.getData');
+            Route::post('faq/add','FaqController@addQuestion')->name('admin.faq.add')->middleware('permission:faq.info.create');
+            //编辑
+            Route::get('faq/{id}/edit','FaqController@edit')->name('admin.faq.edit')->middleware('permission:faq.info.edit');
+            Route::post('faq/{id}/update','FaqController@update')->name('admin.faq.update')->middleware('permission:faq.info.edit');
         });
     });
 });
