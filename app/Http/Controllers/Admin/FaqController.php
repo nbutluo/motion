@@ -53,7 +53,7 @@ class FaqController extends Controller
             Question::create([
                 'user_id' => $data['user_id'],
                 'category_id' => $data['category_id'],
-                'product_id' => ($data['category_id'] != 0) ? $data['product_id'] : 0,
+                'product_id' => $data['product_id'],
                 'title' => $data['title'],
                 'short_content' => $data['short_content'],
                 'content' => $data['content'],
