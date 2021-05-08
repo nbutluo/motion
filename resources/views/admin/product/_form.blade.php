@@ -30,7 +30,7 @@
         <select name="category_id">
             <option value="0">未选择</option>
             @foreach($categories as $category)
-                <option value="{{ $category->id }}" @if(isset($product->category_id)&&$product->category_id==$category->id)selected @endif >{{ $category->name }}</option>
+                <option value="{{ $category->id }}" @if(isset($product->category_id)&&$product->category_id==$category->id)selected @endif >@if($category->level ==2)  ----@endif{{ $category->name }}</option>
             @endforeach
         </select>
     </div>

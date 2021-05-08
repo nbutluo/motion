@@ -18,7 +18,7 @@ class ProductCategoryController extends AdminController
 
     public function getList(Request $request)
     {
-        $category = Category::paginate($request->get('limit', 30));
+        $category = Category::paginate($request->get('limit', 90));
         $data = [
             'code' => 0,
             'msg' => 'loading....',
@@ -30,7 +30,7 @@ class ProductCategoryController extends AdminController
 
     public function create()
     {
-        $categories = Category::where('level', 1)->orderBy('position', 'asc')->get();
+        $categories = Category::where('level', 1)->where('is_active',1)->orderBy('position', 'asc')->get();
         return view('admin.product-category.create', compact('categories'));
     }
 
@@ -56,19 +56,15 @@ class ProductCategoryController extends AdminController
     public function edit($id)
     {
         $category = Category::find($id);
-        if ($category->parent_id != 0) {
-            $parent = Category::find($category->parent_id);
-            $parent_name = $parent->name;
-        } else {
-            $parent_name = '一级分类';
-        }
-        return view('admin.product-category.edit',compact('category','parent_name'));
+        $categories = Category::where('level',1)->where('is_active',1)->get();
+        return view('admin.product-category.edit',compact('category','categories'));
     }
 
     public function update(Request $request,$id)
     {
         $category = Category::findOrFail($id);
-        $data = $request->only(['name','position','description','is_active']);
+        $data = $request->only(['name','position','parent_id','description','is_active']);
+        $data['level'] = ($data['parent_id'] != 0) ? 2 : 1;
         try {
             $category->update($data);
             return Redirect::to(URL::route('admin.catalog.category'))->with(['success' => '更新成功']);

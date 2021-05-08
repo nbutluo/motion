@@ -53,7 +53,7 @@ class FaqController extends Controller
             Question::create([
                 'user_id' => $data['user_id'],
                 'category_id' => $data['category_id'],
-                'product_id' => $data['product_id'],
+                'product_id' => ($data['category_id'] != 0) ? $data['product_id'] : 0,
                 'title' => $data['title'],
                 'short_content' => $data['short_content'],
                 'content' => $data['content'],
@@ -78,7 +78,19 @@ class FaqController extends Controller
         } else {
             $product = '';
         }
-        $categories = Category::where('is_active',1)->get();
+        $category = Category::where('is_active',1)->get();
+        //分类重新排序
+        $categories = [];
+        foreach ($category as $cate) {
+            if ($cate['level'] == 1) {
+                $categories[] = $cate;
+                foreach ($category as $cateItem) {
+                    if ($cateItem['parent_id'] == $cate['id']) {
+                        $categories[] = $cateItem;
+                    }
+                }
+            }
+        }
         $products = Product::where('is_active',1)->get();
         return view('admin.faq.edit',compact('question','category','product','categories','products'));
     }

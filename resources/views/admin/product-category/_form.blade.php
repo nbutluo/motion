@@ -19,11 +19,11 @@
         <select name="parent_id" id="">
             @if (isset($categories))
                 <option value="0">一级分类</option>
-                @foreach ($categories as $category)
-                    <option value="{{$category->id}}">{{$category->name}}</option>
+                @foreach ($categories as $cate)
+                    <option value="{{$cate->id}}" @if (isset($category->id) && $category->parent_id==$cate->id)
+                        selected
+                    @endif>{{$cate->name}}</option>
                 @endforeach
-            @else
-                <option value="{{$category->parent_id}}">{{$parent_name}}</option>
             @endif
 
         </select>

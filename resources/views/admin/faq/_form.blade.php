@@ -12,9 +12,9 @@
     <label for="" class="layui-form-label">所属分类</label>
     <div class="layui-input-inline">
         <select name="category_id">
-            <option value="{{$category->id}}">{{$category->name}}</option>
+            <option value="0">all</option>
             @foreach($categories as $cate)
-                <option value="{{$cate->id}}">{{$cate->name}}</option>
+                <option value="{{$cate->id}}" @if(isset($question->id)&&$question->category_id==$cate->id)selected @endif>@if($cate->level ==2)  ----@endif{{$cate->name}}</option>
             @endforeach
         </select>
     </div>
@@ -24,9 +24,11 @@
     <label for="" class="layui-form-label">所属产品</label>
     <div class="layui-input-inline">
         <select name="product_id">
-            <option value="{{$product->id}}"><span style="color:red;">{{$product->name}}</span></option>
+            <option value="0">all</option>
             @foreach($products as $pro)
-                <option value="{{$pro->id}}">{{$pro->name}}</option>
+                <option value="{{$pro->id}}" @if (isset($question->id)&&$question->product_id==$pro->id)
+                    selected
+                @endif>{{$pro->name}}</option>
             @endforeach
         </select>
     </div>

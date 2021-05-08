@@ -25,7 +25,7 @@ class ProductController extends AdminController
 
     public function index()
     {
-        $categories = Category::orderBy('position', 'asc')->get();
+        $categories = Category::where('is_active',1)->orderBy('position', 'asc')->get();
         return view('admin.product.index', compact('categories'));
     }
 
@@ -52,7 +52,19 @@ class ProductController extends AdminController
     public function create()
     {
         //分类
-        $categories = Category::orderBy('position', 'asc')->get();
+        $category = Category::where('is_active',1)->orderBy('position', 'asc')->get();
+        //分类重新排序
+        $categories = [];
+        foreach ($category as $cate) {
+            if ($cate['level'] == 1) {
+                $categories[] = $cate;
+                foreach ($category as $cateItem) {
+                    if ($cateItem['parent_id'] == $cate['id']) {
+                        $categories[] = $cateItem;
+                    }
+                }
+            }
+        }
 
         return view('admin.product.create', compact('categories'));
     }
@@ -86,8 +98,19 @@ class ProductController extends AdminController
     {
         $product = $this->productModel->findOrFail($id);
         //分类
-        $categories = Category::orderBy('position', 'asc')->get();
-
+        $category = Category::where('is_active',1)->orderBy('position', 'asc')->get();
+        //分类重新排序
+        $categories = [];
+        foreach ($category as $cate) {
+            if ($cate['level'] == 1) {
+                $categories[] = $cate;
+                foreach ($category as $cateItem) {
+                    if ($cateItem['parent_id'] == $cate['id']) {
+                        $categories[] = $cateItem;
+                    }
+                }
+            }
+        }
         return view('admin.product.edit', compact('product', 'categories'));
     }
 
