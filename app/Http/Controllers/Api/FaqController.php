@@ -43,8 +43,18 @@ class FaqController extends ApiController
             }
             return $this->success('success', $questions);
         } catch (\Exception $exception) {
-            return $this->fail('failure', 500, []);
+            return $this->fail('failure', 404, []);
         }
 
+    }
+
+    public function getInfo($questionId)
+    {
+        try {
+            $question = Question::findOrFail($questionId);
+            return $this->success('success', $question);
+        } catch (\Exception $exception) {
+            return $this->fail('failure', 404, []);
+        }
     }
 }

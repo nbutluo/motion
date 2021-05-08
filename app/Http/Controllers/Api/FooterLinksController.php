@@ -36,7 +36,7 @@ class FooterLinksController extends ApiController
                     }
                 }
             } else {
-                throw new Exception('empty','4003');
+                throw new Exception('empty','404');
             }
             return $this->success('successful',$data);
         } catch (Exception $exception) {
