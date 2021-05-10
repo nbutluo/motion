@@ -52,5 +52,29 @@ Route::group(['namespace' => 'Api'], function () {
     //个人中心
     Route::get('user/{id}','UserController@getUser')->name('user.info');
     Route::post('edit/user','UserController@editUser')->name('user.edit');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // test ceshi
+    Route::get('medium/source','MediumSourceController@img_output')->name('medium.source.img_output');
+    Route::get('medium/source/output_html','MediumSourceController@output_html')->name('medium.source.output_html');
+
+    Route::get('medium/source/pdf','MediumSourceController@output_pdf')->name('medium.source.output_pdf');
+
 });
 

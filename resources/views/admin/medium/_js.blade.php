@@ -7,7 +7,7 @@
         $(".uploadPic").each(function (index, elem) {
             upload.render({
                 elem: $(elem)
-                , url: '{{ route("admin.upload") }}'
+                , url: '{{ route("admin.upload.media") }}'
                 , multiple: false
                 , data: {"_token": "{{ csrf_token() }}"}
                 , done: function (res) {

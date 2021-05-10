@@ -90,6 +90,14 @@ return [
             'visibility' => 'public',
         ],
 
+        // medium 资源库
+        'medium' => [
+            'driver' => 'local',
+            'root' => public_path('medium'),
+            'url' => env('APP_URL').'/storage/medium',
+            'visibility' => 'public',
+        ],
+
     ],
 
 ];

@@ -4,19 +4,11 @@
     <div class="layui-card">
         <div class="layui-card-header layuiadmin-card-header-auto">
             <div class="layui-btn-group ">
-{{--                @can('information.article.destroy')--}}
-{{--                    <button class="layui-btn layui-btn-sm layui-btn-danger" id="listDelete">删 除</button>--}}
-{{--                @endcan--}}
                 <a class="layui-btn layui-btn-sm" href="{{route('admin.medium.source.create')}}">添 加</a>
             </div>
             <div class="layui-form">
-                <div class="layui-input-inline">
-                    <select name="media_type" lay-verify="required" id="category_id">
-                        <option value="">请选择产品分类</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
+                <div class="layui-input-inline" style="display: none">
+                    <input type="text" name="media_type" id="media_type" class="layui-input" value="3" hidden>
                 </div>
                 <div class="layui-input-inline">
                     <input type="text" name="title" id="title" placeholder="请输入资源名称" class="layui-input">
@@ -30,9 +22,6 @@
                 <div class="layui-btn-group">
                         <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
                         <a class="layui-btn layui-btn-sm" lay-event="download">资源下载</a>
-{{--                    @can('information.article.destroy')--}}
-{{--                        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">禁用</a>--}}
-{{--                    @endcan--}}
                 </div>
             </script>
             <script type="text/html" id="thumb">
@@ -59,7 +48,7 @@
                     elem: '#dataTable'
                     , autoSort: false
                     , height: 500
-                    , url: "{{ route('admin.medium.index.data') }}" //数据接口
+                    , url: "{{ route('admin.medium.qcfile.data', ['media_type' => 3]) }}" //数据接口
                     , page: true //开启分页
                     , cols: [[ //表头
                         {checkbox: true, fixed: true}
@@ -94,19 +83,6 @@
                         layer.confirm('确认禁用吗？', function (index) {
                             layer.close(index);
                             var load = layer.load();
-                            {{--$.post("{{ route('admin.blog.article.disable') }}", {--}}
-                            {{--    _method: 'delete',--}}
-                            {{--    ids: [data.post_id]--}}
-                            {{--}, function (res) {--}}
-                            {{--    layer.close(load);--}}
-                            {{--    if (res.code == 0) {--}}
-                            {{--        layer.msg(res.msg, {icon: 1}, function () {--}}
-                            {{--            // obj.del();--}}
-                            {{--        })--}}
-                            {{--    } else {--}}
-                            {{--        layer.msg(res.msg, {icon: 2})--}}
-                            {{--    }--}}
-                            {{--});--}}
                         });
                     } else if (layEvent === 'edit') {
                         location.href = '/admin/medium/source/' + data.id + '/edit';

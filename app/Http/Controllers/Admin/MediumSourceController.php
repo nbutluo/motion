@@ -20,15 +20,24 @@ class MediumSourceController extends AdminController
         $this->mediumModel = $mediumModel;
     }
 
-    public function index()
+    /**
+     * @function 基础分类模块
+     * @return array
+     */
+    public function baseCategories()
     {
-        $categories = [
+        return [
             (object)['id' => 1, 'name' => '图片'],
             (object)['id' => 2, 'name' => '视频'],
             (object)['id' => 3, 'name' => '宣传册'],
             (object)['id' => 4, 'name' => '安装信息'],
             (object)['id' => 5, 'name' => '资质认证']
         ];
+    }
+
+    public function index()
+    {
+        $categories = $this->baseCategories();
         return view('admin.medium.index', compact('categories'));
     }
 
@@ -54,14 +63,7 @@ class MediumSourceController extends AdminController
 
     public function create()
     {
-
-        $categories = [
-            (object)['id' => 1, 'name' => '图片'],
-            (object)['id' => 2, 'name' => '视频'],
-            (object)['id' => 3, 'name' => '宣传册'],
-            (object)['id' => 4, 'name' => '安装信息'],
-            (object)['id' => 5, 'name' => '资质认证']
-        ];
+        $categories = $this->baseCategories();
 
         return view('admin.medium.create', compact('categories'));
     }
@@ -92,7 +94,7 @@ class MediumSourceController extends AdminController
         try {
             $medium = $this->mediumModel->findOrFail($id);
             if (!$medium) throw new Exception('下载失败，信息不存在');
-            $files = public_path().$medium['media_url'];
+            $files = public_path() . $medium['media_url'];
             $name = basename($files);
 
             return response()->download($files, $name, $headers = ['Content-Type' => 'application/zip;charset=utf-8']);
@@ -111,13 +113,7 @@ class MediumSourceController extends AdminController
         $media = $this->mediumModel->findOrFail($id);
 
         //分类
-        $categories = [
-            (object)['id' => 1, 'name' => '图片'],
-            (object)['id' => 2, 'name' => '视频'],
-            (object)['id' => 3, 'name' => '宣传册'],
-            (object)['id' => 4, 'name' => '安装信息'],
-            (object)['id' => 5, 'name' => '资质认证']
-        ];
+        $categories = $this->baseCategories();
 
         return view('admin.medium.edit', compact('media', 'categories'));
     }
@@ -151,4 +147,34 @@ class MediumSourceController extends AdminController
             return redirect::back()->withErrors('更新失败');
         }
     }
+
+    public function video()
+    {
+        $categories = $this->baseCategories();
+
+        return view('admin.medium.video.index', compact('categories'));
+    }
+
+    public function instruction()
+    {
+        $categories = $this->baseCategories();
+
+        return view('admin.medium.instruction.index', compact('categories'));
+    }
+
+    public function brochure()
+    {
+        $categories = $this->baseCategories();
+
+        return view('admin.medium.brochure.index', compact('categories'));
+    }
+
+    public function qcfile()
+    {
+        $categories = $this->baseCategories();
+
+        return view('admin.medium.qcfile.index', compact('categories'));
+    }
+
+
 }

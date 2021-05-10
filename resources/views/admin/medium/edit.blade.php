@@ -22,5 +22,5 @@
 </script>
 
 @section('script')
-    @include('admin.blog._js')
+    @include('admin.medium._js')
 @endsection

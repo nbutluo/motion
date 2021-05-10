@@ -45,6 +45,7 @@ Route::group(['prefix' => 'user'], function() {
 
 Route::group(['namespace' => 'Admin'], function () {
     Route::post('upload', 'UploadController@upload')->name('admin.upload');
+    Route::post('upload.media', 'UploadController@uploadMedia')->name('admin.upload.media');
 });
 
 Route::group(['namespace' => 'Admin'], function () {
