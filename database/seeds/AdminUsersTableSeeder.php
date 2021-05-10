@@ -229,6 +229,42 @@ class AdminUsersTableSeeder extends Seeder
                     ],
                 ],
             ],
+            [
+                'name' => 'medium',
+                'display_name' => '资源管理',
+                'route' => '',
+                'icon' => 'layui-icon-read',
+                'child' => [
+                    [
+                        'name' => 'medium.list',
+                        'display_name' => '资源列表',
+                        'route' => 'admin.medium.index',
+                        'is_menu' => 1,
+                        'child' => [
+                            ['name' => 'medium.list.create', 'display_name' => '新建资源','route'=>'admin.medium.create'],
+                            ['name' => 'medium.list.edit', 'display_name' => '编辑资源','route'=>'admin.medium.edit'],
+                        ]
+                    ],
+                ],
+            ],
+            [
+                'name' => 'banner',
+                'display_name' => 'Banner管理',
+                'route' => '',
+                'icon' => 'layui-icon-picture',
+                'child' => [
+                    [
+                        'name' => 'banner.list',
+                        'display_name' => 'banner列表',
+                        'route' => 'admin.banner.index',
+                        'is_menu' => 1,
+                        'child' => [
+                            ['name' => 'banner.list.create', 'display_name' => '新建banner','route'=>'admin.banner.create'],
+                            ['name' => 'banner.list.edit', 'display_name' => '编辑banner','route'=>'admin.banner.edit'],
+                        ]
+                    ],
+                ],
+            ],
         ];
 
         foreach ($permissions as $pem1) {
