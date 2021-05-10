@@ -49,5 +49,8 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('faq/list/{productId}','FaqController@getList')->name('faq.info.list');
     Route::get('faq/info/{questionId}','FaqController@getInfo')->name('faq.info.data');
 
+    //个人中心
+    Route::get('user/{id}','UserController@getUser')->name('user.info');
+    Route::post('edit/user','UserController@editUser')->name('user.edit');
 });
 
