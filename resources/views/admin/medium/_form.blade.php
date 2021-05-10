@@ -37,10 +37,10 @@
 </div>
 
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">资源文件</label>
+    <label for="" class="layui-form-label">图片文件</label>
     <div class="layui-input-block">
         <div class="layui-upload">
-            <button type="button" class="layui-btn layui-btn-sm uploadPic"><i class="layui-icon">&#xe67c;</i>资源上传</button>
+            <button type="button" class="layui-btn layui-btn-sm uploadPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>  <span style="color:red">pdf格式需要</span>
             <div class="layui-upload-list" >
                 <ul class="layui-upload-box layui-clear">
                     @if(isset($media->media_url))
@@ -51,6 +51,27 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">资源文件</label>
+    <div class="layui-input-block">
+        <div class="layui-upload">
+            <button type="button" class="layui-btn layui-btn-sm uploadMedia"><i class="layui-icon">&#xe67c;</i>资源上传</button>
+            <div class="layui-upload-list" >
+                <ul class="layui-upload-box layui-clear">
+
+                </ul>
+                <input type="hidden" name="media_links" class="layui-upload-input" value="{{ $media->media_links??'' }}">
+            </div>
+        </div>
+        <div class="media_links_box">
+            @if(isset($media->media_links))
+                <li>资源链接：  {{ $media->media_links??'' }}</li>
+            @endif
+        </div>
+    </div>
+
 </div>
 
 <div class="layui-form-item">

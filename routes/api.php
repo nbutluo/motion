@@ -74,7 +74,16 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('medium/source','MediumSourceController@img_output')->name('medium.source.img_output');
     Route::get('medium/source/output_html','MediumSourceController@output_html')->name('medium.source.output_html');
 
-    Route::get('medium/source/pdf','MediumSourceController@output_pdf')->name('medium.source.output_pdf');
+    Route::get('medium/source/pdf','MediumSourceController@output_pdf')->name('medium.source.output.pdf');
+    Route::get('medium/source/video','MediumSourceController@output_video')->name('medium.source.output.video');
+
+
+    // 资源列表
+    Route::get('medium/list/video','MediumSourceController@get_video')->name('medium.source.list.video');
+    Route::get('medium/list/brochure','MediumSourceController@get_brochure')->name('medium.source.list.brochure');
+    Route::get('medium/list/instruction','MediumSourceController@get_instruction')->name('medium.source.list.instruction');
+    Route::get('medium/list/qcfile','MediumSourceController@get_qcfile')->name('medium.source.list.qcfile');
+
 
 });
 

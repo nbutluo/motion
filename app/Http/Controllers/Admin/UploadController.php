@@ -58,7 +58,7 @@ class UploadController
         //上传文件最大大小,单位M：资源库最大20M
         $maxSize = 20;
         //支持的上传图片类型
-        $allowed_extensions = ["png", "jpg", "gif", "pdf", "video"];
+        $allowed_extensions = ["png", "jpg", "gif", "pdf", "video", "mov", "mp4"];
         //返回信息json
         $data = ['code' => 1, 'msg' => '上传失败', 'data' => ''];
         $file = $request->file('file');

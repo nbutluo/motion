@@ -7,7 +7,7 @@
         $(".uploadPic").each(function (index, elem) {
             upload.render({
                 elem: $(elem)
-                , url: '{{ route("admin.upload.media") }}'
+                , url: '{{ route("admin.upload") }}'
                 , multiple: false
                 , data: {"_token": "{{ csrf_token() }}"}
                 , done: function (res) {
@@ -22,7 +22,28 @@
                     }
                 }
             });
-        })
+        });
+
+        //资源文件上传
+        $(".uploadMedia").each(function (index, elem) {
+            upload.render({
+                elem: $(elem)
+                , url: '{{ route("admin.upload.media") }}'
+                , accept: 'file'  // 视频等文件需要增加该参数
+                , multiple: false
+                , data: {"_token": "{{ csrf_token() }}"}
+                , done: function (res) {
+                    //如果上传失败
+                    if (res.code == 0) {
+                        layer.msg(res.msg, {icon: 1}, function () {
+                            $(elem).parent('.layui-upload').next('.media_links_box').html('<li>资源链接： <p>'+ res.url + '</p></li>');
+                        })
+                    } else {
+                        layer.msg(res.msg, {icon: 2})
+                    }
+                }
+            });
+        });
 
     })
 </script>
