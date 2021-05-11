@@ -3,11 +3,11 @@
 @section('content')
     <div class="layui-card">
         <div class="layui-card-header layuiadmin-card-header-auto">
-            <h2>添加产品</h2>
+            <h2>添加产品选项</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.catalog.product.post')}}" method="post" >
-                @include('admin.product._form')
+            <form class="layui-form" action="{{route('admin.catalog.option.create')}}" method="post" >
+                @include('admin.product-option._form')
             </form>
         </div>
     </div>
@@ -21,5 +21,5 @@
 </script>
 
 @section('script')
-    @include('admin.product._js')
+    @include('admin.product-option._js')
 @endsection

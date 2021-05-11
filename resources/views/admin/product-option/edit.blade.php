@@ -3,12 +3,12 @@
 @section('content')
     <div class="layui-card">
         <div class="layui-card-header layuiadmin-card-header-auto">
-            <h2>更新产品 ID: {{$product->id}}</h2>
+            <h2>更新产品选项 ID: {{$product->id}}</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.catalog.product.update',['id'=>$product->id])}}" method="post">
+            <form class="layui-form" action="{{route('admin.catalog.option.update',['id'=>$product->id])}}" method="post">
                 {{ method_field('post') }}
-                @include('admin.product._form')
+                @include('admin.product-option._form')
             </form>
         </div>
     </div>
@@ -22,5 +22,5 @@
 </script>
 
 @section('script')
-    @include('admin.product._js')
+    @include('admin.product-option._js')
 @endsection

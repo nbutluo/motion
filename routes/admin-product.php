@@ -28,4 +28,16 @@ Route::group(['middleware' => ['auth', 'permission:catalog']],function() {
             Route::post('product/create', 'ProductController@addProduct')->name('admin.blog.article.create.post');
         });
     });
+
+    //产品选项
+    Route::group(['middleware' => ['auth', 'permission:catalog.product']],function (){
+        Route::group(['namespace' => 'Admin'], function () {
+            Route::get('product/option/index', 'ProductOptionController@index')->name('admin.catalog.option');
+            Route::get('product/option/list', 'ProductOptionController@getList')->name('admin.catalog.option.data');
+            Route::get('product/option/{id}/edit', 'ProductOptionController@edit')->name('admin.catalog.option.edit');
+            Route::post('product/option/{id}/update', 'ProductOptionController@update')->name('admin.catalog.option.update');
+            Route::get('product/option/create', 'ProductOptionController@create')->name('admin.catalog.option.create');
+            Route::post('product/option/create', 'ProductOptionController@store')->name('admin.catalog.option.post');
+        });
+    });
 });
