@@ -33,4 +33,9 @@ Route::group(['namespace' => 'Admin'], function () {
     //宣传册模块
     Route::get('medium/brochure','MediumSourceController@brochure')->name('admin.medium.brochure');
     Route::get('medium/brochure/data','MediumSourceController@getList')->name('admin.medium.brochure.data');
+
+    //banner模块
+    Route::group(['middleware' => ['auth', 'permission:banner']],function (){
+        Route::get('banner/index','BannerController@index')->name('admin.banner.index');
+    });
 });
