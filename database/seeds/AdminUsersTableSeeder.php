@@ -227,6 +227,16 @@ class AdminUsersTableSeeder extends Seeder
                             ['name' => 'catalog.product.destroy', 'display_name' => '删除产品','route'=>'admin.catalog.product.destroy'],
                         ]
                     ],
+                    [
+                        'name' => 'catalog.option',
+                        'display_name' => '配件管理',
+                        'route' => 'admin.catalog.option',
+                        'is_menu' => 1,
+                        'child' => [
+                            ['name' => 'catalog.option.create', 'display_name' => '新增配件','route'=>'admin.catalog.option.create'],
+                            ['name' => 'catalog.option.edit', 'display_name' => '编辑配件','route'=>'admin.catalog.option.edit'],
+                        ]
+                    ],
                 ],
             ],
             [
