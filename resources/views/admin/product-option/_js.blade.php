@@ -25,6 +25,18 @@
         })
 
     })
+    layui.use('colorpicker',function () {
+        var $ = layui.$
+            ,colorpicker = layui.colorpicker;
+        //表单赋值
+        colorpicker.render({
+            elem: '#test-form'
+            ,color: '#1c97f5'
+            ,done: function(color){
+                $('#test-form-input').val(color);
+            }
+        });
+    });
 </script>
 <link href="/editor/themes/default/css/umeditor.min.css" type="text/css" rel="stylesheet">
 <script src="/editor/third-party/jquery.min.js"></script>

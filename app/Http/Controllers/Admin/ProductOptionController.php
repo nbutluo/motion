@@ -85,7 +85,7 @@ class ProductOptionController extends AdminController
             'type' => (int)$request->input('type', 1),
             'description' => $request->input('description'),
             'is_active' => $request->input('is_active', 0),
-            'sort_order' => $request->input('sort_order', 0),
+//            'sort_order' => $request->input('sort_order', 0),
             'created_at' => date('Y-m-d H:i:s')
         ];
 
@@ -95,6 +95,16 @@ class ProductOptionController extends AdminController
 
         if ($option_color = $request->input('option_color')) {
             $params['option_color'] = $option_color;
+        }
+
+        if ($option_size = $request->input('option_size')) {
+            $params['option_size'] = $option_size;
+        }
+
+        if ($sort_order = $request->input('sort_order')) {
+            $params['sort_order'] = $sort_order;
+        } else {
+            $params['sort_order'] = 0;
         }
 
         try {
@@ -119,36 +129,36 @@ class ProductOptionController extends AdminController
     {
         if (empty($id)) return redirect::back()->withErrors('参数错误，缺少ID');
 
-        $params = [];
-        if ($sku = $request->input('sku')) {
-            $params['sku'] = $sku;
-        }
-        if ($name = $request->input('name')) {
-            $params['name'] = $name;
-        }
-        if ($category_id = $request->input('category_id')) {
-            $params['category_id'] = $category_id;
-        }
+        $option = Option::where('id',$id);
+
+        $params = [
+            'sku' => $request->input('sku'),
+            'product_id' => $request->input('product_id'),
+            'title' => $request->input('title'),
+            'type' => (int)$request->input('type'),
+            'description' => $request->input('description'),
+            'is_active' => $request->input('is_active'),
+            'sort_order' => $request->input('sort_order')
+        ];
+
         if ($image = $request->input('image')) {
             $params['image'] = $image;
         }
-        if ($image_label = $request->input('image_label')) {
-            $params['image_label'] = $image_label;
-        }
-        if ($short_description = $request->input('short_description')) {
-            $params['short_description'] = $short_description;
-        }
-        if ($description = $request->input('description')) {
-            $params['description'] = $description;
+
+        if ($option_color = $request->input('option_color')) {
+            $params['option_color'] = $option_color;
         }
 
-        $params['is_active'] = $request->input('is_active', 1);
+        if ($option_size = $request->input('option_size')) {
+            $params['option_size'] = $option_size;
+        }
 
         try {
-            $this->productModel->updateProduct($id, $params);
-            return redirect::to(URL::route('admin.catalog.product'))->with(['success' => '更新成功']);
-        } catch (\Exception $exception) {
-            return redirect::back()->withErrors('更新失败');
+            $option->update($params);
+            return redirect::to(URL::route('admin.catalog.option'))->with(['success' => '添加成功']);
+        } catch (\Exception $e) {
+            Log::info($e->getMessage());
+            return redirect::back()->withErrors('添加失败: ' . $e->getMessage());
         }
     }
 }

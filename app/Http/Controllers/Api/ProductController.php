@@ -68,6 +68,9 @@ class ProductController extends ApiController
         if ($data['image'] !='') {
             $data['image'] = $_SERVER["HTTP_HOST"].$data['image'];
         }
+        if ($data['small_image'] !='') {
+            $data['small_image'] = $_SERVER["HTTP_HOST"].$data['small_image'];
+        }
         if (!empty($data)) {
             // option 选项配置
             $option_size = $this->optionModel->where('product_id', $data['id'])->where('type', 1)->where('is_active', 1)->orderBy('sort_order', 'desc')->get();

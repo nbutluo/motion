@@ -34,10 +34,10 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">分类</label>
     <div class="layui-input-inline">
-        <select name="category_id">
+        <select name="type">
             <option value="0">未选择</option>
             @foreach($categories as $category)
-                <option value="{{ $category->id }}" @if(isset($product->category_id)&&$product->category_id==$category->id)selected @endif >{{ $category->name }}</option>
+                <option value="{{ $category->id }}" @if(isset($product->type)&&$product->type==$category->id)selected @endif >{{ $category->name }}</option>
             @endforeach
         </select>
     </div>
@@ -62,9 +62,23 @@
 
 <div class="layui-form-item">
     <label for="" class="layui-form-label">选项颜色</label>
+{{--    <div class="layui-input-inline">--}}
+{{--        <input type="text" name="option_color" value="{{$product->option_color??old('option_color')}}" placeholder="请输入选项颜色" class="layui-input" > <span style="color:red">例子：#ccc</span>--}}
+{{--    </div>--}}
+
     <div class="layui-input-inline">
-        <input type="text" name="option_color" value="{{$product->option_color??old('option_color')}}" placeholder="请输入选项颜色" class="layui-input" > <span style="color:red">例子：#ccc</span>
+        <input type="text" name="option_color" placeholder="请选择颜色" value="{{$product->option_color??old('option_color')}}" class="layui-input" id="test-form-input">
     </div>
+    <div class="layui-inline" style="left: -11px;">
+        <div id="test-form"></div>
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">尺寸</label>
+        <div class="layui-input-inline">
+            <input type="text" name="option_size" value="{{$product->option_size??old('option_size')}}" placeholder="例：36'x36'" class="layui-input" >
+        </div>
 </div>
 
 <div class="layui-form-item">

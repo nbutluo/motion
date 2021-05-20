@@ -25,6 +25,7 @@ class CreateCatalogProductOptionTable extends Migration
             $table->integer('sort_order')->default(0)->comment('Sort Order');
             $table->text('image')->nullable()->comment('Image');
             $table->string('option_color')->nullable()->comment('Option Color');
+            $table->string('option_size')->nullable()->comment('Option Size');
             $table->text('dependency')->nullable()->comment('Dependency options');
             $table->smallInteger('stocks')->default(0)->comment('OUT OF STOCK   0 has 1 no stock   default 0');
             $table->smallInteger('pre_sale')->default(0)->comment('Is Pre Sale  0 no 1 yes   default 0');
