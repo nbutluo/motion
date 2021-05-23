@@ -34,6 +34,7 @@ class CreateSalesOrderItemTable extends Migration
             $table->decimal('base_price',12,4)->default('0.0000')->comment('Base Price');
             $table->decimal('original_price',12,4)->nullable()->comment('Original Price');
             $table->decimal('base_original_price',12,4)->nullable()->comment('Base Original Price');
+            $table->decimal('qty_ordered',12,4)->default('0.0000')->comment('Qty Ordered');
             $table->decimal('tax_percent',12,4)->default('0.0000')->comment('Tax Percent');
             $table->decimal('tax_amount',12,4)->default('0.0000')->comment('Tax Amount');
             $table->decimal('base_tax_amount',12,4)->default('0.0000')->comment('Base Tax Amount');

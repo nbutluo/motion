@@ -20,6 +20,7 @@ class CreateSalesOrderTable extends Migration
             $table->integer('customer_id')->unsigned()->nullable()->comment('Customer Id');
             $table->string('customer_name')->nullable()->comment('Customer Name');
             $table->string('customer_email')->nullable()->comment('Customer Email');
+            $table->integer('salesman')->nullable()->comment('Salesman ID');
             $table->decimal('base_grand_total',12,4)->nullable()->comment('Base Grand Total');
             $table->decimal('base_total_paid',12,4)->nullable()->comment('Base Total Paid');
             $table->decimal('grand_total',12,4)->nullable()->comment('Grand Total');

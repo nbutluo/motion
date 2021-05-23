@@ -52,6 +52,7 @@ Route::group(['namespace' => 'Api'], function () {
     //个人中心
     Route::get('user/{id}','UserController@getUser')->name('user.info');
     Route::post('edit/user','UserController@editUser')->name('user.edit');
+    Route::get('region','UserController@getRegion')->name('user.region');
 
 
 
@@ -84,6 +85,11 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('medium/list/instruction','MediumSourceController@get_instruction')->name('medium.source.list.instruction');
     Route::get('medium/list/qcfile','MediumSourceController@get_qcfile')->name('medium.source.list.qcfile');
 
+
+    //订单接口
+    Route::get('order/user/{id}','OrderController@orders')->name('order.source.list');
+    Route::post('order/create','OrderController@addOrder')->name('order.add');
+    Route::post('order/update','OrderController@update')->name('order.update');
 
 });
 
