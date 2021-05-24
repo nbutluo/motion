@@ -62,8 +62,23 @@ class UserController extends ApiController
         try {
             $user = Users::findOrFail($request->id);
             $user_avatar = '/avatars';
-            $file_path = $request->file('avatar')->store($user_avatar);
-            $data = $request->only(['nickname','avatar','sex','birth','email','phone','country','province','city','area','company_url']);
+            $file_path = '';
+            if ($request->file('avatar')) {
+                $file_path = $request->file('avatar')->store($user_avatar);
+            }
+            $data = $request->only(['nickname','avatar','sex','birth','email','phone','country','province','city','company_url']);
+
+            $data['nickname'] = isset($data['nickname']) ? $data['nickname'] : '';
+            $data['avatar'] = isset($data['avatar']) ? $data['avatar'] : '';
+            $data['sex'] = isset($data['sex']) ? $data['sex'] : 0;
+            $data['birth'] = isset($data['birth']) ? $data['birth'] : '';
+            $data['email'] = isset($data['email']) ? $data['email'] : '';
+            $data['phone'] = isset($data['phone']) ? $data['phone'] : '';
+            $data['country'] = isset($data['country']) ? $data['country'] : '';
+            $data['province'] = isset($data['province']) ? $data['province'] : '';
+            $data['city'] = isset($data['city']) ? $data['city'] : '';
+            $data['area'] = isset($data['area']) ? $data['area'] : '';
+            $data['company_url'] = isset($data['company_url']) ? $data['company_url'] : '';
             $data['avatar'] = $file_path;
             /*$name = basename($file_path);*/
 
