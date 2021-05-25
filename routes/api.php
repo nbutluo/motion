@@ -91,5 +91,9 @@ Route::group(['namespace' => 'Api'], function () {
     Route::post('order/create','OrderController@addOrder')->name('order.add');
     Route::post('order/update','OrderController@update')->name('order.update');
 
+    //baner接口
+    Route::get('banner/index/{pageName}','BannerController@getBanner')->name('banner.index');
+    Route::get('banner/list','BannerController@getBannerList')->name('banner.list');
+
 });
 
