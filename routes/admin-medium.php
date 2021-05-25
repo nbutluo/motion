@@ -37,5 +37,10 @@ Route::group(['namespace' => 'Admin'], function () {
     //banner模块
     Route::group(['middleware' => ['auth', 'permission:banner']],function (){
         Route::get('banner/index','BannerController@index')->name('admin.banner.index');
+        Route::get('banner/index/list','BannerController@getList')->name('admin.banner.index.list');
+        Route::get('banner/create','BannerController@create')->name('admin.banner.create');
+        Route::post('banner/add','BannerController@addBanner')->name('admin.banner.add');
+        Route::get('banner/{id}/edit','BannerController@edit')->name('admin.banner.edit');
+        Route::post('banner/{id}/update','BannerController@update')->name('admin.banner.update');
     });
 });

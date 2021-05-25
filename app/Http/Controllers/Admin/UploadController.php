@@ -89,7 +89,7 @@ class UploadController
                 'msg' => '上传成功',
                 'data' => $newFile,
                 'file_type' => strtolower($ext),
-                'url' => '/uploads/' . $newFile,
+                'url' => '/medium/' . $newFile,
             ];
         } else {
             $data['data'] = $file->getErrorMessage();

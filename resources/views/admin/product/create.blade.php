@@ -6,7 +6,7 @@
             <h2>添加产品</h2>
         </div>
         <div class="layui-card-body">
-            <form class="layui-form" action="{{route('admin.catalog.product.post')}}" method="post" >
+            <form class="layui-form" action="{{route('admin.blog.article.create.post')}}" method="post" >
                 @include('admin.product._form')
             </form>
         </div>
