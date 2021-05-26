@@ -13,6 +13,6 @@ class AdminUser extends Authenticatable
     protected $datas = ['deleted_at'];
 
     protected $fillable = [
-        'username','nickname', 'email', 'password','phone','api_token','remember_token',
+        'username','nickname', 'email', 'password','phone','api_token','remember_token','rule_id'
     ];
 }

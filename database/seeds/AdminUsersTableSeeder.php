@@ -240,6 +240,23 @@ class AdminUsersTableSeeder extends Seeder
                 ],
             ],
             [
+                'name' => 'order',
+                'display_name' => '订单管理',
+                'route' => '',
+                'icon' => 'layui-icon-time',
+                'child' => [
+                    [
+                        'name' => 'order.list',
+                        'display_name' => '订单列表',
+                        'route' => 'admin.order.index',
+                        'is_menu' => 1,
+                        'child' => [
+                            ['name' => 'order.list.edit', 'display_name' => '编辑订单','route'=>'admin.order.edit'],
+                        ]
+                    ],
+                ],
+            ],
+            [
                 'name' => 'medium',
                 'display_name' => '资源管理',
                 'route' => '',

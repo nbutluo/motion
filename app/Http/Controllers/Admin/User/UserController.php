@@ -113,6 +113,13 @@ class UserController extends Controller
         $roles = $request->get('roles',[]);
         try {
             $user->syncRoles($roles);
+            $data = [];
+            $rule_id = '';
+            foreach ($request->roles as $role) {
+                $rule_id = ($rule_id == '') ? $role : $rule_id.','.$role;
+            }
+            $data['rule_id'] = $rule_id;
+            $user->update($data);
             return Redirect::to(URL::route('admin.user'))->with(['success'=>'更新成功']);
         } catch (\Exception $exception) {
             return Redirect::back()->withErrors('更新失败');

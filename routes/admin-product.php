@@ -40,4 +40,14 @@ Route::group(['middleware' => ['auth', 'permission:catalog']],function() {
             Route::post('product/option/create', 'ProductOptionController@store')->name('admin.catalog.option.post');
         });
     });
+
+    //订单管理
+    Route::group(['middleware' => ['auth', 'permission:order']],function(){
+        Route::group(['namespace' => 'Admin'],function(){
+            Route::get('order/index','OrderController@index')->name('admin.order.index');
+            Route::get('order/data','OrderController@getList')->name('admin.order.index.list');
+            Route::get('order/{id}/edit','OrderController@edit')->name('admin.order.edit');
+            Route::post('order/update','OrderController@update')->name('admin.order.update');
+        });
+    });
 });

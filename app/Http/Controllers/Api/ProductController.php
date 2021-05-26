@@ -60,42 +60,48 @@ class ProductController extends ApiController
 
     public function detail($id, Request $request)
     {
-        $select = [
-            'id', 'name', 'sku', 'description', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label'
-        ];
+        try {
+            $select = [
+                'id', 'name', 'sku', 'description', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label'
+            ];
 
-        $data = $this->productModel->getDetailForApi($id, $select);
-        if ($data['image'] !='') {
-            $data['image'] = $_SERVER["HTTP_HOST"].$data['image'];
-        }
-        if ($data['small_image'] !='') {
-            $data['small_image'] = $_SERVER["HTTP_HOST"].$data['small_image'];
-        }
-        if (!empty($data)) {
-            // option 选项配置
-            $option_size = $this->optionModel->where('product_id', $data['id'])->where('type', 2)->where('is_active', 1)->orderBy('sort_order', 'desc')->get();
-            foreach ($option_size as $o_s) {
-                if ($o_s['image'] != '') {
-                    $o_s['image'] = $_SERVER["HTTP_HOST"].$o_s['image'];
-                }
+            $data = $this->productModel->getDetailForApi($id, $select);
+            if ($data['image'] !='') {
+                $data['image'] = $_SERVER["HTTP_HOST"].$data['image'];
             }
-            $data['option_size'] = $option_size;
-            $option_color = $this->optionModel->where('product_id', $data['id'])->where('type', 1)->where('is_active', 1)->orderBy('sort_order', 'desc')->get();
-            foreach ($option_color as $o_c) {
-                if ($o_c['image'] !== '') {
-                    $o_c['image'] = $_SERVER["HTTP_HOST"].$o_c['image'];
-                }
+            if ($data['small_image'] !='') {
+                $data['small_image'] = $_SERVER["HTTP_HOST"].$data['small_image'];
             }
-            $data['option_color'] = $option_color;
-            $desk_img = $this->optionModel->where('product_id', $data['id'])->where('type', 3)->where('is_active', 1)->orderBy('sort_order', 'desc')->get();
-            foreach ($desk_img as $d_i) {
-                if ($d_i['image'] != '') {
-                    $d_i['image'] = $_SERVER["HTTP_HOST"].$d_i['image'];
+            if (!empty($data)) {
+                // option 选项配置
+                $option_size = $this->optionModel->where('product_id', $data['id'])->where('type', 2)->where('is_active', 1)->orderBy('sort_order', 'desc')->get();
+                foreach ($option_size as $o_s) {
+                    if ($o_s['image'] != '') {
+                        $o_s['image'] = $_SERVER["HTTP_HOST"].$o_s['image'];
+                    }
                 }
+                $data['option_size'] = $option_size;
+                $option_color = $this->optionModel->where('product_id', $data['id'])->where('type', 1)->where('is_active', 1)->orderBy('sort_order', 'desc')->get();
+                foreach ($option_color as $o_c) {
+                    if ($o_c['image'] !== '') {
+                        $o_c['image'] = $_SERVER["HTTP_HOST"].$o_c['image'];
+                    }
+                }
+                $data['option_color'] = $option_color;
+                $desk_img = $this->optionModel->where('product_id', $data['id'])->where('type', 3)->where('is_active', 1)->orderBy('sort_order', 'desc')->get();
+                foreach ($desk_img as $d_i) {
+                    if ($d_i['image'] != '') {
+                        $d_i['image'] = $_SERVER["HTTP_HOST"].$d_i['image'];
+                    }
+                }
+                $data['desk_img'] = $desk_img;
             }
-            $data['desk_img'] = $desk_img;
+            return $this->success('success', $data);
+        } catch (Exception $exception) {
+            return $this->fail('error, failure.', 403);
         }
 
-        return $this->success('success', $data);
+
+
     }
 }

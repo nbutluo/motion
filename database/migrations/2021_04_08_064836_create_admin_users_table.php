@@ -21,6 +21,7 @@ class CreateAdminUsersTable extends Migration
             $table->string('email')->default('')->comment('邮箱');
             $table->string('phone')->default('')->comment('电话号码');
             $table->string('password')->comment('密码');
+            $table->string('rule_id')->nullable()->comment('角色id');
             $table->rememberToken();
             $table->string('api_token', 80)->unique()->nullable()->default(null);
             $table->softDeletes();

@@ -59,11 +59,20 @@
                         , {field: 'title', title: 'Title', width: 200}
                         , {field: 'type', title: '产品选项类型', width: 280, templet: function (res) {
                                 $type_string = '未知';
-                                switch (res.type) {
-                                    case 1: $type_string = '桌板颜色'; break;
-                                    case 2: $type_string = 'size尺寸'; break;
-                                    case 3: $type_string = 'desk图片'; break;
-                                    default:break;
+                                // switch (res.type) {
+                                //     case 1: $type_string = '桌板颜色'; break;
+                                //     case 2: $type_string = 'size尺寸'; break;
+                                //     case 3: $type_string = 'desk图片'; break;
+                                //     default:break;
+                                // }
+                                if(res.type == 1) {
+                                    $type_string = '桌板颜色';
+                                }
+                                if(res.type == 2) {
+                                    $type_string = 'size尺寸';
+                                }
+                                if(res.type == 3) {
+                                    $type_string = 'desk图片';
                                 }
                                 return $type_string;
                             }}
