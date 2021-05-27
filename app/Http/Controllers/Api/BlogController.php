@@ -14,6 +14,11 @@ class BlogController extends ApiController
         $page = $request->input('page', 1);
         $pageSize = $request->input('pageSize', 10);
         $data = app(Blog::class)->getPageList($page, $pageSize);
+        foreach ($data['list'] as $list) {
+            if (isset($list->featured_img) && !empty($list->featured_img)) {
+                $list->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$list->featured_img;
+            }
+        }
 
         if ($data) {
             return $this->success('success', $data);
@@ -25,6 +30,9 @@ class BlogController extends ApiController
     public function getDetail($post_id)
     {
         $data = app(Blog::class)->getSelectFind($post_id);
+        if(isset($data['featured_img']) && !empty($data['featured_img'])) {
+            $data['featured_img'] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$data['featured_img'];
+        }
         return $this->success('success', $data);
     }
 
@@ -43,7 +51,11 @@ class BlogController extends ApiController
 
         $category_id = $request->input('category_id');
         $data = app(Blog::class)->getCategoryPostList($category_id, $page, $pageSize);
-
+        foreach ($data['list'] as $item) {
+            if (isset($item->featured_img) && !empty($item->featured_img)) {
+                $item->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$item->featured_img;
+            }
+        }
         if ($data) {
             return $this->success('success', $data);
         } else {

@@ -76,11 +76,11 @@
             <button type="button" class="layui-btn layui-btn-sm uploadPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>
             <div class="layui-upload-list" >
                 <ul class="layui-upload-box layui-clear">
-                    @if(isset($post->thumb))
-                        <li><img src="{{ $post->thumb }}" /><p>上传成功</p></li>
+                    @if(isset($post->featured_img) && $post->featured_img != '')
+                        <li><img src="{{ $post->featured_img }}" /><p>上传成功</p></li>
                     @endif
                 </ul>
-                <input type="hidden" name="thumb" class="layui-upload-input" value="{{ $post->thumb??'' }}">
+                <input type="hidden" name="featured_img" class="layui-upload-input" value="{{ $post->featured_img??'' }}">
             </div>
         </div>
     </div>

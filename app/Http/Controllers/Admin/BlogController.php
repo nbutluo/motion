@@ -60,13 +60,14 @@ class BlogController extends AdminController
         $is_active = $request->input('is_active', 0);
         $title = $request->input('title', '');
         if (empty($title)) return redirect::back()->withErrors('添加失败，缺少标题');
-
+        $image = $request->input('featured_img');
         $params = [
             'title' => $title,
             'content' => $content,
             'short_content' => $short_content,
             'publish_time' => date('Y-m-d H:i:s'),
             'is_active' => $is_active,
+            'featured_img' => $image,
         ];
 
         if ($category_id = $request->input('category_id')) {
@@ -113,6 +114,9 @@ class BlogController extends AdminController
         }
         if ($keywords = $request->input('keywords')) {
             $params['keywords'] = $keywords;
+        }
+        if ($image = $request->input('featured_img')) {
+            $params['featured_img'] = $image;
         }
 
         // 首页显示状态 1、是 2、否

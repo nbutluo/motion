@@ -13,7 +13,7 @@ class BannerController extends ApiController
         try {
             $banner = MediumBanner::where('page_name',$pageName)->where('is_active',1)->get();
             foreach ($banner as $ban) {
-                $ban->media_url = $_SERVER["HTTP_HOST"].$ban->media_url;
+                $ban->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$ban->media_url;
             }
             return $this->success('success', $banner);
         } catch (\Exception $exception) {
@@ -26,7 +26,7 @@ class BannerController extends ApiController
         try {
             $banner = MediumBanner::where('is_active',1)->get();
             foreach ($banner as $ban) {
-                $ban->media_url = $_SERVER["HTTP_HOST"].$ban->media_url;
+                $ban->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$ban->media_url;
             }
             return $this->success('success', $banner);
         } catch (\Exception $exception) {

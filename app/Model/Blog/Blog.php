@@ -40,7 +40,7 @@ class Blog extends Model
         $where = [
             'category_id' => $category_id
         ];
-        $select = ['post_id', 'title', 'identifier', 'content', 'views_count', 'short_content', 'category_id'];
+        $select = ['post_id', 'title', 'identifier', 'content', 'views_count', 'short_content', 'category_id','featured_img'];
         return $this->paginate($pageSize, $select, $page, 'page', $where);
     }
 
@@ -56,8 +56,8 @@ class Blog extends Model
     public function getSelectFind($id)
     {
         if ($this->where('post_id', $id)->first()) {
-            return $this->select('post_id', 'title', 'meta_title', 'meta_keywords', 'meta_description', 'content', 'views_count', 'category_id')
-                ->where('post_id', $id)->first()->toArray();
+//            return $this->select('post_id', 'title', 'meta_title', 'meta_keywords', 'meta_description', 'content', 'views_count', 'category_id')
+            return $this->where('post_id', $id)->first()->toArray();
         } else {
             return [];
         }
