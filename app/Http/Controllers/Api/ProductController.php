@@ -67,7 +67,12 @@ class ProductController extends ApiController
 
             $data = $this->productModel->getDetailForApi($id, $select);
             if ($data['image'] !='') {
-                $data['image'] = $_SERVER["HTTP_HOST"].$data['image'];
+                $images = explode(';',$data['image']);
+                $imageData = [];
+                foreach ($images as $image) {
+                    $imageData[] = $_SERVER["HTTP_HOST"].$image;
+                }
+                $data['image'] = $imageData;
             }
             if ($data['small_image'] !='') {
                 $data['small_image'] = $_SERVER["HTTP_HOST"].$data['small_image'];
