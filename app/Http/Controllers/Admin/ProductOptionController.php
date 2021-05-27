@@ -108,6 +108,9 @@ class ProductOptionController extends AdminController
         }
 
         try {
+            if ($params['type'] == 2 && (!isset($params['option_color']) || empty($params['option_color']))) {
+                throw new \Exception('必须设置对应颜色');
+            }
             $this->optionModel->insertGetId($params);
             return redirect::to(URL::route('admin.catalog.option'))->with(['success' => '添加成功']);
         } catch (\Exception $e) {
@@ -154,6 +157,9 @@ class ProductOptionController extends AdminController
         }
 
         try {
+            if ($params['type'] == 2 && (!isset($params['option_color']) || empty($params['option_color']))) {
+                throw new \Exception('必须设置对应颜色');
+            }
             $option->update($params);
             return redirect::to(URL::route('admin.catalog.option'))->with(['success' => '添加成功']);
         } catch (\Exception $e) {

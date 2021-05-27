@@ -70,7 +70,7 @@
                     , cols: [[ //表头
                         {checkbox: true, fixed: true}
                         , {field: 'post_id', title: 'ID', sort: true, width: 80}
-                        , {field: 'category_id', title: '分类', toolbar: '#category'}
+                        , {field: 'category_id', title: '分类'}
                         , {field: 'title', title: '标题'}
                         , {field: 'identifier', title: '标识', toolbar: '#thumb', width: 100}
                         , {field: 'keywords', title: '关键词'}

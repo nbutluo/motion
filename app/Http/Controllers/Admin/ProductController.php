@@ -84,7 +84,9 @@ class ProductController extends AdminController
             'small_image' => $request->input('small_image'),
             'small_image_label' => $request->input('small_image_label'),
         ];
-
+        if (!isset($params['position'])) {
+            $params['position'] = 0;
+        }
         try {
             $this->productModel->insertGetId($params);
             return redirect::to(URL::route('admin.catalog.product'))->with(['success' => '添加成功']);

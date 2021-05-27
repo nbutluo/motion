@@ -77,7 +77,7 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">尺寸</label>
         <div class="layui-input-inline">
-            <input type="text" name="option_size" value="{{$product->option_size??old('option_size')}}" placeholder="例：36'x36'" class="layui-input" >
+            <input type="text" style="width: 400px;" name="option_size" value="{{$product->option_size??old('option_size')}}" placeholder="例：36'x36',设置尺寸时必须设置尺寸时必须设置对应颜色" class="layui-input" >
         </div>
 </div>
 
