@@ -95,5 +95,10 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('banner/index/{pageName}','BannerController@getBanner')->name('banner.index');
     Route::get('banner/list','BannerController@getBannerList')->name('banner.list');
 
+    //加入购物车
+    Route::post('product/addTCoart','AddToCartController@addToCart')->name('product.addToCart');
+    Route::get('product/getCart','AddToCartController@getCart')->name('product.getCart');
+    Route::post('product/destory','AddToCartController@destory')->name('product.destory');
+
 });
 
