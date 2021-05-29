@@ -24,7 +24,38 @@
             });
         })
 
+        //多图片上传
+        upload.render({
+            elem: '#images'
+            ,url: '{{route('admin.upload')}}' //改成您自己的上传接口
+            ,multiple: true
+            , data: {"_token": "{{ csrf_token() }}"}
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    // $('#images_show').append('<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img" title="单击删除" onclick="delMultipleImgs(this)">');
+                });
+            }
+            ,done: function(res){
+                //上传完毕
+                console.log(res);
+                $('#images_show').append('<div onclick="delMultipleImgs(this)"><img width="220" height="220" style="float:left;" src="'+ res.url +'" id="'+res.url+'" alt="'+ res.url +'" class="layui-upload-img" title="单击删除"><input type="hidden" name="images[]" id="'+res.url+'" value="'+ res.url +'"></div>');
+            }
+        });
     })
+
+    /**
+     * 多图清除按钮点击事件
+     */
+    $("#btn_image_clear").click(function () {
+        $('#images_show').html("");
+        $(".upload_image_url").val('');
+    });
+
+    //单图删除操作
+    function delMultipleImgs(obj) {
+        obj.remove();
+    }
 </script>
 <link href="/editor/themes/default/css/umeditor.min.css" type="text/css" rel="stylesheet">
 <script src="/editor/third-party/jquery.min.js"></script>

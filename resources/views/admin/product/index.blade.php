@@ -65,7 +65,7 @@
                         , {field: 'id', title: 'ID', sort: true, width: 80}
                         , {field: 'sku', title: 'SKU', width: 200}
                         , {field: 'name', title: '产品名称', width: 280}
-                        , {field: 'category_id', title: '所属分类', toolbar: '#category'}
+                        , {field: 'category_id', title: '所属分类'}
                         , {field: 'short_description', title: '短描述', width: 200}
                         , {field: 'is_active', title: '是否启用', templet: function (res) {return (res.is_active == 0) ? "否" : "是";}}
                         , {field: 'position', title: '位置权重'}

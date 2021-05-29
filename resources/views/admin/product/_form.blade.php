@@ -36,20 +36,40 @@
     </div>
 </div>
 
+{{--<div class="layui-form-item">--}}
+{{--    <label for="" class="layui-form-label">主图</label>--}}
+{{--    <div class="layui-input-block">--}}
+{{--        <div class="layui-upload">--}}
+{{--            <button type="button" class="layui-btn layui-btn-sm uploadPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>--}}
+{{--            <div class="layui-upload-list" >--}}
+{{--                <ul class="layui-upload-box layui-clear">--}}
+{{--                    @if(isset($product->image))--}}
+{{--                        <li><img src="{{ $product->image }}" /><p>上传成功</p></li>--}}
+{{--                    @endif--}}
+{{--                </ul>--}}
+{{--                <input type="hidden" name="image" class="layui-upload-input" value="{{ $product->image??'' }}">--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">主图</label>
-    <div class="layui-input-block">
-        <div class="layui-upload">
-            <button type="button" class="layui-btn layui-btn-sm uploadPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>
-            <div class="layui-upload-list" >
-                <ul class="layui-upload-box layui-clear">
-                    @if(isset($product->image))
-                        <li><img src="{{ $product->image }}" /><p>上传成功</p></li>
-                    @endif
-                </ul>
-                <input type="hidden" name="image" class="layui-upload-input" value="{{ $product->image??'' }}">
+    <label for="" class="layui-form-label">图片</label>
+    <div class="layui-upload">
+        <button type="button" class="layui-btn" id="images">多图片上传</button>
+        <button type="button" class="layui-btn" id="btn_image_clear">清空多图</button>
+        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+            预览图:<span style="color:#8d8d8d;">(单击删除)</span>
+            <div class="layui-upload-list" id="images_show">
+                @if (isset($product->image) && !empty($product->image))
+                    @foreach($product->image as $image)
+                        <div onclick="delMultipleImgs(this)">
+                            <img width="220" height="220" style="float:left;" src="{{$image}}" alt="{{$image}}" id="{{$image}}"{{-- onclick="delMultipleImgs(this)"--}}>
+                            <input type="hidden" name="images[]" class="{{$image}}" value="{{$image}}">
+                        </div>
+                    @endforeach
+                @endif
             </div>
-        </div>
+        </blockquote>
     </div>
 </div>
 
