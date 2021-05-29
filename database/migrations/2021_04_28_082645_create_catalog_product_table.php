@@ -20,9 +20,11 @@ class CreateCatalogProductTable extends Migration
             $table->string('sku',64)->nullable()->comment('SKU');
             $table->smallInteger('category_id')->default(0)->comment('Parent Category ID');
             $table->longText('description')->nullable()->comment('Description');
+            $table->longText('parameters')->nullable()->comment('Parameters');
             $table->longText('short_description')->nullable()->comment('Short Description');
             $table->string('url_key')->nullable()->comment('Url Key');
             $table->decimal('price')->nullable()->comment('Price');
+            $table->string('relate_ids',100)->nullable()->comment('Relate Ids');
             $table->integer('position')->default(0)->comment('Position');
             $table->tinyInteger('is_active')->default(0)->comment('Is Active');
             $table->string('image')->nullable()->comment('Image');

@@ -73,7 +73,7 @@ class ProductController extends ApiController
     {
         try {
             $select = [
-                'id', 'name', 'sku', 'description', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label'
+                'id', 'name', 'sku', 'description','parameters', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label','relate_ids'
             ];
 
             $data = $this->productModel->getDetailForApi($id, $select);
@@ -122,6 +122,23 @@ class ProductController extends ApiController
                     }
                 }
                 $data['desk_img'] = $desk_img;
+                //获取关联产品
+                if ($data['relate_ids'] !='') {
+                    $relates = explode(',',$data['relate_ids']);
+                    $relateData = [];
+                    foreach ($relates as $relate) {
+                        $relateProduct = Product::select(['id','name','image'])->findOrFail($relate);
+                        if (isset($relateProduct->image) && $relateProduct->image != '') {
+                            $relateImages = explode(';',$relateProduct->image);
+                            foreach ($relateImages as &$relateImage) {
+                                $relateImage = HTTP_TEXT.$_SERVER["HTTP_HOST"].$relateImage;
+                            }
+                            $relateProduct->image = $relateImages;
+                        }
+                        $relateData[] = $relateProduct;
+                    }
+                    $data['relate'] = $relateData;
+                }
             }
             return $this->success('success', $data);
         } catch (Exception $exception) {

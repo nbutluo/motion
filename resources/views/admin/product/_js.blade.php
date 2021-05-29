@@ -1,7 +1,67 @@
 <script>
-    layui.use(['upload', 'layer', 'element', 'form'], function () {
+    layui.use(['transfer', 'layer', 'util'], function(){
+        var $ = layui.$
+            ,transfer = layui.transfer
+            ,layer = layui.layer
+            ,util = layui.util;
+    });
+
+    layui.use(['upload', 'layer', 'element', 'form','transfer', 'util'], function () {
         var $ = layui.jquery;
         var upload = layui.upload;
+        var transfer = layui.transfer;
+        var layer = layui.layer;
+        var util = layui.util;
+        // var data1 = [
+        //     {"value": "1", "title": "李白"}
+        //     ,{"value": "2", "title": "杜甫"}
+        //     ,{"value": "4", "title": "李清照",'checked':'checked'}
+        //     ,{"value": "5", "title": "鲁迅", "disabled": true}
+        // ]
+        var productData = getProductData();
+        function getProductData(){
+            var result = '';
+            $.ajax({
+                type:"post",
+                dataType:"json",
+                url:'{{route("admin.catalog.product.relate.list")}}',
+                data:{"_token": "{{ csrf_token() }}",'product_id':{{(isset($product->id)) ? $product->id : 0}} },
+                cache: false,
+                async: false,
+                success:function(data){
+                    result = data;
+                },
+            });
+            return result;
+        }
+        //关联产品
+        transfer.render({
+            elem: '#product-list'
+            ,data: productData
+            ,id: 'beSelect'
+            ,title: ['产品列表', '已选产品']
+            ,showSearch: true,
+            parseData :function (productData) {
+                return {
+                    'value':productData.value,
+                    'title':productData.title,
+                    'checked':productData.checked,
+                    'disabled':productData.disabled,
+                }
+            },
+            onchange:function (productData,index) {
+                console.log(productData);
+                console.log(index);
+                $.each(productData,function (i,n) {
+                    if (index == 0) {
+                        $("#product-list").append('<input type="hidden" id="relate_id_'+n['value']+'" name="relate_id[]" value="'+n['value']+'">');
+                    } else {
+                        $("#relate_id_"+n['value']).remove();
+                    }
+                });
+            }
+        })
+
 
         //普通图片上传
         $(".uploadPic").each(function (index, elem) {
@@ -66,5 +126,5 @@
 <!-- 实例化编辑器 -->
 <script type="text/javascript">
     var ue = UM.getEditor('container');
-    // var ue1 = UM.getEditor('container1');
+    var ue1 = UM.getEditor('parameters');
 </script>

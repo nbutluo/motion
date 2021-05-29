@@ -26,6 +26,7 @@ Route::group(['middleware' => ['auth', 'permission:catalog']],function() {
             Route::post('product/detail/{id}/update', 'ProductController@update')->name('admin.catalog.product.update');
             Route::get('product/create', 'ProductController@create')->name('admin.catalog.product.create');
             Route::post('product/create', 'ProductController@addProduct')->name('admin.blog.article.create.post');
+            Route::post('product/relate/list', 'ProductController@RelateProductList')->name('admin.catalog.product.relate.list');
         });
     });
 

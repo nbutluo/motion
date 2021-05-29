@@ -29,6 +29,31 @@ class ProductController extends AdminController
         return view('admin.product.index', compact('categories'));
     }
 
+    public function RelateProductList(Request $request)
+    {
+        if ($request->product_id != 0) {
+            $productData = Product::findOrFail($request->product_id);
+            $relates = explode(',',$productData->relate_ids);
+        }
+        $products = Product::select(['id','name'])->where('is_active',1)->orderBy('position', 'asc')->get();
+        foreach ($products as $product) {
+            $product->value = $product->id;
+            $product->title = $product->name;
+            if (isset($productData) && !empty($productData)) {
+                if ($product->id == $request->product_id) {
+                    $product->disabled = true;
+                }
+                if (in_array($product->id,$relates)) {
+                    $product->checked = 'checked';
+                }
+            }
+
+            unset($product->id);
+            unset($product->name);
+        }
+        return json_encode($products);
+    }
+
     public function getList(Request $request)
     {
         $page = $request->input('page', 1);
@@ -84,6 +109,12 @@ class ProductController extends AdminController
                 $images = ($images == '') ? $image : $images.';'.$image;
             }
         }
+        $relate_ids = '';
+        if (isset($request->relate_id) && !empty($request->relate_id)) {
+            foreach ($request->relate_id as $relate) {
+                $relate_ids = ($relate_ids == '') ? $relate : $relate_ids.','.$relate;
+            }
+        }
         $params = [
             'sku' => $request->input('sku', ''),
             'name' => $request->input('name', ''),
@@ -93,6 +124,7 @@ class ProductController extends AdminController
             'is_active' => $request->input('is_active', 0),
 //            'image' => $request->input('image'),//单图
             'image' => $images,//多图
+            'relate_ids' => $relate_ids,
             'image_label' => $request->input('image_label'),
             'position' => $request->input('position', 0),
             'small_image' => $request->input('small_image'),
@@ -144,6 +176,12 @@ class ProductController extends AdminController
                 $images = ($images == '') ? $image : $images.';'.$image;
             }
         }
+        $relate_ids = '';
+        if (isset($request->relate_id) && !empty($request->relate_id)) {
+            foreach ($request->relate_id as $relate) {
+                $relate_ids = ($relate_ids == '') ? $relate : $relate_ids.','.$relate;
+            }
+        }
         $params = [];
         if ($sku = $request->input('sku')) {
             $params['sku'] = $sku;
@@ -155,6 +193,7 @@ class ProductController extends AdminController
             $params['category_id'] = $category_id;
         }
         $params['image'] = $images;
+        $params['relate_ids'] = $relate_ids;
 //        if ($image = $request->input('image')) {
 //            $params['image'] = $image;
 //        }
@@ -166,6 +205,9 @@ class ProductController extends AdminController
         }
         if ($description = $request->input('description')) {
             $params['description'] = $description;
+        }
+        if ($parameters = $request->input('parameters')) {
+            $params['parameters'] = $parameters;
         }
 
         $params['is_active'] = $request->input('is_active', 1);

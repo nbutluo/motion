@@ -81,6 +81,13 @@
 </div>
 
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">产品关联</label>
+    <div id="product-list" class="demo-transfer"></div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    </fieldset>
+</div>
+
+<div class="layui-form-item">
     <label for="" class="layui-form-label">短描述</label>
     <div class="layui-input-block">
         <textarea type="text" name="short_description" placeholder="短描述，可为空" class="layui-textarea" >{!! $product->short_description??old('short_description') !!}</textarea>
@@ -92,6 +99,15 @@
     <div class="layui-input-block">
         <script id="container" name="description" type="text/plain" style="width: 98%">
             {!! $product->description??old('description') !!}
+        </script>
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">产品参数</label>
+    <div class="layui-input-block">
+        <script id="parameters" name="parameters" type="text/plain" style="width: 98%">
+            {!! $product->parameters??old('parameters') !!}
         </script>
     </div>
 </div>
