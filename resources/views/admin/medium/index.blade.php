@@ -78,7 +78,8 @@
                                 }
                             return $type_string;
                         }}
-                        , {field: 'media_url', title: '资源链接', width: 200}
+                        , {field: 'media_url', title: '图片链接', width: 200}
+                        , {field: 'media_links', title: '文件链接', width: 200}
                         , {field: 'is_active', title: '是否启用', templet: function (res) {return (res.is_active == 0) ? "否" : "是";}}
                         , {field: 'position', title: '位置权值'}
                         , {field: 'updated_at', title: '更新时间'}

@@ -70,15 +70,14 @@ class MediumSourceController extends AdminController
 
     public function store(Request $request)
     {
-        $params = [
-            'title' => $request->input('title', ''),
-            'description' => $request->input('description', ''),
-            'media_type' => (int)$request->input('media_type', 0),
-            'media_url' => $request->input('media_url'),
-            'position' => $request->input('position', 0),
-            'is_active' => $request->input('is_active', 0),
-            'created_at' => date('Y-m-d H:i:s')
-        ];
+        $params['title'] = (isset($request->title) && $request->title != '') ? $request->title : '';
+        $params['description'] = (isset($request->description) && $request->description != '') ? $request->description : '';
+        $params['media_type'] = (isset($request->media_type) && $request->media_type != '') ? $request->media_type : 0;
+        $params['media_url'] = (isset($request->media_url) && $request->media_url != '') ? $request->media_url : '';
+        $params['media_links'] = (isset($request->media_links) && $request->media_links != '') ? $request->media_links : '';
+        $params['position'] = (isset($request->position) && $request->position != '') ? $request->position : 0;
+        $params['is_active'] = (isset($request->is_active) && $request->is_active != '') ? $request->is_active : 0;
+        $params['created_at'] = date('Y-m-d H:i:s');
 
         try {
             $this->mediumModel->insertGetId($params);
@@ -94,7 +93,13 @@ class MediumSourceController extends AdminController
         try {
             $medium = $this->mediumModel->findOrFail($id);
             if (!$medium) throw new Exception('下载失败，信息不存在');
-            $files = public_path() . $medium['media_url'];
+            if (isset($medium['media_url']) && $medium['media_url'] != '') {
+                $files = public_path() . $medium['media_url'];
+            } elseif(isset($medium['media_links']) && $medium['media_links'] != '') {
+                $files = public_path() . $medium['media_links'];
+            } else {
+                $files = '';
+            }
             $name = basename($files);
 
             return response()->download($files, $name, $headers = ['Content-Type' => 'application/zip;charset=utf-8']);
@@ -134,6 +139,9 @@ class MediumSourceController extends AdminController
         }
         if ($media_url = $request->input('media_url')) {
             $params['media_url'] = $media_url;
+        }
+        if ($media_links = $request->input('media_links')) {
+            $params['media_links'] = $media_links;
         }
         if ($position = $request->input('position')) {
             $params['position'] = $position;

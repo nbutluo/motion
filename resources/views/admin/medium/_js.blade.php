@@ -37,6 +37,7 @@
                     if (res.code == 0) {
                         layer.msg(res.msg, {icon: 1}, function () {
                             $(elem).parent('.layui-upload').next('.media_links_box').html('<li>资源链接： <p>'+ res.url + '</p></li>');
+                            $(elem).parent('.layui-upload').find('.layui-upload-input').val(res.url);
                         })
                     } else {
                         layer.msg(res.msg, {icon: 2})
