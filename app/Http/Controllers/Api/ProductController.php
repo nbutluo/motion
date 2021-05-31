@@ -36,18 +36,22 @@ class ProductController extends ApiController
             $where = [];
             if (isset($request->category_name) && $request->category_name != '') {
                 $categoryData = Category::where('name',$request->category_name)->first();
-                if ($categoryData->parent_id == 0) {
-                    $categorys = Category::where('parent_id',$categoryData->id)->where('is_active',1)->get();
-                    $cateArray = [];
-                    foreach ($categorys as $cate) {
-                        $cateArray[] = $cate->id;
+                if ($categoryData) {
+                    if ($categoryData->parent_id == 0) {
+                        $categorys = Category::where('parent_id',$categoryData->id)->where('is_active',1)->get();
+                        $cateArray = [];
+                        foreach ($categorys as $cate) {
+                            $cateArray[] = $cate->id;
+                        }
+                        $where['category_id'] = $cateArray;
+                    } else {
+                        $where['category_id'] = $categoryData->id;
                     }
-                    $where['category_id'] = $cateArray;
                 } else {
-                    $where['category_id'] = $categoryData->id;
+                    throw new Exception('there is no "'.$request->category_name.'"');
                 }
             }
-
+            $where['is_active'] = 1;
             $select = [
                 'id', 'name', 'sku', 'description', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label'
             ];
