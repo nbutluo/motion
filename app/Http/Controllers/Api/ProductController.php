@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
+use App\Model\Product\Category;
 use App\Model\Product\Option;
 use App\Model\Product\Product;
 use App\Model\User\Users;
@@ -28,14 +29,23 @@ class ProductController extends ApiController
 
     public function getList(Request $request)
     {
-        $page = $request->input('page', 1);
-        $pageSize = $request->input('page_size', 10);
-
+        $page = (isset($request->page) && $request->page != '') ? $request->page : 1;
+        $pageSize = (isset($request->page_size) && $request->page_size != '') ? $request->page_size : 10;
         try {
 
             $where = [];
-            if ($category_id = $request->input('category_id')) {
-                $where['category_id'] = $category_id;
+            if (isset($request->category_name) && $request->category_name != '') {
+                $categoryData = Category::where('name',$request->category_name)->first();
+                if ($categoryData->parent_id == 0) {
+                    $categorys = Category::where('parent_id',$categoryData->id)->where('is_active',1)->get();
+                    $cateArray = [];
+                    foreach ($categorys as $cate) {
+                        $cateArray[] = $cate->id;
+                    }
+                    $where['category_id'] = $cateArray;
+                } else {
+                    $where['category_id'] = $categoryData->id;
+                }
             }
 
             $select = [

@@ -20,12 +20,20 @@ class Product extends Model
         if (!empty($where)) {
             $toBaseCollection = $this->toBase();
             foreach ($where as $k => $w) {
-                $toBaseCollection = $toBaseCollection->where($k, $w);
+                if (is_array($w)) {
+                    $toBaseCollection = $toBaseCollection->whereIn($k, $w);
+                } else {
+                    $toBaseCollection = $toBaseCollection->where($k, $w);
+                }
             }
             if ($total = $toBaseCollection->getCountForPagination()) {
                 $forPageCollection = $this->forPage($page, $perPage);
                 foreach ($where as $k => $w) {
-                    $forPageCollection = $forPageCollection->where($k, $w);
+                    if (is_array($w)) {
+                        $forPageCollection = $forPageCollection->whereIn($k, $w);
+                    } else {
+                        $forPageCollection = $forPageCollection->where($k, $w);
+                    }
                 }
                 $results = $forPageCollection->get($columns);
             } else {
