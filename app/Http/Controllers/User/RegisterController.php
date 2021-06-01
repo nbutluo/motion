@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Http\Controllers\ApiController;
 use Exception;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LoctekMail;
 
 class RegisterController extends ApiController
 {
@@ -19,6 +21,8 @@ class RegisterController extends ApiController
             $users = new Users;
             $users->username = $request->username;
             $users->email = $request->username;
+            $users->country = isset($request->country) ? $request->country : '';
+            $users->company_url = isset($request->company) ? $request->company : '';
             $users->password = Hash::make($request->password);
             $users->api_token = Hash::make(Str::random(60));
             $userSave = $users->save();
@@ -28,6 +32,27 @@ class RegisterController extends ApiController
                 return $this->success('register successful!','200');
             }else {
                 throw new Exception('registration failed','4002');
+            }
+        } catch (Exception $exception) {
+            return $this->fail($exception->getMessage(),$exception->getCode());
+        }
+    }
+
+    public function sendEmail(Request $request)
+    {
+        try {
+            $email = trim($request->username);
+            if (filter_var($email,FILTER_VALIDATE_EMAIL)) {
+                //发送邮件
+                $verifiCode = str_pad(mt_rand(0, 999999), 6, "0", STR_PAD_BOTH);
+                $sendData = [
+                    'user' => $request->username,
+                    'code' => $verifiCode
+                ];
+                Mail::to([$email])->send(new LoctekMail($sendData));
+                return $this->success('register successful!',$sendData);
+            } else {
+                throw new Exception($request->username.' is not a email!');
             }
         } catch (Exception $exception) {
             return $this->fail($exception->getMessage(),$exception->getCode());
