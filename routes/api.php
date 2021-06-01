@@ -102,5 +102,7 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('product/getCart','AddToCartController@getCart')->name('product.getCart');
     Route::post('product/destory','AddToCartController@destory')->name('product.destory');
 
+    //搜索页面
+    Route::post('search','SearchController@search')->name('search.info');
 });
 
