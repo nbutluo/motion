@@ -33,12 +33,28 @@ class MediumSource extends Model
                     $forPageCollection = $forPageCollection->where($k, $w);
                 }
                 $results = $forPageCollection->get($columns);
+                foreach ($results as $result) {
+                    if (isset($result->media_links) && $result->media_links != '') {
+                        $result->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$result->media_links;
+                    }
+                    if (isset($result->media_url) && $result->media_url != '') {
+                        $result->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$result->media_url;
+                    }
+                }
             } else {
                 $results = [];
             }
         } else {
             if ($total = $this->toBase()->getCountForPagination()) {
                 $results = $this->forPage($page, $perPage)->get($columns);
+                foreach ($results as $result) {
+                    if (isset($result->media_links) && $result->media_links != '') {
+                        $result->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$result->media_links;
+                    }
+                    if (isset($result->media_url) && $result->media_url != '') {
+                        $result->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$result->media_url;
+                    }
+                }
             } else {
                 $results = [];
             }
