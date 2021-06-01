@@ -10,5 +10,5 @@ class Users extends Model
     protected $hidden = [
         'password', 'remember_token',
     ];
-    protected $fillable = ['nickname','avatar','sex','birth','email','phone','country','province','city','area','company_url'];
+    protected $fillable = ['username','password','nickname','avatar','sex','birth','email','phone','country','province','city','area','company_url','api_token'];
 }

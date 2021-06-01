@@ -18,18 +18,18 @@ class RegisterController extends ApiController
         try {
             $this->checkParams($request);
 
-            $users = new Users;
-            $users->username = $request->username;
-            $users->email = $request->username;
-            $users->country = isset($request->country) ? $request->country : '';
-            $users->company_url = isset($request->company) ? $request->company : '';
-            $users->password = Hash::make($request->password);
-            $users->api_token = Hash::make(Str::random(60));
-            $userSave = $users->save();
+            $params = [];
+            $params['username'] = $request->username;
+            $params['email'] = $request->username;
+            $params['country'] = isset($request->country) ? $request->country : '';
+            $params['company_url'] = isset($request->company) ? $request->company : '';
+            $params['password'] = Hash::make($request->password);
+            $params['api_token'] = Hash::make(Str::random(60));
+            $userSave = Users::create($params);
             if ($userSave) {
                 $result['code'] = 200;
                 $result['data']['message'] = 'register successful!';
-                return $this->success('register successful!','200');
+                return $this->success('register successful!',$userSave);
             }else {
                 throw new Exception('registration failed','4002');
             }
