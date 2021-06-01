@@ -26,20 +26,20 @@ class ContactUsController extends ApiController
 
         $base_remark_option = [
             '1' => [
-                'chinese' => '其他',
-                'english' => 'Other'
+                'chinese' => '我想了解产品',
+                'english' => 'I want to know about the product'
             ],
             '2' => [
-                'chinese' => '我想了解产品',
-                'english' => 'x'
+                'chinese' => '成为代理合作伙伴',
+                'english' => 'Become an agency partner'
             ],
             '3' => [
-                'chinese' => '成为代理合作伙伴',
-                'english' => 'xx'
+                'chinese' => '项目合作',
+                'english' => 'Project cooperation'
                 ],
             '4' => [
-                'chinese' => '项目合作',
-                'english' => 'xxx'
+                'chinese' => '其他',
+                'english' => 'Other'
             ]
         ];
     }
@@ -49,15 +49,15 @@ class ContactUsController extends ApiController
         $name = $request->input('name');
         if (!$name) return $this->fail('please input name or company name.', 4001);
 
-        $phone = $request->input('phone');
-        if (!$phone) return $this->fail('please input telephone.', 4001);
+//        $phone = $request->input('phone');
+//        if (!$phone) return $this->fail('please input telephone.', 4001);
 
         $email = $request->input('email');
         if (!$email) return $this->fail('please input email.', 4001);
 
         $params = [
             'name' => $name,
-            'phone' => $phone,
+//            'phone' => $phone,
             'email' => $email,
         ];
 
@@ -79,14 +79,15 @@ class ContactUsController extends ApiController
         if ($remark = $request->input('remark')) {
             $params['remark'] = $remark;
         }
-
+//var_dump($params);
         try {
             // update info
-            $res = $this->contactModel->insertGetId($params);
-
+//            $res = $this->contactModel->insertGetId($params);
+            $res = Contact::create($params);
             return $this->success('submit success.', [$res]);
         } catch (Exception $e) {
-            return $this->fail('error, submit failure.', 500);
+//            return $this->fail('error, submit failure.', 500);
+            return $this->fail($e->getMessage(), 500);
         }
     }
 }

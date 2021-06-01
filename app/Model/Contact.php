@@ -12,6 +12,7 @@ class Contact extends Model
 
     protected $table = 'contact';
     protected $primaryKey = 'id';
+    protected $fillable = ['name','email','customer_id','phone','continent','country','city','identity','remark_option','remark'];
 
     protected $dates = ['deleted_at'];
 
