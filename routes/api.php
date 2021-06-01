@@ -22,6 +22,7 @@ Route::group(['prefix' => 'user'], function () {
     Route::post('register','User\RegisterController@create')->name('users.register');
     Route::post('login','User\LoginController@Login')->name('users.login');
     Route::post('sendEmail','User\RegisterController@sendEmail')->name('users.sendEmail');
+    Route::post('changePassword','User\RetrievePasswordController@changePassword')->name('users.changePassword');
 
     Route::group(['middleware' => 'token'], function () {
         Route::get('denglu/{id}/{token}','User\LoginController@denglu')->name('user.denglu');
