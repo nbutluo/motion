@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'user'], function () {
     Route::post('register','User\RegisterController@create')->name('users.register');
     Route::post('login','User\LoginController@Login')->name('users.login');
-    Route::post('sendEmail','User\RegisterController@sendEmail')->name('users.sendEmail');
+//    Route::post('sendEmail','User\RegisterController@sendEmail')->name('users.sendEmail');
     Route::post('changePassword','User\RetrievePasswordController@changePassword')->name('users.changePassword');
 
     Route::group(['middleware' => 'token'], function () {
@@ -55,6 +55,9 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('user/{id}','UserController@getUser')->name('user.info');
     Route::post('edit/user','UserController@editUser')->name('user.edit');
     Route::get('region','UserController@getRegion')->name('user.region');
+
+    //发送验证码邮件
+    Route::post('user/sendEmail','SendEmailController@sendEmail')->name('users.sendEmail');
 
 
 
