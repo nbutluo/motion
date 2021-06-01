@@ -39,6 +39,36 @@ class AboutUsController extends ApiController
                             'title' => 'QUALITY',
                             'description' => 'xxxxxxxxxxxxxx'
                         ],
+                        [
+                            'style' => 1,
+                            'img' => 'xxxxx.jpg',
+                            'title' => 'QUALITY',
+                            'description' => 'xxxxxxxxxxxxxx'
+                        ],
+                        [
+                            'style' => 1,
+                            'img' => 'xxxxx.jpg',
+                            'title' => 'QUALITY',
+                            'description' => 'xxxxxxxxxxxxxx'
+                        ],
+                        [
+                            'style' => 1,
+                            'img' => 'xxxxx.jpg',
+                            'title' => 'QUALITY',
+                            'description' => 'xxxxxxxxxxxxxx'
+                        ],
+                        [
+                            'style' => 2,
+                            'img' => 'xxxxx.jpg',
+                            'title' => 'QUALITY',
+                            'description' => 'xxxxxxxxxxxxxx'
+                        ],
+                        [
+                            'style' => 2,
+                            'img' => 'xxxxx.jpg',
+                            'title' => 'QUALITY',
+                            'description' => 'xxxxxxxxxxxxxx'
+                        ],
                     ]
                 ],
                 'services' => [
