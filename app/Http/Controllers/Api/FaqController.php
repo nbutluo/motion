@@ -57,4 +57,14 @@ class FaqController extends ApiController
             return $this->fail('failure', 404, []);
         }
     }
+
+    public function getSearch()
+    {
+        try {
+            $question = Question::select(['id','title','short_content','content'])->where('is_active',1)->limit(8)->get();
+            return $this->success('success', $question);
+        } catch (\Exception $exception) {
+            return $this->fail('failure', 404, []);
+        }
+    }
 }

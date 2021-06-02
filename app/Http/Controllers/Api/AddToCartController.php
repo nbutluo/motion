@@ -102,8 +102,18 @@ class AddToCartController extends ApiController
             foreach ($categories as $category) {
                 $categoryData[] = $category->id;
             }
-            $relate = Product::select()->whereIn('category_id',$categoryData)->orderBy('position','DESC')->get();
-            return $this->success('success', $relate);
+            $relates = Product::select()->whereIn('category_id',$categoryData)->orderBy('position','DESC')->get();
+            foreach ($relates as $relate) {
+                if (isset($relate->image) && $relate->image != '') {
+                    $imageData = [];
+                    $images = explode(';',$relate->image);
+                    foreach ($images as $image) {
+                        $imageData[] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$image;
+                    }
+                    $relate->image = $imageData;
+                }
+            }
+            return $this->success('success', $relates);
         } catch (\Exception $exception) {
             return $this->fail($exception->getMessage(), 4003, []);
         }
