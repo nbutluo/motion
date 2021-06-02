@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
 use App\Model\AddToCart;
+use App\Model\Product\Category;
 use App\Model\Product\Option;
 use App\Model\Product\Product;
 use App\Model\User\Users;
@@ -88,6 +89,21 @@ class AddToCartController extends ApiController
             } else {
                 throw new \Exception('fail');
             }
+        } catch (\Exception $exception) {
+            return $this->fail($exception->getMessage(), 4003, []);
+        }
+    }
+
+    public function getRelateProducts()
+    {
+        try {
+            $categories = Category::where('parent_id',1)->where('is_active',1)->get();
+            $categoryData = [];
+            foreach ($categories as $category) {
+                $categoryData[] = $category->id;
+            }
+            $relate = Product::select()->whereIn('category_id',$categoryData)->orderBy('position','DESC')->get();
+            return $this->success('success', $relate);
         } catch (\Exception $exception) {
             return $this->fail($exception->getMessage(), 4003, []);
         }
