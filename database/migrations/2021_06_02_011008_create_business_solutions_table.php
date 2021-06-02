@@ -20,6 +20,7 @@ class CreateBusinessSolutionsTable extends Migration
             $table->string('title')->nullable()->comment('Title');
             $table->text('content')->nullable()->comment('content');
             $table->tinyInteger('is_active')->default(1)->comment('Is Active');
+            $table->integer('position')->default(0)->comment('Position');
             $table->string('meida_link')->nullable()->comment('Meida Link');
             $table->softDeletes();
             $table->timestamps();

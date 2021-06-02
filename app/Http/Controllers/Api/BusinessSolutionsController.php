@@ -10,13 +10,25 @@ class BusinessSolutionsController extends ApiController
 {
     public function getList(Request $request)
     {
-        $type = $request->type;
+        $page = (isset($request->page) && $request->page != '') ? $request->page : 1;
+        $page_size = (isset($request->page_size) && $request->page_size != '') ? $request->page_size : 10;
         try {
+            $totalSolutions = Business_solutions::select(['id'])
+                ->where('is_active',1)
+                ->where('category_type',$request->type)
+                ->orderBy('position','DESC')
+                ->get();
             $solutions = Business_solutions::select(['id','title','content','meida_link'])
                 ->where('is_active',1)
                 ->where('category_type',$request->type)
-                ->get();
-            return $this->success('success', $solutions);
+                ->orderBy('position','DESC')
+                ->offset(($page-1)*$request->page_size)
+                ->limit($page_size)->get();
+            $data = [];
+            $data['totle'] = count($totalSolutions);
+            $data['totle_pageNum'] = ceil($data['totle'] / $page_size);
+            $data['list'] = $solutions;
+            return $this->success('success', $data);
         } catch (\Exception $exception) {
             return $this->fail($exception->getMessage(), 403, []);
         }
