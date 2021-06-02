@@ -107,5 +107,8 @@ Route::group(['namespace' => 'Api'], function () {
 
     //搜索页面
     Route::post('search','SearchController@search')->name('search.info');
+
+    //business solutions
+    Route::get('business_solutions','BusinessSolutionsController@getList')->name('business.solution');
 });
 
