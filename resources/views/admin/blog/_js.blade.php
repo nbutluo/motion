@@ -1,8 +1,56 @@
 
 <script>
-    layui.use(['upload','layer','element','form'],function () {
+    layui.use(['upload','layer','element','form','transfer', 'util'],function () {
         var $ = layui.jquery;
         var upload = layui.upload;
+        var transfer = layui.transfer;
+        var layer = layui.layer;
+        var util = layui.util;
+
+        //获取blog数据列表
+        var blogData = getBlogData();
+        function getBlogData(){
+            var result = '';
+            $.ajax({
+                type:"post",
+                dataType:"json",
+                url:'{{route("admin.blog.relate.list")}}',
+                data:{"_token": "{{ csrf_token() }}",'blog_id':{{(isset($post->post_id)) ? $post->post_id : 0}} },
+                cache: false,
+                async: false,
+                success:function(data){
+                    result = data;
+                },
+            });
+            return result;
+        }
+        //关联blog
+        transfer.render({
+            elem: '#blog-list'
+            ,data: blogData
+            ,id: 'beSelect'
+            ,title: ['blog列表', '已选blog']
+            ,showSearch: true,
+            parseData :function (productData) {
+                return {
+                    'value':productData.value,
+                    'title':productData.title,
+                    'checked':productData.checked,
+                    'disabled':productData.disabled,
+                }
+            },
+            onchange:function (productData,index) {
+                console.log(productData);
+                console.log(index);
+                $.each(productData,function (i,n) {
+                    if (index == 0) {
+                        $("#blog-list").append('<input type="hidden" id="relate_id_'+n['value']+'" name="relate_id[]" value="'+n['value']+'">');
+                    } else {
+                        $("#relate_id_"+n['value']).remove();
+                    }
+                });
+            }
+        })
 
         //普通图片上传
         $(".uploadPic").each(function (index,elem) {

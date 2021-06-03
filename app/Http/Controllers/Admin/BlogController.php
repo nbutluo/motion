@@ -76,6 +76,13 @@ class BlogController extends AdminController
         if ($keywords = $request->input('keywords')) {
             $params['keywords'] = $keywords;
         }
+        if ($relate = $request->input('relate_id')) {
+            $relate_text = '';
+            foreach ($relate as $rela) {
+                $relate_text = ($relate_text == '') ? $rela : $relate_text.','.$rela;
+            }
+            $params['relate_id'] = $relate_text;
+        }
 
         try {
             app(Blog::class)->addPost($params);
@@ -118,6 +125,13 @@ class BlogController extends AdminController
         if ($image = $request->input('featured_img')) {
             $params['featured_img'] = $image;
         }
+        if ($relate = $request->input('relate_id')) {
+            $relate_text = '';
+            foreach ($relate as $rela) {
+                $relate_text = ($relate_text == '') ? $rela : $relate_text.','.$rela;
+            }
+            $params['relate_id'] = $relate_text;
+        }
 
         // 首页显示状态 1、是 2、否
         $params['show_in_home'] = $request->input('show_in_home', 1);
@@ -146,5 +160,27 @@ class BlogController extends AdminController
         }
     }
 
-
+    public function RataleBlogList(Request $request) {
+        if ($request->blog_id != 0) {
+            $blogData = Blog::findOrFail($request->blog_id);
+            $relates = [];
+            if (isset($blogData->relate_id) && $blogData->relate_id != '') {
+                $relates = explode(',', $blogData->relate_id);
+            }
+        }
+            $Blogs = Blog::select(['post_id','title'])->where('is_active',1)->orderBy('position','DESC')->get();
+            foreach ($Blogs as $item) {
+                $item->value = $item->post_id;//赋值给value，title已有，不用重新赋值
+                if (isset($blogData) && !empty($blogData)) {
+                    if ($item->post_id == $request->blog_id) {
+                        $item->disabled = true;
+                    }
+                    if (in_array($item->post_id,$relates)) {
+                        $item->checked = 'checked';
+                    }
+                }
+                unset($item->post_id);
+            }
+        return json_encode($Blogs);
+    }
 }

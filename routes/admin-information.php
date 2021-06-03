@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth', 'permission:information']],function() {
             Route::get('blog/{id}/edit', 'BlogController@edit')->name('admin.blog.article.edit');
             Route::post('blog/{id}/update', 'BlogController@update')->name('admin.blog.article.update');
             Route::delete('blog/disable', 'BlogController@disable')->name('admin.blog.article.disable');
+            //blog 关联列表
+            Route::post('blog/relate/list','BlogController@RataleBlogList')->name('admin.blog.relate.list');
         });
     });
 });

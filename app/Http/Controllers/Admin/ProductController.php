@@ -109,12 +109,7 @@ class ProductController extends AdminController
                 $images = ($images == '') ? $image : $images.';'.$image;
             }
         }
-        $relate_ids = '';
-        if (isset($request->relate_id) && !empty($request->relate_id)) {
-            foreach ($request->relate_id as $relate) {
-                $relate_ids = ($relate_ids == '') ? $relate : $relate_ids.','.$relate;
-            }
-        }
+
         $params = [
             'sku' => $request->input('sku', ''),
             'name' => $request->input('name', ''),
@@ -124,12 +119,18 @@ class ProductController extends AdminController
             'is_active' => $request->input('is_active', 0),
 //            'image' => $request->input('image'),//单图
             'image' => $images,//多图
-            'relate_ids' => $relate_ids,
             'image_label' => $request->input('image_label'),
             'position' => $request->input('position', 0),
             'small_image' => $request->input('small_image'),
             'small_image_label' => $request->input('small_image_label'),
         ];
+        $relate_ids = '';
+        if (isset($request->relate_id) && !empty($request->relate_id)) {
+            foreach ($request->relate_id as $relate) {
+                $relate_ids = ($relate_ids == '') ? $relate : $relate_ids.','.$relate;
+            }
+            $params['relate_ids'] = $relate_ids;
+        }
         if (!isset($params['position'])) {
             $params['position'] = 0;
         }
@@ -181,6 +182,7 @@ class ProductController extends AdminController
             foreach ($request->relate_id as $relate) {
                 $relate_ids = ($relate_ids == '') ? $relate : $relate_ids.','.$relate;
             }
+            $params['relate_ids'] = $relate_ids;
         }
         $params = [];
         if ($sku = $request->input('sku')) {
@@ -193,7 +195,7 @@ class ProductController extends AdminController
             $params['category_id'] = $category_id;
         }
         $params['image'] = $images;
-        $params['relate_ids'] = $relate_ids;
+
 //        if ($image = $request->input('image')) {
 //            $params['image'] = $image;
 //        }

@@ -87,6 +87,13 @@
 </div>
 
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">blog关联</label>
+    <div id="blog-list" class="demo-transfer"></div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    </fieldset>
+</div>
+
+<div class="layui-form-item">
     <label for="" class="layui-form-label">短描述</label>
     <div class="layui-input-block">
         <textarea type="text" name="short_content" placeholder="短描述，可为空" class="layui-textarea" >{!! $post->short_content??old('short_content') !!}</textarea>
