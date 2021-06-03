@@ -62,4 +62,36 @@ class BlogController extends ApiController
             return $this->fail('failure', 500, []);
         }
     }
+
+    //获取新帖子
+    public function getNewBlog()
+    {
+        try {
+            $news = Blog::select(['post_id','title','featured_img'])->orderBy('created_at','desc')->limit(4)->get();
+            foreach ($news as $new) {
+                if (isset($new->featured_img) && $new->featured_img) {
+                    $new->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$new->featured_img;
+                }
+            }
+            return $this->success('success', $news);
+        } catch (\Exception $exception) {
+            return $this->fail('failure', 500, []);
+        }
+    }
+
+    //获取最近更新帖子
+    public function lastUpdate()
+    {
+        try {
+            $news = Blog::select(['post_id','title','featured_img','short_content','content'])->orderBy('updated_at','desc')->limit(3)->get();
+            foreach ($news as $new) {
+                if (isset($new->featured_img) && $new->featured_img) {
+                    $new->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$new->featured_img;
+                }
+            }
+            return $this->success('success', $news);
+        } catch (\Exception $exception) {
+            return $this->fail('failure', 500, []);
+        }
+    }
 }

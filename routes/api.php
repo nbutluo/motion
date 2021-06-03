@@ -42,6 +42,8 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('blog/{id}','BlogController@getDetail')->name('blog.detail');
     Route::get('blog/category-list','BlogController@getCategoryList')->name('blog.category-list');
     Route::get('category/blog-list','BlogController@getCategoriesBlog')->name('category.blog-list');
+    Route::get('blog/new-blog','BlogController@getNewBlog')->name('blog.new.blog');
+    Route::get('blog/lastUpdate-blog','BlogController@lastUpdate')->name('blog.lastUpdate.blog');
 
     Route::get('product/index','ProductController@index')->name('product.index');
     Route::get('product/list','ProductController@getList')->name('product.list');
