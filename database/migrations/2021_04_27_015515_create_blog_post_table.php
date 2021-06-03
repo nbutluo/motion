@@ -27,6 +27,7 @@ class CreateBlogPostTable extends Migration
             $table->smallInteger('include_in_recent')->default(1)->comment('Include in Recent Posts');
             $table->smallInteger('position')->default(0)->comment('Position');
             $table->string('featured_img')->default('')->comment('Thumbnail Image');
+            $table->string('relate_id')->nullable()->comment('Relate Post Id');
             $table->integer('author_id')->nullable()->comment('Author ID');
             $table->mediumText('media_gallery')->nullable()->comment('Media Gallery');
             $table->string('secret', 32)->nullable()->comment('Post Secret');

@@ -94,4 +94,20 @@ class BlogController extends ApiController
             return $this->fail('failure', 500, []);
         }
     }
+
+    //获取相关文章
+    public function relateBlog($id)
+    {
+        try {
+            $news = Blog::select(['post_id','title','featured_img','short_content','content'])->get();
+            foreach ($news as $new) {
+                if (isset($new->featured_img) && $new->featured_img) {
+                    $new->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$new->featured_img;
+                }
+            }
+            return $this->success('success', $news);
+        } catch (\Exception $exception) {
+            return $this->fail('failure', 500, []);
+        }
+    }
 }
