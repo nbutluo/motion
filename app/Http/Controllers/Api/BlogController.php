@@ -67,7 +67,7 @@ class BlogController extends ApiController
     public function getNewBlog()
     {
         try {
-            $news = Blog::select(['post_id','title','featured_img'])->orderBy('created_at','desc')->limit(4)->get();
+            $news = Blog::select(['post_id','title','featured_img'])->orderBy('created_at','desc')->where('is_active',1)->limit(4)->get();
             foreach ($news as $new) {
                 if (isset($new->featured_img) && $new->featured_img) {
                     $new->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$new->featured_img;
@@ -83,7 +83,7 @@ class BlogController extends ApiController
     public function lastUpdate()
     {
         try {
-            $news = Blog::select(['post_id','title','featured_img','short_content','content'])->orderBy('updated_at','desc')->limit(3)->get();
+            $news = Blog::select(['post_id','title','featured_img','short_content','content'])->where('is_active',1)->orderBy('updated_at','desc')->limit(3)->get();
             foreach ($news as $new) {
                 if (isset($new->featured_img) && $new->featured_img) {
                     $new->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$new->featured_img;
@@ -99,7 +99,11 @@ class BlogController extends ApiController
     public function relateBlog($id)
     {
         try {
-            $news = Blog::select(['post_id','title','featured_img','short_content','content'])->get();
+            $blog = Blog::select(['post_id','title','relate_id','featured_img','short_content','content'])->where('is_active',1)->where('post_id',$id)->first();
+            if (isset($blog->relate_id) && $blog->relate_id !='') {
+                $relates = explode(',',$blog->relate_id);
+            }
+            $news = Blog::select(['post_id','title','featured_img','short_content','content'])->where('is_active',1)->whereIn('post_id',$relates)->get();
             foreach ($news as $new) {
                 if (isset($new->featured_img) && $new->featured_img) {
                     $new->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$new->featured_img;
