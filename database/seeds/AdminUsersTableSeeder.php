@@ -292,6 +292,25 @@ class AdminUsersTableSeeder extends Seeder
                     ],
                 ],
             ],
+            [
+                'name' => 'business.solutions',
+                'display_name' => 'Business Solutions',
+                'route' => '',
+                'icon' => 'layui-icon-app',
+                'child' => [
+                    [
+                        'name' => 'business.solutions.list',
+                        'display_name' => 'solution列表',
+                        'route' => 'admin.solution.index',
+                        'is_menu' => 1,
+                        'child' => [
+                            ['name' => 'business.solution.list.create', 'display_name' => '新建solution','route'=>'admin.solution.create'],
+                            ['name' => 'business.solution.list.edit', 'display_name' => '编辑solution','route'=>'admin.solution.edit'],
+                            ['name' => 'business.solution.list.destory', 'display_name' => '删除solution','route'=>'admin.solution.destory'],
+                        ]
+                    ],
+                ],
+            ],
         ];
 
         foreach ($permissions as $pem1) {
