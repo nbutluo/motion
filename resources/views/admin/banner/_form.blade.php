@@ -20,9 +20,9 @@
                 <ul class="layui-upload-box layui-clear">
                     @if(isset($banner->media_url))
                         <li id="layer-picture"><img src="{{ $banner->media_url }}" /><p>上传成功</p></li>
+                        <span>可点击放大图片</span>
                     @endif
                 </ul>
-                <span>可点击放大图片</span>
                 <input type="hidden" name="media_url" class="layui-upload-input" value="{{ $banner->media_url??'' }}">
             </div>
         </div>

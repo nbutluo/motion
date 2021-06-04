@@ -32,7 +32,7 @@ class BannerController extends AdminController
     public function getPageName()
     {
         $pageNames = [
-            'Index','productList','FAQ','News','Infomation','AboutUs','ContactUs','Solution',
+            'Index','Index-mobile','productList','productList-mobile','priductDetail','priductDetail-mobile','FAQ','FAQ-mobile','News','News-mobile','Infomation','Infomation-mobile','AboutUs','AboutUs-mobile','ContactUs','ContactUs-mobile','Solution','Solution-mobile',
         ];
         return $pageNames;
     }
