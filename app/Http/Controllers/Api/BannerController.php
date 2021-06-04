@@ -11,7 +11,7 @@ class BannerController extends ApiController
     public function getBanner($pageName)
     {
         try {
-            $banner = MediumBanner::where('page_name',$pageName)->where('is_active',1)->get();
+            $banner = MediumBanner::where('is_active',1)->where('page_name','like',$pageName.'%')->get();
             foreach ($banner as $ban) {
                 $ban->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$ban->media_url;
             }
