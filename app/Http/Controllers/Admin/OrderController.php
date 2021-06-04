@@ -24,8 +24,10 @@ class OrderController extends AdminController
     {
         $orders = SalesOrder::paginate($request->get('limit',30));
         foreach ($orders as $order) {
-            $salesman = AdminUser::findOrFail($order->salesman);
-            $order->salesman = $salesman->nickname;
+            if (isset($order->salesman) && $order->salesman != 0) {
+                $salesman = AdminUser::findOrFail($order->salesman);
+                $order->salesman = $salesman->nickname;
+            }
         }
         $data = [
             'code' => 0,
@@ -72,7 +74,7 @@ class OrderController extends AdminController
             }
             $data['items'][] = $itemData;
         }
-        $salesmans = AdminUser::where('rule_id','like','%3')->get();
+        $salesmans = AdminUser::where('rule_id','like','%3%')->get();
         return view('admin.order.edit',compact('id','data','salesmans'));
     }
 
