@@ -46,10 +46,16 @@ class BannerController extends AdminController
     public function addBanner(Request $request)
     {
         $data = $request->all();
+        $images = '';
+        if (!empty($data['media_url'])) {
+            foreach ($data['media_url'] as $image) {
+                $images = ($images == '') ? $image : $images.';'.$image;
+            }
+        }
         try {
             MediumBanner::create([
                 'page_name' => $data['page_name'],
-                'media_url' => $data['media_url'],
+                'media_url' => $images,
                 'is_active' => $data['is_active'],
                 'description' => $data['description'],
             ]);
@@ -64,12 +70,23 @@ class BannerController extends AdminController
     {
         $pageNames = $this->getPageName();
         $banner = MediumBanner::findOrFail($id);
+        if (isset($banner->media_url) && $banner->media_url != '') {
+            $image = explode(';',$banner->media_url);
+            $banner->media_url = $image;
+        }
         return view('admin.banner.edit',compact('pageNames','id','banner'));
     }
 
     public function update(Request $request,$id)
     {
         $data = $request->only(['page_name','media_url','is_active','description']);
+        $medis_url = '';
+        if (!empty($data['media_url'])) {
+            foreach ($data['media_url'] as $media) {
+                $medis_url = ($medis_url == '') ? $media : $medis_url.';'.$media;
+            }
+        }
+        $data['media_url'] = $medis_url;
         try {
             $banner = MediumBanner::findOrFail($id);
             $banner->update($data);

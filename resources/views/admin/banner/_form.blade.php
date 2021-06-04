@@ -11,21 +11,42 @@
     </div>
 </div>
 
+{{--<div class="layui-form-item">--}}
+{{--    <label for="" class="layui-form-label">banner图片</label>--}}
+{{--    <div class="layui-input-block">--}}
+{{--        <div class="layui-upload">--}}
+{{--            <button type="button" class="layui-btn layui-btn-sm uploadPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>--}}
+{{--            <div class="layui-upload-list" >--}}
+{{--                <ul class="layui-upload-box layui-clear">--}}
+{{--                    @if(isset($banner->media_url))--}}
+{{--                        <li id="layer-picture"><img src="{{ $banner->media_url }}" /><p>上传成功</p></li>--}}
+{{--                        <span>可点击放大图片</span>--}}
+{{--                    @endif--}}
+{{--                </ul>--}}
+{{--                <input type="hidden" name="media_url" class="layui-upload-input" value="{{ $banner->media_url??'' }}">--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
+
 <div class="layui-form-item">
     <label for="" class="layui-form-label">banner图片</label>
-    <div class="layui-input-block">
-        <div class="layui-upload">
-            <button type="button" class="layui-btn layui-btn-sm uploadPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>
-            <div class="layui-upload-list" >
-                <ul class="layui-upload-box layui-clear">
-                    @if(isset($banner->media_url))
-                        <li id="layer-picture"><img src="{{ $banner->media_url }}" /><p>上传成功</p></li>
-                        <span>可点击放大图片</span>
-                    @endif
-                </ul>
-                <input type="hidden" name="media_url" class="layui-upload-input" value="{{ $banner->media_url??'' }}">
+    <div class="layui-upload">
+        <button type="button" class="layui-btn" id="images">多图片上传</button>
+        <button type="button" class="layui-btn" id="btn_image_clear">清空多图</button>
+        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+            预览图:<span style="color:#8d8d8d;">(单击删除)</span>
+            <div class="layui-upload-list" id="images_show">
+                @if (isset($banner->media_url) && $banner->media_url != '')
+                    @foreach($banner->media_url as $image)
+                        <div onclick="delMultipleImgs(this)">
+                            <img width="220" height="220" style="float:left;" src="{{$image}}" alt="{{$image}}" id="{{$image}}"{{-- onclick="delMultipleImgs(this)"--}}>
+                            <input type="hidden" name="media_url[]" class="{{$image}}" value="{{$image}}">
+                        </div>
+                    @endforeach
+                @endif
             </div>
-        </div>
+        </blockquote>
     </div>
 </div>
 
