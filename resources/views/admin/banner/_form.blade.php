@@ -40,7 +40,7 @@
                 @if (isset($banner->media_url) && $banner->media_url != '')
                     @foreach($banner->media_url as $image)
                         <div onclick="delMultipleImgs(this)">
-                            <img width="220" height="220" style="float:left;" src="{{$image}}" alt="{{$image}}" id="{{$image}}"{{-- onclick="delMultipleImgs(this)"--}}>
+                            <img style="float:left;" src="{{$image}}" alt="{{$image}}" id="{{$image}}"{{-- onclick="delMultipleImgs(this)"--}}>
                             <input type="hidden" name="media_url[]" class="{{$image}}" value="{{$image}}">
                         </div>
                     @endforeach

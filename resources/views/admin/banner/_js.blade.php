@@ -38,7 +38,7 @@
             ,done: function(res){
                 //上传完毕
                 // console.log(res);
-                $('#images_show').append('<div onclick="delMultipleImgs(this)"><img width="220" height="220" style="float:left;" src="'+ res.url +'" id="'+res.url+'" alt="'+ res.url +'" class="layui-upload-img" title="单击删除"><input type="hidden" name="media_url[]" id="'+res.url+'" value="'+ res.url +'"></div>');
+                $('#images_show').append('<div onclick="delMultipleImgs(this)"><img style="float:left;" src="'+ res.url +'" id="'+res.url+'" alt="'+ res.url +'" class="layui-upload-img" title="单击删除"><input type="hidden" name="media_url[]" id="'+res.url+'" value="'+ res.url +'"></div>');
             }
         });
     })
