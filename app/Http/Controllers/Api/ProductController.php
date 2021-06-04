@@ -162,4 +162,44 @@ class ProductController extends ApiController
 
 
     }
+
+    public function newProduct()
+    {
+        try {
+            $categories = Category::all();
+            $allCateData = [];
+            foreach ($categories as $category) {
+                $allCateData[] = $category->toArray();
+            }
+            $relates = Product::select(['id','name','category_id','image'])->where('is_active',1)->orderBy('created_at','DESC')->limit(4)->get();
+            foreach ($relates as $relate) {
+                //添加分类信息
+                if ($relate->category_id != 0) {
+                    $third_id = $relate->category_id;
+                    if ($allCateData[$third_id]['parent_id'] == 0) {
+                        $relate->secondCategory = $allCateData[$third_id]['name'];
+                        $relate->thirdCategory = '';
+                    } else {
+                        $sedond_id = $allCateData[$third_id]['parent_id'];
+                        $relate->secondCategory = $allCateData[$sedond_id]['name'];
+                        $relate->thirdCategory = $allCateData[$third_id]['name'];
+                    }
+                } else {
+                    $relate->secondCategory = '';
+                    $relate->thirdCategory = '';
+                }
+                if (isset($relate->image) && $relate->image != '') {
+                    $imageData = [];
+                    $images = explode(';',$relate->image);
+                    foreach ($images as $image) {
+                        $imageData[] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$image;
+                    }
+                    $relate->image = $imageData;
+                }
+            }
+            return $this->success('success', $relates);
+        } catch (\Exception $exception) {
+            return $this->fail($exception->getMessage(), 4003, []);
+        }
+    }
 }

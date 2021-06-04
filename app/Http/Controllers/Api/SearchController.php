@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
+use App\Model\Product\Category;
 use Illuminate\Http\Request;
 use App\Model\Product\Product;
 use App\Model\Blog\Blog;
@@ -12,6 +13,11 @@ class SearchController extends ApiController
     public function search(Request $request)
     {
         try {
+            $categories = Category::all();
+            $categoryData = [];
+            foreach ($categories as $category) {
+                $categoryData[$category->id] = $category->toArray();
+            }
             if (isset($request->keywords) && $request->keywords != '') {
                 $allBlogs = Blog::select(['post_id','title','featured_img','short_content'])
                     ->where('title',trim($request->keywords))
@@ -19,7 +25,7 @@ class SearchController extends ApiController
                     ->orderBy('position','desc')
                     ->orWhere('title','like','%'.trim($request->keywords).'%')
                     ->get();
-                $allProducts = Product::select(['id','name','sku','short_description','image'])
+                $allProducts = Product::select(['id','name','sku','category_id','short_description','image'])
                     ->where('name',trim($request->keywords))
                     ->where('is_active',1)
                     ->orderBy('position','desc')
@@ -34,7 +40,7 @@ class SearchController extends ApiController
                         ->offset(($request->page-1)*$request->page_size)
                         ->limit($request->page_size)->get();
                 } elseif($request->type == 1) {
-                    $products = Product::select(['id','name','sku','short_description','image'])
+                    $products = Product::select(['id','name','sku','category_id','short_description','image'])
                         ->where('name',trim($request->keywords))
                         ->where('is_active',1)
                         ->orWhere('name','like','%'.trim($request->keywords).'%')
@@ -45,7 +51,7 @@ class SearchController extends ApiController
             } else {
                 $allBlogs = Blog::select(['post_id','title','featured_img','short_content'])
                     ->where('is_active',1)->get();
-                $allProducts = Product::select(['id','name','sku','short_description','image'])
+                $allProducts = Product::select(['id','name','sku','category_id','short_description','image'])
                     ->where('is_active',1)->get();
                 if ($request->type == 2) {
                     $blogs = Blog::select(['post_id','title','featured_img','short_content'])
@@ -54,7 +60,7 @@ class SearchController extends ApiController
                         ->offset(($request->page-1)*$request->page_size)
                         ->limit($request->page_size)->get();
                 } elseif ($request->type == 1) {
-                    $products = Product::select(['id','name','sku','short_description','image'])
+                    $products = Product::select(['id','name','sku','category_id','short_description','image'])
                         ->where('is_active',1)
                         ->orderBy('position','desc')
                         ->offset(($request->page-1)*$request->page_size)
@@ -70,6 +76,21 @@ class SearchController extends ApiController
             }
             if (isset($allProducts) && !empty($allProducts)) {
                 foreach ($allProducts as $allProduct) {
+                    //添加分类信息
+                    if ($allProduct->category_id != 0) {
+                        $third_id = $allProduct->category_id;
+                        if ($categoryData[$third_id]['parent_id'] == 0) {
+                            $allProduct->secondCategory = $categoryData[$third_id]['name'];
+                            $allProduct->thirdCategory = '';
+                        } else {
+                            $sedond_id = $categoryData[$third_id]['parent_id'];
+                            $allProduct->secondCategory = $categoryData[$sedond_id]['name'];
+                            $allProduct->thirdCategory = $categoryData[$third_id]['name'];
+                        }
+                    } else {
+                        $allProduct->secondCategory = '';
+                        $allProduct->thirdCategory = '';
+                    }
                     if (isset($allProduct->image) && $allProduct->image != '') {
                         $allImages = explode(';',$allProduct->image);
                         $allImageArray = [];
@@ -89,6 +110,21 @@ class SearchController extends ApiController
             }
             if (isset($products) && !empty($products)) {
                 foreach ($products as $product) {
+                    //添加分类信息
+                    if ($product->category_id != 0) {
+                        $third_id = $product->category_id;
+                        if ($categoryData[$third_id]['parent_id'] == 0) {
+                            $product->secondCategory = $categoryData[$third_id]['name'];
+                            $product->thirdCategory = '';
+                        } else {
+                            $sedond_id = $categoryData[$third_id]['parent_id'];
+                            $product->secondCategory = $categoryData[$sedond_id]['name'];
+                            $product->thirdCategory = $categoryData[$third_id]['name'];
+                        }
+                    } else {
+                        $product->secondCategory = '';
+                        $product->thirdCategory = '';
+                    }
                     if (isset($product->image) && $product->image != '') {
                         $images = explode(';',$product->image);
                         $imageArray = [];

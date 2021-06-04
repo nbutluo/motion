@@ -65,30 +65,39 @@ class UserController extends ApiController
     public function editUser(Request $request)
     {
         try {
-            $user = Users::findOrFail($request->id);
-            $user_avatar = '/avatars';
-            $file_path = '';
-            if ($request->file('avatar')) {
-                $file_path = $request->file('avatar')->store($user_avatar);
+            $token = $request->header('Authorization');
+//            $user = Users::findOrFail($request->id);
+            $user = Users::where('api_token',$token)->first();
+            if ($user) {
+                $user_avatar = '/avatars';
+                $file_path = '';
+                if ($request->file('avatar')) {
+                    $file_path = $request->file('avatar')->store($user_avatar);
+                }
+                $data = $request->only(['nickname','avatar','sex','birth','email','phone','country','province','city','company_url']);
+
+                $data['nickname'] = isset($data['nickname']) ? $data['nickname'] : '';
+                $data['avatar'] = isset($data['avatar']) ? $data['avatar'] : '';
+                $data['sex'] = isset($data['sex']) ? $data['sex'] : 0;
+                $data['birth'] = isset($data['birth']) ? $data['birth'] : '';
+                $data['email'] = isset($data['email']) ? $data['email'] : '';
+                $data['phone'] = isset($data['phone']) ? $data['phone'] : '';
+                $data['country'] = isset($data['country']) ? $data['country'] : '';
+                $data['province'] = isset($data['province']) ? $data['province'] : '';
+                $data['city'] = isset($data['city']) ? $data['city'] : '';
+                $data['area'] = isset($data['area']) ? $data['area'] : '';
+                $data['company_url'] = isset($data['company_url']) ? $data['company_url'] : '';
+                $data['avatar'] = $file_path;
+                /*$name = basename($file_path);*/
+
+                $user->update($data);
+                if ($user->avatar != '') {
+                    $user->avatar = HTTP_TEXT.$_SERVER["HTTP_HOST"].'/'.$user->avatar;
+                }
+                return $this->success('更新成功', $user);
+            } else {
+                throw new \Exception('Please log in correctly!');
             }
-            $data = $request->only(['nickname','avatar','sex','birth','email','phone','country','province','city','company_url']);
-
-            $data['nickname'] = isset($data['nickname']) ? $data['nickname'] : '';
-            $data['avatar'] = isset($data['avatar']) ? $data['avatar'] : '';
-            $data['sex'] = isset($data['sex']) ? $data['sex'] : 0;
-            $data['birth'] = isset($data['birth']) ? $data['birth'] : '';
-            $data['email'] = isset($data['email']) ? $data['email'] : '';
-            $data['phone'] = isset($data['phone']) ? $data['phone'] : '';
-            $data['country'] = isset($data['country']) ? $data['country'] : '';
-            $data['province'] = isset($data['province']) ? $data['province'] : '';
-            $data['city'] = isset($data['city']) ? $data['city'] : '';
-            $data['area'] = isset($data['area']) ? $data['area'] : '';
-            $data['company_url'] = isset($data['company_url']) ? $data['company_url'] : '';
-            $data['avatar'] = $file_path;
-            /*$name = basename($file_path);*/
-
-            $user->update($data);
-            return $this->success('更新成功', $user);
         } catch(\Exception $exception) {
             return $this->fail('更新失败。', 404);
         }

@@ -97,13 +97,33 @@ class AddToCartController extends ApiController
     public function getRelateProducts()
     {
         try {
-            $categories = Category::where('parent_id',1)->where('is_active',1)->get();
+            $categories = Category::all();
+            $allCateData = [];
+//            $categories = Category::where('parent_id',1)->where('is_active',1)->get();
             $categoryData = [];
             foreach ($categories as $category) {
-                $categoryData[] = $category->id;
+                if ($category->parent_id == 1 && $category->is_active == 1) {
+                    $categoryData[] = $category->id;
+                }
+                $allCateData[] = $category->toArray();
             }
-            $relates = Product::select()->whereIn('category_id',$categoryData)->orderBy('position','DESC')->get();
+            $relates = Product::whereIn('category_id',$categoryData)->orderBy('position','DESC')->get();
             foreach ($relates as $relate) {
+                //添加分类信息
+                if ($relate->category_id != 0) {
+                    $third_id = $relate->category_id;
+                    if ($allCateData[$third_id]['parent_id'] == 0) {
+                        $relate->secondCategory = $allCateData[$third_id]['name'];
+                        $relate->thirdCategory = '';
+                    } else {
+                        $sedond_id = $allCateData[$third_id]['parent_id'];
+                        $relate->secondCategory = $allCateData[$sedond_id]['name'];
+                        $relate->thirdCategory = $allCateData[$third_id]['name'];
+                    }
+                } else {
+                    $relate->secondCategory = '';
+                    $relate->thirdCategory = '';
+                }
                 if (isset($relate->image) && $relate->image != '') {
                     $imageData = [];
                     $images = explode(';',$relate->image);

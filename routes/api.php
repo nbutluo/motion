@@ -49,6 +49,7 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('product/index','ProductController@index')->name('product.index');
     Route::get('product/list','ProductController@getList')->name('product.list');
     Route::get('product/info/{id}','ProductController@detail')->name('product.detail');
+    Route::get('product/new','ProductController@newProduct')->name('product.new');
 
     Route::get('product/category','ProductCategoryController@getList')->name('product.category.menu');
     Route::get('faq/list/{productId}','FaqController@getList')->name('faq.info.list');
