@@ -21,7 +21,6 @@ class RegisterController extends ApiController
             $verify = $request->verify_code;
             $verifyCode = session($code);
             if ($verify == $verifyCode) {
-                Session::pull($code,'');//清除session
                 $this->checkParams($request);
                 $params = [];
                 $params['username'] = $request->username;
@@ -32,6 +31,7 @@ class RegisterController extends ApiController
                 $params['api_token'] = Hash::make(Str::random(60));
                 $userSave = Users::create($params);
                 if ($userSave) {
+                    Session::pull($code,'');//清除session
                     $result['code'] = 200;
                     $result['data']['message'] = 'register successful!';
                     return $this->success('register successful!',$userSave);
