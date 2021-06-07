@@ -66,18 +66,21 @@ class UserController extends ApiController
     {
         try {
             $token = $request->header('Authorization');
-//            $user = Users::findOrFail($request->id);
             $user = Users::where('api_token',$token)->first();
             if ($user) {
-                $user_avatar = '/avatars';
-                $file_path = '';
-                if ($request->file('avatar')) {
-                    $file_path = $request->file('avatar')->store($user_avatar);
-                }
                 $data = $request->only(['nickname','avatar','sex','birth','email','phone','country','province','city','company_url']);
 
+                if (isset($data['avatar'])) {
+                    if (strpos($data['avatar'],'avatars') !== false) {
+                        $avatar = explode('avatars',$data['avatar']);
+                        $data['avatar'] = 'avatars'.$avatar[1];
+                    } else {
+                        throw new \Exception('avatar file is wrong!');
+                    }
+                } else {
+                    unset($data['avatar']);
+                }
                 $data['nickname'] = isset($data['nickname']) ? $data['nickname'] : '';
-                $data['avatar'] = isset($data['avatar']) ? $data['avatar'] : '';
                 $data['sex'] = isset($data['sex']) ? $data['sex'] : 0;
                 $data['birth'] = isset($data['birth']) ? $data['birth'] : '';
                 $data['email'] = isset($data['email']) ? $data['email'] : '';
@@ -87,8 +90,6 @@ class UserController extends ApiController
                 $data['city'] = isset($data['city']) ? $data['city'] : '';
                 $data['area'] = isset($data['area']) ? $data['area'] : '';
                 $data['company_url'] = isset($data['company_url']) ? $data['company_url'] : '';
-                $data['avatar'] = $file_path;
-                /*$name = basename($file_path);*/
 
                 $user->update($data);
                 if ($user->avatar != '') {
@@ -99,7 +100,7 @@ class UserController extends ApiController
                 throw new \Exception('Please log in correctly!');
             }
         } catch(\Exception $exception) {
-            return $this->fail('更新失败。', 404);
+            return $this->fail($exception->getMessage(), 404);
         }
     }
 }

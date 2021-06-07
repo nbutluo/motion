@@ -60,6 +60,7 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('user/{id}','UserController@getUser')->name('user.info');
     Route::post('edit/user','UserController@editUser')->name('user.edit');
     Route::get('region','UserController@getRegion')->name('user.region');
+    Route::post('user/update/avatar','UpdateController@update')->name('user.update.avatar');
 
     //发送验证码邮件
     Route::post('user/sendEmail','SendEmailController@sendEmail')->name('users.sendEmail');
