@@ -88,11 +88,11 @@ Route::group(['middleware' => ['auth', 'permission:business.solutions']],functio
         Route::group(['namespace' => 'Admin'], function () {
             Route::get('business/solution/index','BusinessSolutionController@index')->name('admin.solution.index');
             Route::get('business/solution/data','BusinessSolutionController@getList')->name('admin.solution.index.data');
-            Route::get('business/solution/create','BusinessSolutionController@create')->name('admin.solution.create');
-            Route::post('business/solution/add','BusinessSolutionController@add')->name('admin.solution.add');
-            Route::get('business/solution/{id}/edit','BusinessSolutionController@edit')->name('admin.solution.edit');
-            Route::post('business/solution/update','BusinessSolutionController@update')->name('admin.solution.update');
-            Route::get('business/solution/destory','BusinessSolutionController@destory')->name('admin.solution.destory');
+            Route::get('business/solution/create','BusinessSolutionController@create')->name('admin.solution.create')->middleware('permission:business.solution.list.create');
+            Route::post('business/solution/add','BusinessSolutionController@add')->name('admin.solution.add')->middleware('permission:business.solution.list.create');
+            Route::get('business/solution/{id}/edit','BusinessSolutionController@edit')->name('admin.solution.edit')->middleware('permission:business.solution.list.edit');
+            Route::post('business/solution/update','BusinessSolutionController@update')->name('admin.solution.update')->middleware('permission:business.solution.list.edit');
+            Route::delete('business/solution/destory','BusinessSolutionController@destory')->name('admin.solution.destory')->middleware('permission:company.profile.destory');
         });
     });
 });

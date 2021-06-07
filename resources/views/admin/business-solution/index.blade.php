@@ -17,7 +17,7 @@
                         <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
                     @endcan
                     @can('business.solution.list.destory')
-                        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">禁用</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
                     @endcan
                 </div>
             </script>
@@ -41,8 +41,8 @@
                     , url: "{{ route('admin.solution.index.data') }}" //数据接口
                     , page: true //开启分页
                     , cols: [[ //表头
-                        {checkbox: true, fixed: true}
-                        , {field: 'id', title: 'ID', sort: true, width: 80}
+                        // {checkbox: true, fixed: true},
+                        {field: 'id', title: 'ID', sort: true, width: 80}
                         , {field: 'category_type', title: '分类', templet: function (res) {return (res.category_type == 1) ? "Home Solutions" : "Office Solution";}}
                         , {field: 'title', title: '标题'}
                         , {field: 'content', title: '内容', width: 100}
@@ -60,23 +60,23 @@
                     var data = obj.data //获得当前行数据
                         , layEvent = obj.event; //获得 lay-event 对应的值
                     if (layEvent === 'del') {
-                        {{--layer.confirm('确认禁用吗？', function (index) {--}}
-                        {{--    layer.close(index);--}}
-                        {{--    var load = layer.load();--}}
-                        {{--    $.post("{{ route('admin.blog.article.disable') }}", {--}}
-                        {{--        _method: 'delete',--}}
-                        {{--        ids: [data.post_id]--}}
-                        {{--    }, function (res) {--}}
-                        {{--        layer.close(load);--}}
-                        {{--        if (res.code == 0) {--}}
-                        {{--            layer.msg(res.msg, {icon: 1}, function () {--}}
-                        {{--                // obj.del();--}}
-                        {{--            })--}}
-                        {{--        } else {--}}
-                        {{--            layer.msg(res.msg, {icon: 2})--}}
-                        {{--        }--}}
-                        {{--    });--}}
-                        {{--});--}}
+                        layer.confirm('确认禁用吗？', function (index) {
+                            layer.close(index);
+                            var load = layer.load();
+                            $.post("{{ route('admin.solution.destory') }}", {
+                                _method: 'delete',
+                                ids: [data.id]
+                            }, function (res) {
+                                layer.close(load);
+                                if (res.code == 0) {
+                                    layer.msg(res.msg, {icon: 1}, function () {
+                                        obj.del();
+                                    })
+                                } else {
+                                    layer.msg(res.msg, {icon: 2})
+                                }
+                            });
+                        });
                     } else if (layEvent === 'edit') {
                         location.href = data.id + '/edit';
                     }

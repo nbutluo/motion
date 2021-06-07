@@ -86,4 +86,18 @@ class BusinessSolutionController extends AdminController
             return redirect::back()->withErrors('添加失败: ' . $exception->getMessage());
         }
     }
+
+    public function destory(Request $request)
+    {
+        $ids = $request->get('ids');
+        if (!is_array($ids) || empty($ids)) {
+            return Response::json(['code' => 1, 'msg' => '请选择删项']);
+        }
+        try{
+            Business_solutions::destroy($ids);
+            return Response::json(['code'=>0,'msg'=>'删除成功']);
+        }catch (\Exception $exception){
+            return Response::json(['code'=>1,'msg'=>'删除失败']);
+        }
+    }
 }
