@@ -94,6 +94,7 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('product/getCart','AddToCartController@getCart')->name('product.getCart');
     Route::post('product/destory','AddToCartController@destory')->name('product.destory');
     Route::get('cart/relate_product','AddToCartController@getRelateProducts')->name('product.relate.product');
+    Route::post('cart/change','AddToCartController@change')->name('product.cart.change');
 
     //搜索页面
     Route::post('search','SearchController@search')->name('search.info');

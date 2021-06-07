@@ -11,7 +11,7 @@ class CompanyProfileController extends ApiController
     public function getProfile()
     {
         try {
-            $profiles = Companyprofile::select(['id','title','content','media_link'])->where('is_active',1)->get();
+            $profiles = Companyprofile::select(['id','title','content','media_link'])->where('is_active',1)->orderBy('position','DESC')->get();
             foreach ($profiles as $profile) {
                 if (isset($profile->media_link) && $profile->media_link != '') {
                     $profile->media_link = HTTP_TEXT.$_SERVER["HTTP_HOST"].$profile->media_link;

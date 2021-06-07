@@ -62,7 +62,69 @@ class AddToCartController extends ApiController
                     $optionData[] = $option;
                 }
                 $product->options = $optionData;
+
+                //获取所有配件信息
+                $alloptions = Option::select(['id','type','sku','title','image','option_color','option_size'])
+                    ->where('product_id',$cart->product_id)
+                    ->where('is_active',1)
+                    ->get();
+                $typeData1 = [];  $typeData3 = [];
+                foreach ($alloptions as $alloption) {
+                    if ($alloption->type == 1) {
+                        $typeData1[] = $alloption;
+                        $typeData2 = [];
+                        foreach ($alloptions as $alloptionSize) {
+                            if ($alloptionSize->type == 2 && $alloptionSize->option_color == $alloption->option_color) {
+                                $typeData2[] = $alloptionSize;
+                            }
+                        }
+                        $alloption->option_size = $typeData2;
+                    } elseif ($alloption->type == 3) {
+                        $typeData3[] = $alloption;
+                    }
+                }
+                $product->option_color = $typeData1;
+                $product->desk_img = $typeData3;
                 $data[] = $product;
+            }
+            return $this->success('success', $data);
+        } catch (\Exception $exception) {
+            return $this->fail($exception->getMessage(), 4003, []);
+        }
+    }
+
+    public function change(Request $request)
+    {
+        try {
+            if (!isset($request->items) || $request->items == '') {
+                throw new \Exception('param is empty!');
+            }
+            $data = [];
+            $token = $request->header('Authorization');
+            $user = Users::where('api_token',$token)->first();
+            if (!isset($user) || empty($user)) {
+                throw new \Exception('please login!');
+            }
+
+            $items = json_decode($request->items,true);
+            foreach ($items as $item) {
+                $catMsg = AddToCart::findOrFail($item['cart_id']);
+                if (!isset($catMsg) || empty($catMsg)) {
+                    throw new \Exception('there is no message to change');
+                }
+                if (isset($user) && $user->id != $catMsg->user_id) {
+                    throw new \Exception('user message is wrong!');
+                }
+                if (isset($catMsg) && $catMsg->product_id != $item['product_id']) {
+                    throw new \Exception('cart message is wrong!');
+                }
+                $catMsg->qty = $item['qty'];
+                $options = '';
+                foreach ($item['options'] as $option) {
+                    $options = ($options == '') ? $option['option_id'] : $options.','.$option['option_id'];
+                }
+                $catMsg->options = $options;
+                $catMsg->save();
             }
             return $this->success('success', $data);
         } catch (\Exception $exception) {
