@@ -96,3 +96,18 @@ Route::group(['middleware' => ['auth', 'permission:business.solutions']],functio
         });
     });
 });
+
+//company profile 管理
+Route::group(['middleware' => ['auth', 'permission:company.profile']],function() {
+    Route::group(['middleware' => ['permission:company.profile.list']],function(){
+        Route::group(['namespace' => 'Admin'], function () {
+            Route::get('company/profile/index','CompanyProfileController@index')->name('admin.company.profile.index');
+            Route::get('company/profile/data','CompanyProfileController@getList')->name('admin.company.profile.data');
+            Route::get('company/profile/create','CompanyProfileController@create')->name('admin.company.profile.create')->middleware('permission:company.profile.create');
+            Route::post('company/profile/add','CompanyProfileController@add')->name('admin.company.profile.add')->middleware('permission:company.profile.create');
+            Route::get('company/profile/{id}/edit','CompanyProfileController@edit')->name('admin.company.profile.edit')->middleware('permission:company.profile.edit');
+            Route::post('company/profile/update','CompanyProfileController@update')->name('admin.company.profile.update')->middleware('permission:company.profile.edit');
+            Route::delete('company/profile/destory','CompanyProfileController@destory')->name('admin.company.profile.destory')->middleware('permission:company.profile.destory');
+        });
+    });
+});

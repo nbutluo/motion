@@ -311,6 +311,25 @@ class AdminUsersTableSeeder extends Seeder
                     ],
                 ],
             ],
+            [
+                'name' => 'company.profile',
+                'display_name' => 'Company Profile管理',
+                'route' => '',
+                'icon' => 'layui-icon-picture',
+                'child' => [
+                    [
+                        'name' => 'company.profile.list',
+                        'display_name' => 'company.profile列表',
+                        'route' => 'admin.company.profile.index',
+                        'is_menu' => 1,
+                        'child' => [
+                            ['name' => 'company.profile.create', 'display_name' => '新建profile','route'=>'admin.company.profile.create'],
+                            ['name' => 'company.profile.edit', 'display_name' => '编辑profile','route'=>'admin.company.profile.edit'],
+                            ['name' => 'company.profile.destory', 'display_name' => '删除profile','route'=>'admin.company.profile.destory'],
+                        ]
+                    ],
+                ],
+            ],
         ];
 
         foreach ($permissions as $pem1) {

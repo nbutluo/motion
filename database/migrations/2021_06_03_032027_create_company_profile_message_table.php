@@ -20,6 +20,7 @@ class CreateCompanyProfileMessageTable extends Migration
             $table->text('content')->nullable()->comment('Content');
             $table->string('media_link')->nullable()->comment('Media Link');
             $table->tinyInteger('is_active')->default(1)->comment('Is Active 0:no,1:yes');
+            $table->tinyInteger('position')->default(0)->comment('Position');
             $table->softDeletes();
             $table->timestamps();
         });
