@@ -26,7 +26,7 @@
 @endsection
 
 @section('script')
-    @can('information.article')
+    @can('business.solutions.list')
         <script>
             layui.use(['layer', 'table', 'form'], function () {
                 var $ = layui.jquery;

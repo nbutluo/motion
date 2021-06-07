@@ -29,7 +29,7 @@
 @endsection
 
 @section('script')
-    @can('information.article')
+    @can('company.profile.list')
         <script>
             layui.use(['layer', 'table', 'form'], function () {
                 var $ = layui.jquery;

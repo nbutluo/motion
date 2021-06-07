@@ -46,7 +46,7 @@
 @endsection
 
 @section('script')
-    @can('information.article')
+    @can('catalog.product')
         <script>
             layui.use(['layer', 'table', 'form'], function () {
                 var $ = layui.jquery;
