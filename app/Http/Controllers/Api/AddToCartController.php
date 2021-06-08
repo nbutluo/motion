@@ -59,9 +59,16 @@ class AddToCartController extends ApiController
                     if (isset($option->image) && !empty($option->image)) {
                         $option->image = HTTP_TEXT.$_SERVER["HTTP_HOST"].$option->image;
                     }
-                    $optionData[] = $option;
+                    if (isset($option) && !empty($option)) {
+                        if ($option->type == 1) {
+                            $product->cart_option_color = $option;
+                        } elseif ($option->type == 2) {
+                            $product->cart_option_size = $option;
+                        } else {
+                            $product->cart_desk_img = $option;
+                        }
+                    }
                 }
-                $product->options = $optionData;
 
                 //获取所有配件信息
                 $alloptions = Option::select(['id','type','sku','title','image','option_color','option_size'])
