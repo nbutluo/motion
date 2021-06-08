@@ -330,6 +330,25 @@ class AdminUsersTableSeeder extends Seeder
                     ],
                 ],
             ],
+            [
+                'name' => 'customer',
+                'display_name' => 'customer管理',
+                'route' => '',
+                'icon' => 'layui-icon-group',
+                'child' => [
+                    [
+                        'name' => 'customer.list',
+                        'display_name' => 'customer列表',
+                        'route' => 'admin.customer.index',
+                        'is_menu' => 1,
+                        'child' => [
+                            ['name' => 'customer.create', 'display_name' => '新建customer','route'=>'admin.customer.create'],
+                            ['name' => 'customer.edit', 'display_name' => '编辑customer','route'=>'admin.customer.edit'],
+                            ['name' => 'customer.destory', 'display_name' => '删除customer','route'=>'admin.customer.destory'],
+                        ]
+                    ],
+                ],
+            ],
         ];
 
         foreach ($permissions as $pem1) {

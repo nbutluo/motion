@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('sex')->default(0)->comment('sex：0woman，1man');
             $table->string('birth')->default('')->comment('birth');
             $table->string('email')->default('')->comment('email');
+            $table->integer('salesman')->default(0)->comment('Salesman');
             $table->string('phone')->default('')->comment('phone');
             $table->string('country')->default('')->comment('country');
             $table->string('province')->default('')->comment('province');

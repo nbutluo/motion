@@ -111,3 +111,18 @@ Route::group(['middleware' => ['auth', 'permission:company.profile']],function()
         });
     });
 });
+
+//customer 管理
+Route::group(['middleware' => ['auth', 'permission:customer']],function() {
+    Route::group(['middleware' => ['permission:customer.list']],function(){
+        Route::group(['namespace' => 'Admin'], function () {
+            Route::get('customer/index','CustomerController@index')->name('admin.customer.index');
+            Route::get('customer/data','CustomerController@getList')->name('admin.customer.data');
+            Route::get('customer/create','CustomerController@create')->name('admin.customer.create')->middleware('permission:customer.create');
+            Route::post('customer/add','CustomerController@add')->name('admin.customer.add')->middleware('permission:customer.create');
+            Route::get('customer/{id}/edit','CustomerController@edit')->name('admin.customer.edit')->middleware('permission:customer.edit');
+            Route::post('customer/update','CustomerController@update')->name('admin.customer.update')->middleware('permission:customer.edit');
+//            Route::delete('customer/destory','CustomerController@destory')->name('admin.customer.destory')->middleware('permission:customer.destory');
+        });
+    });
+});
