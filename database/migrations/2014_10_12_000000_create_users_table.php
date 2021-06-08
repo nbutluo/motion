@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique()->comment('username');
             $table->string('password')->comment('password');
             $table->string('nickname')->default('')->comment('');
-            $table->tinyInteger('user_leverl')->default(0)->comment('用户等级：0普通用户，1一级用户，2二级用户');
+            $table->tinyInteger('user_level')->default(0)->comment('用户等级：0普通用户，1一级用户，2二级用户');
             $table->string('avatar')->default('')->comment('user avatar');
             $table->tinyInteger('sex')->default(0)->comment('sex：0woman，1man');
             $table->string('birth')->default('')->comment('birth');

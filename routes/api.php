@@ -64,6 +64,7 @@ Route::group(['namespace' => 'Api'], function () {
 
     //发送验证码邮件
     Route::post('user/sendEmail','SendEmailController@sendEmail')->name('users.sendEmail');
+    Route::post('user/wishList/email','SendEmailController@sendWishList')->name('users.wishList.email');
 
     // test ceshi
     Route::get('medium/source','MediumSourceController@img_output')->name('medium.source.img_output');
