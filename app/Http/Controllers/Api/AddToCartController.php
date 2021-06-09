@@ -174,7 +174,7 @@ class AddToCartController extends ApiController
                 if ($category->parent_id == 1 && $category->is_active == 1) {
                     $categoryData[] = $category->id;
                 }
-                $allCateData[] = $category->toArray();
+                $allCateData[$category->id] = $category->toArray();
             }
             $relates = Product::whereIn('category_id',$categoryData)->orderBy('position','DESC')->get();
             foreach ($relates as $relate) {

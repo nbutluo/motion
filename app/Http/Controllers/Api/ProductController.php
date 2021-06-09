@@ -169,7 +169,7 @@ class ProductController extends ApiController
             $categories = Category::all();
             $allCateData = [];
             foreach ($categories as $category) {
-                $allCateData[] = $category->toArray();
+                $allCateData[$category->id] = $category->toArray();
             }
             $relates = Product::select(['id','name','category_id','image'])->where('is_active',1)->orderBy('created_at','DESC')->limit(4)->get();
             foreach ($relates as $relate) {

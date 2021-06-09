@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
+use App\Model\Product\Category;
 use App\Model\Product\Option;
 use App\Model\Product\Product;
+use App\Model\User\AdminUser;
 use App\Model\User\Users;
 use Illuminate\Http\Request;
 use App\Model\SalesOrder;
@@ -78,14 +80,53 @@ class OrderController extends ApiController
         try {
             $data = [];
             $orders = SalesOrder::where('customer_id',$id)->get();
+            $allCateData = [];
+            $categoryData = [];
+            $categories = Category::select(['id','name','parent_id'])->get();
+            foreach ($categories as $category) {
+                $allCateData[$category->id] = $category->toArray();
+            }
             if (!empty($orders->toArray())) {
                 foreach ($orders as $order) {
                     $orderData = [];
-                    $orderData = $order;
-                    $orderItems = SalesOrderItem::where('order_id',$order->id)->get();
+                    $customer = Users::select(['salesman'])->findOrFail($order->customer_id);
+                    $salesman = ($customer->salesman != 0) ? $customer->salesman : 1;
+                    $charge = AdminUser::select(['email'])->findOrFail($salesman);
+                    $orderData['salesman'] = $charge->email;
+                    $orderData['order_number'] = $order->id;
+                    $creatTime = explode(' ',$order->created_at);
+                    $orderData['create_time'] = $creatTime[0];
+                    $orderItems = SalesOrderItem::select(['product_options'])->where('order_id',$order->id)->get();
                     $items = [];
                     foreach ($orderItems as $item) {
-                        $items[] = $item;
+                        $detail = json_decode($item->product_options,true);
+                        $product = Product::select(['id','name','sku','image','category_id'])->findOrfail($detail['product_id']);
+                        if ($product->category_id != 0) {
+                            $third_id = $product->category_id;
+                            if ($allCateData[$third_id]['parent_id'] == 0) {
+                                $product->secondCategory = $allCateData[$third_id]['name'];
+                                $product->thirdCategory = '';
+                            } else {
+                                $sedond_id = $allCateData[$third_id]['parent_id'];
+                                $product->secondCategory = $allCateData[$sedond_id]['name'];
+                                $product->thirdCategory = $allCateData[$third_id]['name'];
+                            }
+                        } else {
+                            $product->secondCategory = '';
+                            $product->thirdCategory = '';
+                        }
+                        $productImages = explode(';',$product->image);
+                        $product->image = (isset($productImages) && !empty($productImages)) ? HTTP_TEXT.$_SERVER["HTTP_HOST"].$productImages[0] : '';
+                        foreach ($detail['options'] as $optionData) {
+                            if ($optionData['type'] == 1) {
+                                $product->option_color = (isset($optionData['title']) && $optionData['title'] != '') ? $optionData['title'] : '';
+                            } elseif ($optionData['type'] == 2) {
+                                $product->option_size = (isset($optionData['option_size']) && $optionData['option_size'] != '') ? $optionData['option_size'] : '';
+                            } else {
+                                $product->desk_img = ($optionData['type'] == 3 && isset($optionData['image']) && $optionData['image'] != '') ? HTTP_TEXT.$_SERVER["HTTP_HOST"].$optionData['image'] : '';
+                            }
+                        }
+                        $items[] = $product;
                     }
                     $orderData['items'] = $items;
                     $data[] = $orderData;
