@@ -82,7 +82,7 @@ Route::group(['namespace' => 'Api'], function () {
 
 
     //订单接口
-    Route::get('order/user/{id}','OrderController@orders')->name('order.source.list');
+    Route::post('order/user','OrderController@orders')->name('order.source.list');
     Route::post('order/create','OrderController@addOrder')->name('order.add');
     Route::post('order/update','OrderController@update')->name('order.update');
 

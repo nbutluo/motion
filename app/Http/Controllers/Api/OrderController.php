@@ -75,18 +75,32 @@ class OrderController extends ApiController
         }
     }
 
-    public function orders($id)
+    public function orders(Request $request)
     {
         try {
+            $token = $request->header('Authorization');
+            $user = Users::select(['id'])->where('api_token',$token)->first();
+            if (!isset($user) || empty($user)) {
+                throw new \Exception('please login!');
+            }
+            $page = isset($request->page) ? $request->page : 1;
+            $page_size = isset($request->page_size) ? $request->page_size : 4;
             $data = [];
-            $orders = SalesOrder::where('customer_id',$id)->get();
+            $allOrders = SalesOrder::select(['id'])
+                ->where('customer_id',$user['id'])
+                ->offset(($page-1)*$request->page_size)
+                ->limit($page_size)
+                ->get();
+            $data['total'] = count($allOrders);
+            $data['total_page'] = ceil($data['total'] / $page_size);
+            $orders = SalesOrder::where('customer_id',$user['id'])->get();
             $allCateData = [];
-            $categoryData = [];
             $categories = Category::select(['id','name','parent_id'])->get();
             foreach ($categories as $category) {
                 $allCateData[$category->id] = $category->toArray();
             }
             if (!empty($orders->toArray())) {
+                $allOrderData = [];
                 foreach ($orders as $order) {
                     $orderData = [];
                     $customer = Users::select(['salesman'])->findOrFail($order->customer_id);
@@ -129,8 +143,9 @@ class OrderController extends ApiController
                         $items[] = $product;
                     }
                     $orderData['items'] = $items;
-                    $data[] = $orderData;
+                    $allOrderData[] = $orderData;
                 }
+                $data['list'] = $allOrderData;
             }
             return $this->success('success', $data);
         } catch (\Exception $exception) {
