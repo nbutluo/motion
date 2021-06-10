@@ -85,6 +85,7 @@ Route::group(['namespace' => 'Api'], function () {
     Route::post('order/user','OrderController@orders')->name('order.source.list');
     Route::post('order/create','OrderController@addOrder')->name('order.add');
     Route::post('order/update','OrderController@update')->name('order.update');
+    Route::post('order/detail','OrderController@orderDetail')->name('order.detail');
 
     //baner接口
     Route::get('banner/index/{pageName}','BannerController@getBanner')->name('banner.index');
@@ -105,5 +106,8 @@ Route::group(['namespace' => 'Api'], function () {
 
     //企业介绍
     Route::get('company/profile','CompanyProfileController@getProfile')->name('company.profile');
+
+//    //订阅
+//    Route::post('store-subscription','SubscriptionController@store')->name('subscription.store');
 });
 

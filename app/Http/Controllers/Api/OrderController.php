@@ -154,6 +154,72 @@ class OrderController extends ApiController
         }
     }
 
+    public function orderDetail(Request $request)
+    {
+        try {
+            $token = $request->header('Authorization');
+            $user = Users::select(['id'])->where('api_token',$token)->first();
+            if (!isset($user) || empty($user)) {
+                throw new \Exception('please login!');
+            }
+
+            $order = SalesOrder::findOrFail($request->order_id);
+            $allCateData = [];
+            $categories = Category::select(['id','name','parent_id'])->get();
+            foreach ($categories as $category) {
+                $allCateData[$category->id] = $category->toArray();
+            }
+            if (!empty($order)) {
+                $orderData = [];
+                $customer = Users::select(['salesman'])->findOrFail($order->customer_id);
+                $salesman = ($customer->salesman != 0) ? $customer->salesman : 1;
+                $charge = AdminUser::select(['email'])->findOrFail($salesman);
+                $orderData['salesman'] = $charge->email;
+                $orderData['order_number'] = $order->id;
+                $creatTime = explode(' ',$order->created_at);
+                $orderData['create_time'] = $creatTime[0];
+                $orderItems = SalesOrderItem::select(['product_options','qty_ordered'])->where('order_id',$order->id)->get();
+                $items = [];
+                foreach ($orderItems as $item) {
+                    $detail = json_decode($item->product_options,true);
+                    $product = Product::select(['id','name','sku','image','category_id'])->findOrfail($detail['product_id']);
+                    $product->qty = $item->qty_ordered;
+                    if ($product->category_id != 0) {
+                        $third_id = $product->category_id;
+                        if ($allCateData[$third_id]['parent_id'] == 0) {
+                            $product->secondCategory = $allCateData[$third_id]['name'];
+                            $product->thirdCategory = '';
+                        } else {
+                            $sedond_id = $allCateData[$third_id]['parent_id'];
+                            $product->secondCategory = $allCateData[$sedond_id]['name'];
+                            $product->thirdCategory = $allCateData[$third_id]['name'];
+                        }
+                    } else {
+                        $product->secondCategory = '';
+                        $product->thirdCategory = '';
+                    }
+                    $productImages = explode(';',$product->image);
+                    $product->image = (isset($productImages) && !empty($productImages)) ? HTTP_TEXT.$_SERVER["HTTP_HOST"].$productImages[0] : '';
+                    foreach ($detail['options'] as $optionData) {
+                        if ($optionData['type'] == 1) {
+                            $product->option_color = (isset($optionData['title']) && $optionData['title'] != '') ? $optionData['title'] : '';
+                        } elseif ($optionData['type'] == 2) {
+                            $product->option_size = (isset($optionData['option_size']) && $optionData['option_size'] != '') ? $optionData['option_size'] : '';
+                        } else {
+                            $product->desk_img = ($optionData['type'] == 3 && isset($optionData['image']) && $optionData['image'] != '') ? HTTP_TEXT.$_SERVER["HTTP_HOST"].$optionData['image'] : '';
+                        }
+                    }
+                    $items[] = $product;
+                }
+                $orderData['items'] = $items;
+                $data['list'] = $orderData;
+            }
+            return $this->success('success', $data);
+        } catch (\Exception $exception) {
+            return $this->fail($exception->getMessage(), 4003, []);
+        }
+    }
+
     public function update(Request $request)
     {
         $getData = $request->toArray();
