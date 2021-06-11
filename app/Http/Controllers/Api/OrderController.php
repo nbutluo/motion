@@ -178,11 +178,12 @@ class OrderController extends ApiController
                 $orderData['order_number'] = $order->id;
                 $creatTime = explode(' ',$order->created_at);
                 $orderData['create_time'] = $creatTime[0];
-                $orderItems = SalesOrderItem::select(['product_options','qty_ordered'])->where('order_id',$order->id)->get();
+                $orderItems = SalesOrderItem::select(['id','product_options','qty_ordered'])->where('order_id',$order->id)->get();
                 $items = [];
                 foreach ($orderItems as $item) {
                     $detail = json_decode($item->product_options,true);
                     $product = Product::select(['id','name','sku','image','category_id'])->findOrfail($detail['product_id']);
+                    $product->item_id = $item->id;
                     $product->qty = $item->qty_ordered;
                     if ($product->category_id != 0) {
                         $third_id = $product->category_id;
