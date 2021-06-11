@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
 use App\Model\MediumSource;
+use App\Model\MediumSourceCategory;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -19,18 +20,61 @@ class MediumSourceController extends ApiController
         $this->mediumModel = $mediumModel;
     }
 
+    public function getCategory()
+    {
+        $data = [];
+        $categories = MediumSourceCategory::all();
+        foreach ($categories as $category) {
+            $data[$category->id] = $category->toArray();
+        }
+        return $data;
+    }
+
+    public function getCategoryData($category_id)
+    {
+        $categories = [];
+        foreach ($this->getCategory() as $category) {
+            if ($category['id'] == $category_id || $category['parent_id'] == $category_id) {
+                $categories[] = $category['id'];
+            }
+        }
+        return $categories;
+    }
+
     public function get_video(Request $request)
     {
-        $page = $request->input('page', 1);
-        $limit = $request->input('limit', 10);
-
-        $where = [];
-        $where['media_type'] = 2; // 视频文件
-
-        $res = $this->mediumModel->getPageList($page, $limit, $where);
-
-        if ($res) {
-            return $this->success('success', $res);
+        if (isset($request->keywords) && $request->keywords != '' && isset($request->category) && $request->category >= 1) {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
+                ->where('media_type',2)
+                ->where('is_active',1)
+                ->where('title','like','%'.$request->keywords.'%')
+                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->get();
+        } else if ((isset($request->keywords) && $request->keywords != '')) {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
+                ->where('media_type',2)
+                ->where('is_active',1)
+                ->where('title','like','%'.$request->keywords.'%')
+                ->get();
+        } elseif (isset($request->category) && $request->category >= 1) {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
+                ->where('media_type',2)
+                ->where('is_active',1)
+                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->get();
+        } else {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])->where('media_type',2)->where('is_active',1)->get();
+        }
+        if ($mediumData) {
+            foreach ($mediumData as $md) {
+                if (isset($md->media_url) && $md->media_url != '') {
+                    $md->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_url;
+                }
+                if (isset($md->media_links) && $md->media_links != '') {
+                    $md->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_links;
+                }
+            }
+            return $this->success('success', $mediumData);
         } else {
             return $this->fail('failure', 500, []);
         }
@@ -38,16 +82,38 @@ class MediumSourceController extends ApiController
 
     public function get_brochure(Request $request)
     {
-        $page = $request->input('page', 1);
-        $limit = $request->input('limit', 10);
-
-        $where = [];
-        $where['media_type'] = 3; // 宣传册
-
-        $res = $this->mediumModel->getPageList($page, $limit, $where);
-
-        if ($res) {
-            return $this->success('success', $res);
+        if (isset($request->keywords) && $request->keywords != '' && isset($request->category) && $request->category >= 1) {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
+                ->where('media_type',3)
+                ->where('is_active',1)
+                ->where('title','like','%'.$request->keywords.'%')
+                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->get();
+        } else if ((isset($request->keywords) && $request->keywords != '')) {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
+                ->where('media_type',3)
+                ->where('is_active',1)
+                ->where('title','like','%'.$request->keywords.'%')
+                ->get();
+        } elseif (isset($request->category) && $request->category >= 1) {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
+                ->where('media_type',3)
+                ->where('is_active',1)
+                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->get();
+        } else {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])->where('media_type',3)->where('is_active',1)->get();
+        }
+        if ($mediumData) {
+            foreach ($mediumData as $md) {
+                if (isset($md->media_url) && $md->media_url != '') {
+                    $md->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_url;
+                }
+                if (isset($md->media_links) && $md->media_links != '') {
+                    $md->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_links;
+                }
+            }
+            return $this->success('success', $mediumData);
         } else {
             return $this->fail('failure', 500, []);
         }
@@ -55,16 +121,38 @@ class MediumSourceController extends ApiController
 
     public function get_instruction(Request $request)
     {
-        $page = $request->input('page', 1);
-        $limit = $request->input('limit', 10);
-
-        $where = [];
-        $where['media_type'] = 4; // 安装说明文件
-
-        $res = $this->mediumModel->getPageList($page, $limit, $where);
-
-        if ($res) {
-            return $this->success('success', $res);
+        if (isset($request->keywords) && $request->keywords != '' && isset($request->category) && $request->category >= 1) {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
+                ->where('media_type',4)
+                ->where('is_active',1)
+                ->where('title','like','%'.$request->keywords.'%')
+                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->get();
+        } else if ((isset($request->keywords) && $request->keywords != '')) {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
+                ->where('media_type',4)
+                ->where('is_active',1)
+                ->where('title','like','%'.$request->keywords.'%')
+                ->get();
+        } elseif (isset($request->category) && $request->category >= 1) {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
+                ->where('media_type',4)
+                ->where('is_active',1)
+                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->get();
+        } else {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])->where('media_type',4)->where('is_active',1)->get();
+        }
+        if ($mediumData) {
+            foreach ($mediumData as $md) {
+                if (isset($md->media_url) && $md->media_url != '') {
+                    $md->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_url;
+                }
+                if (isset($md->media_links) && $md->media_links != '') {
+                    $md->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_links;
+                }
+            }
+            return $this->success('success', $mediumData);
         } else {
             return $this->fail('failure', 500, []);
         }
@@ -72,16 +160,38 @@ class MediumSourceController extends ApiController
 
     public function get_qcfile(Request $request)
     {
-        $page = $request->input('page', 1);
-        $limit = $request->input('limit', 10);
-
-        $where = [];
-        $where['media_type'] = 5; // 质检文件
-
-        $res = $this->mediumModel->getPageList($page, $limit, $where);
-
-        if ($res) {
-            return $this->success('success', $res);
+        if (isset($request->keywords) && $request->keywords != '' && isset($request->category) && $request->category >= 1) {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
+                ->where('media_type',5)
+                ->where('is_active',1)
+                ->where('title','like','%'.$request->keywords.'%')
+                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->get();
+        } else if ((isset($request->keywords) && $request->keywords != '')) {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
+                ->where('media_type',5)
+                ->where('is_active',1)
+                ->where('title','like','%'.$request->keywords.'%')
+                ->get();
+        } elseif (isset($request->category) && $request->category >= 1) {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
+                ->where('media_type',5)
+                ->where('is_active',1)
+                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->get();
+        } else {
+            $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])->where('media_type',5)->where('is_active',1)->get();
+        }
+        if ($mediumData) {
+            foreach ($mediumData as $md) {
+                if (isset($md->media_url) && $md->media_url != '') {
+                    $md->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_url;
+                }
+                if (isset($md->media_links) && $md->media_links != '') {
+                    $md->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_links;
+                }
+            }
+            return $this->success('success', $mediumData);
         } else {
             return $this->fail('failure', 500, []);
         }

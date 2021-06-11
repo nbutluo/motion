@@ -75,10 +75,10 @@ Route::group(['namespace' => 'Api'], function () {
 
 
     // 资源列表
-    Route::get('medium/list/video','MediumSourceController@get_video')->name('medium.source.list.video');
-    Route::get('medium/list/brochure','MediumSourceController@get_brochure')->name('medium.source.list.brochure');
-    Route::get('medium/list/instruction','MediumSourceController@get_instruction')->name('medium.source.list.instruction');
-    Route::get('medium/list/qcfile','MediumSourceController@get_qcfile')->name('medium.source.list.qcfile');
+    Route::post('medium/list/video','MediumSourceController@get_video')->name('medium.source.list.video');
+    Route::post('medium/list/brochure','MediumSourceController@get_brochure')->name('medium.source.list.brochure');
+    Route::post('medium/list/instruction','MediumSourceController@get_instruction')->name('medium.source.list.instruction');
+    Route::post('medium/list/qcfile','MediumSourceController@get_qcfile')->name('medium.source.list.qcfile');
 
 
     //订单接口
