@@ -41,8 +41,27 @@ class MediumSourceController extends ApiController
         return $categories;
     }
 
+    //获取各个分类下的二级分类
+    public function getSecondCategory($media_type)
+    {
+        $categoryData = [];
+        $categories = $this->getCategory();
+        foreach ($categories as $category) {
+            if ($category['media_type'] == $media_type && $category['parent_id'] == 0) {
+                foreach ($categories as $cate) {
+                    if ($cate['parent_id'] == $category['id']) {
+                        $categoryData[] = $cate;
+                    }
+                }
+            }
+        }
+        return $categoryData;
+    }
+
     public function get_video(Request $request)
     {
+        $data = [];
+        $data['category'] = $this->getSecondCategory(2);
         if (isset($request->keywords) && $request->keywords != '' && isset($request->category) && $request->category >= 1) {
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',2)
@@ -74,7 +93,8 @@ class MediumSourceController extends ApiController
                     $md->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_links;
                 }
             }
-            return $this->success('success', $mediumData);
+            $data['list'] = $mediumData;
+            return $this->success('success', $data);
         } else {
             return $this->fail('failure', 500, []);
         }
@@ -82,6 +102,8 @@ class MediumSourceController extends ApiController
 
     public function get_brochure(Request $request)
     {
+        $data = [];
+        $data['category'] = $this->getSecondCategory(3);
         if (isset($request->keywords) && $request->keywords != '' && isset($request->category) && $request->category >= 1) {
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',3)
@@ -113,7 +135,8 @@ class MediumSourceController extends ApiController
                     $md->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_links;
                 }
             }
-            return $this->success('success', $mediumData);
+            $data['list'] = $mediumData;
+            return $this->success('success', $data);
         } else {
             return $this->fail('failure', 500, []);
         }
@@ -121,6 +144,8 @@ class MediumSourceController extends ApiController
 
     public function get_instruction(Request $request)
     {
+        $data = [];
+        $data['category'] = $this->getSecondCategory(4);
         if (isset($request->keywords) && $request->keywords != '' && isset($request->category) && $request->category >= 1) {
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',4)
@@ -152,7 +177,8 @@ class MediumSourceController extends ApiController
                     $md->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_links;
                 }
             }
-            return $this->success('success', $mediumData);
+            $data['list'] = $mediumData;
+            return $this->success('success', $data);
         } else {
             return $this->fail('failure', 500, []);
         }
@@ -160,6 +186,8 @@ class MediumSourceController extends ApiController
 
     public function get_qcfile(Request $request)
     {
+        $data = [];
+        $data['category'] = $this->getSecondCategory(5);
         if (isset($request->keywords) && $request->keywords != '' && isset($request->category) && $request->category >= 1) {
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',5)
@@ -191,7 +219,8 @@ class MediumSourceController extends ApiController
                     $md->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_links;
                 }
             }
-            return $this->success('success', $mediumData);
+            $data['list'] = $mediumData;
+            return $this->success('success', $data);
         } else {
             return $this->fail('failure', 500, []);
         }

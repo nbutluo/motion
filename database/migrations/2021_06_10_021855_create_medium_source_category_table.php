@@ -19,6 +19,7 @@ class CreateMediumSourceCategoryTable extends Migration
             $table->string('name')->nullable()->comment('Category Name');
             $table->integer('parent_id')->default(0)->comment('Parent ID');
             $table->string('identity')->default('')->comment('Identity');
+            $table->tinyInteger('media_type')->default(0)->comment('Media Type');
             $table->tinyInteger('is_active')->default(1)->comment('Is Active');
             $table->softDeletes();
             $table->timestamps();
