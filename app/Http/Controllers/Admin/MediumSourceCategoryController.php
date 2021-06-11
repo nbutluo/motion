@@ -8,9 +8,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
+use App\Http\Controllers\Admin\MediumSourceController as MediumSource;
 
 class MediumSourceCategoryController extends AdminController
 {
+    public function baseMediaType()
+    {
+        return [
+            (object)['id' => 2, 'name' => '视频'],
+            (object)['id' => 3, 'name' => '宣传册'],
+            (object)['id' => 4, 'name' => '安装信息'],
+            (object)['id' => 5, 'name' => '资质认证'],
+            (object)['id' => 1, 'name' => '图片'],
+        ];
+    }
+
     public function index()
     {
         return view('admin.medium-category.index');
@@ -79,8 +91,9 @@ class MediumSourceCategoryController extends AdminController
 
     public function create()
     {
+        $media_type = $this->baseMediaType();
         $categories = $this->categoryData();
-        return view('admin.medium-category.create',compact('categories'));
+        return view('admin.medium-category.create',compact('categories','media_type'));
     }
 
     public function add(Request $request)
@@ -90,6 +103,7 @@ class MediumSourceCategoryController extends AdminController
             $data['name'] = $request->category_name;
             $data['parent_id'] = $request->category_parent_id;
             $data['is_active'] = $request->is_active;
+            $data['media_type'] = $request->media_type;
             if ($request->category_parent_id == 0) {
                 $data['identity'] = 0;
             } else {
@@ -106,8 +120,9 @@ class MediumSourceCategoryController extends AdminController
     public function edit($id)
     {
         $categories = $this->categoryData();
+        $media_type = $this->baseMediaType();
         $mediumCategory = MediumSourceCategory::findOrFail($id);
-        return view('admin.medium-category.edit',compact('id','mediumCategory','categories'));
+        return view('admin.medium-category.edit',compact('id','mediumCategory','categories','media_type'));
     }
 
     public function update(Request $request)
@@ -118,6 +133,7 @@ class MediumSourceCategoryController extends AdminController
             $params['name'] = $request->category_name;
             $params['parent_id'] = $request->category_parent_id;
             $params['is_active'] = $request->is_active;
+            $params['media_type'] = $request->media_type;
             if ($request->category_parent_id == 0) {
                 $params['identity'] = 0;
             } else {

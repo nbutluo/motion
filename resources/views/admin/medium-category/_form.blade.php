@@ -1,7 +1,19 @@
 {{csrf_field()}}
 
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">分类</label>
+    <label for="" class="layui-form-label">资源类型</label>
+    <div class="layui-input-inline">
+        <select name="media_type">
+            <option value="0">未选择</option>
+            @foreach($media_type as $category)
+                <option value="{{ $category->id }}" @if(isset($mediumCategory->media_type)&&$mediumCategory->media_type==$category->id)selected @endif >{{ $category->name }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">资源分类</label>
     <div class="layui-input-inline">
         <select name="category_parent_id">
             <option value="0">未选择</option>
