@@ -126,11 +126,11 @@ class AddToCartController extends ApiController
                     throw new \Exception('cart message is wrong!');
                 }
                 $catMsg->qty = $item['qty'];
-                $options = '';
-                foreach ($item['options'] as $option) {
-                    $options = ($options == '') ? $option['option_id'] : $options.','.$option['option_id'];
-                }
-                $catMsg->options = $options;
+//                $options = '';
+//                foreach ($item['options'] as $option) {
+//                    $options = ($options == '') ? $option['option_id'] : $options.','.$option['option_id'];
+//                }
+//                $catMsg->options = $options;
                 $catMsg->save();
             }
             return $this->success('success', $data);
