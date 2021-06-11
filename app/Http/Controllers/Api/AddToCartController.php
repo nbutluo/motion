@@ -59,6 +59,9 @@ class AddToCartController extends ApiController
                     if (isset($option->image) && !empty($option->image)) {
                         $option->image = HTTP_TEXT.$_SERVER["HTTP_HOST"].$option->image;
                     }
+                    $product->cart_option_color = '';
+                    $product->cart_option_size = '';
+                    $product->cart_desk_img = '';
                     if (isset($option) && !empty($option)) {
                         if ($option->type == 1) {
                             $product->cart_option_color = $option;
