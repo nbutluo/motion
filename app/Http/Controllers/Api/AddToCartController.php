@@ -71,27 +71,27 @@ class AddToCartController extends ApiController
                 }
 
                 //获取所有配件信息
-                $alloptions = Option::select(['id','type','sku','title','image','option_color','option_size'])
-                    ->where('product_id',$cart->product_id)
-                    ->where('is_active',1)
-                    ->get();
-                $typeData1 = [];  $typeData3 = [];
-                foreach ($alloptions as $alloption) {
-                    if ($alloption->type == 1) {
-                        $typeData1[] = $alloption;
-                        $typeData2 = [];
-                        foreach ($alloptions as $alloptionSize) {
-                            if ($alloptionSize->type == 2 && $alloptionSize->option_color == $alloption->option_color) {
-                                $typeData2[] = $alloptionSize;
-                            }
-                        }
-                        $alloption->option_size = $typeData2;
-                    } elseif ($alloption->type == 3) {
-                        $typeData3[] = $alloption;
-                    }
-                }
-                $product->option_color = $typeData1;
-                $product->desk_img = $typeData3;
+//                $alloptions = Option::select(['id','type','sku','title','image','option_color','option_size'])
+//                    ->where('product_id',$cart->product_id)
+//                    ->where('is_active',1)
+//                    ->get();
+//                $typeData1 = [];  $typeData3 = [];
+//                foreach ($alloptions as $alloption) {
+//                    if ($alloption->type == 1) {
+//                        $typeData1[] = $alloption;
+//                        $typeData2 = [];
+//                        foreach ($alloptions as $alloptionSize) {
+//                            if ($alloptionSize->type == 2 && $alloptionSize->option_color == $alloption->option_color) {
+//                                $typeData2[] = $alloptionSize;
+//                            }
+//                        }
+//                        $alloption->option_size = $typeData2;
+//                    } elseif ($alloption->type == 3) {
+//                        $typeData3[] = $alloption;
+//                    }
+//                }
+//                $product->option_color = $typeData1;
+//                $product->desk_img = $typeData3;
                 $data[] = $product;
             }
             return $this->success('success', $data);
