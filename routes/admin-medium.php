@@ -3,6 +3,16 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Admin'], function () {
+    //资源分类
+    Route::get('medium/category/index','MediumSourceCategoryController@index')->name('admin.medium.category.index')->middleware('permission:medium.category.list');
+    Route::get('medium/category/index/data','MediumSourceCategoryController@getList')->name('admin.medium.category.index.data')->middleware('permission:medium.category.list');
+//    Route::post('medium/category/data','MediumSourceCategoryController@categoryData')->name('admin.medium.category.data');
+    Route::get('medium/category/create','MediumSourceCategoryController@create')->name('admin.medium.category.create')->middleware('permission:medium.category.create');
+    Route::post('medium/category/add','MediumSourceCategoryController@add')->name('admin.medium.category.add')->middleware('permission:medium.category.create');
+    Route::get('medium/category/{id}/edit','MediumSourceCategoryController@edit')->name('admin.medium.category.edit')->middleware('permission:medium.category.edit');
+    Route::post('medium/category/update','MediumSourceCategoryController@update')->name('admin.medium.category.update')->middleware('permission:medium.category.edit');
+
+
     //总体资源模块
     Route::get('medium/index','MediumSourceController@index')->name('admin.medium.index');
     Route::get('medium/index/data','MediumSourceController@getList')->name('admin.medium.index.data');
