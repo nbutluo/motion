@@ -19,6 +19,7 @@ class CreateMediumSourceTable extends Migration
             $table->string('title')->nullable()->comment('Media Title');
             $table->string('description')->nullable()->comment('Media Description');
             $table->smallInteger('media_type')->default(1)->comment('Media Type');
+            $table->integer('category_id')->default(0)->comment('Category Id');
             $table->text('lable')->nullable()->comment('Media Lable');
             $table->string('media_url')->nullable()->comment('Media URL');
             $table->string('media_location')->nullable()->comment('Media Location');

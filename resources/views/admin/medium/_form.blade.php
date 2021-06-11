@@ -8,12 +8,33 @@
 </div>
 
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">分类</label>
+    <label for="" class="layui-form-label">资源类型</label>
     <div class="layui-input-inline">
         <select name="media_type">
             <option value="0">未选择</option>
             @foreach($categories as $category)
                 <option value="{{ $category->id }}" @if(isset($media->media_type)&&$media->media_type==$category->id)selected @endif >{{ $category->name }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">资源分类</label>
+    <div class="layui-input-inline">
+        <select name="category_id">
+            <option value="0">未选择</option>
+            @foreach($categoryData as $category)
+                <option value="{{ $category['id'] }}" disabled >{{ $category['title'] }}</option>
+                @if (isset($category['children']) && !empty($category['children']))
+                    @foreach($category['children'] as $firstCategory)
+                        <option value="{{ $firstCategory['id'] }}" disabled >-----{{ $firstCategory['title'] }}</option>
+                        @if (isset($firstCategory['children']) && !empty($firstCategory['children']))
+                            @foreach($firstCategory['children'] as $secondCategory)
+                                <option value="{{ $secondCategory['id'] }}" @if(isset($media->category_id)&&$media->category_id==$secondCategory['id'])selected @endif >----------{{ $secondCategory['title'] }}</option>
+                            @endforeach
+                        @endif
+                    @endforeach
+                @endif
             @endforeach
         </select>
     </div>

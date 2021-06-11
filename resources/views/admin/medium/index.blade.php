@@ -13,8 +13,21 @@
                 <div class="layui-input-inline">
                     <select name="media_type" lay-verify="required" id="category_id">
                         <option value="">请选择产品分类</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+{{--                        @foreach($categories as $category)--}}
+{{--                            <option value="{{ $category->id }}">{{ $category->name }}</option>--}}
+{{--                        @endforeach--}}
+                        @foreach($categoryData as $category)
+                            <option value="{{ $category['id'] }}" >{{ $category['title'] }}</option>
+                            @if (isset($category['children']) && !empty($category['children']))
+                                @foreach($category['children'] as $firstCategory)
+                                    <option value="{{ $firstCategory['id'] }}" >-----{{ $firstCategory['title'] }}</option>
+                                    @if (isset($firstCategory['children']) && !empty($firstCategory['children']))
+                                        @foreach($firstCategory['children'] as $secondCategory)
+                                            <option value="{{ $secondCategory['id'] }}" >----------{{ $secondCategory['title'] }}</option>
+                                        @endforeach
+                                    @endif
+                                @endforeach
+                            @endif
                         @endforeach
                     </select>
                 </div>
@@ -63,9 +76,10 @@
                     , page: true //开启分页
                     , cols: [[ //表头
                         {checkbox: true, fixed: true}
-                        , {field: 'id', title: 'ID', sort: true, width: 80}
-                        , {field: 'title', title: '名称', width: 200}
-                        , {field: 'description', title: '描述', width: 280}
+                        , {field: 'id', title: 'ID', sort: true,width:80,}
+                        , {field: 'title', title: '名称',width:200,}
+                        , {field: 'description', title: '描述',width:200,}
+                        , {field: 'category_id', title: '资源分类',width:200,}
                         , {field: 'media_type', title: '资源类型', templet: function (res) {
                                 $type_string = '未知';
                                 switch (res.media_type) {
@@ -78,10 +92,10 @@
                                 }
                             return $type_string;
                         }}
-                        , {field: 'media_url', title: '图片链接', width: 200}
-                        , {field: 'media_links', title: '文件链接', width: 200}
-                        , {field: 'is_active', title: '是否启用', templet: function (res) {return (res.is_active == 0) ? "否" : "是";}}
-                        , {field: 'position', title: '位置权值'}
+                        , {field: 'media_url', title: '图片链接', width: 100}
+                        , {field: 'media_links', title: '文件链接', width: 100}
+                        , {field: 'is_active', title: '是否启用',width:100, templet: function (res) {return (res.is_active == 0) ? "否" : "是";}}
+                        , {field: 'position', title: '位置权值',width:100,}
                         , {field: 'updated_at', title: '更新时间'}
                         , {fixed: 'right',title: '操作', width: 160, align: 'center', toolbar: '#options'}
                     ]]
@@ -120,10 +134,10 @@
 
                 //搜索
                 $("#searchBtn").click(function () {
-                    var typeId = $("#media_type").val();
+                    var typeId = $(".layui-anim-upbit").find('.layui-this').attr('lay-value');
                     var title = $("#title").val();
                     dataTable.reload({
-                        where: {media_type: typeId, title: title},
+                        where: {category_id: typeId, title: title},
                         page: {curr: 1}
                     })
                 })

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
 use App\Model\MediumSource;
+use App\Model\MediumSourceCategory;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -38,7 +39,8 @@ class MediumSourceController extends AdminController
     public function index()
     {
         $categories = $this->baseCategories();
-        return view('admin.medium.index', compact('categories'));
+        $categoryData = $this->categoryData();
+        return view('admin.medium.index', compact('categories','categoryData'));
     }
 
     public function getList(Request $request)
@@ -49,6 +51,12 @@ class MediumSourceController extends AdminController
         $where = [];
         if ($media_type = $request->input('media_type')) {
             $where['media_type'] = $media_type;
+        }
+        if ($category_id = $request->input('category_id')) {
+            $where['category_id'] = $category_id;
+        }
+        if ($title = $request->input('title')) {
+            $where['title'] = $title;
         }
 
         $res = $this->mediumModel->getPageList($page, $limit, $where);
@@ -61,11 +69,48 @@ class MediumSourceController extends AdminController
         ]);
     }
 
+    public function categoryData ()
+    {
+        $categoriesData = [];
+        $allCategories = MediumSourceCategory::select(['id','name','parent_id','identity'])->get();
+        foreach ($allCategories as $allCategory) {
+            $categoriesData[$allCategory->id] = $allCategory->toArray();
+        }
+        $allCateData = [];
+        foreach ($categoriesData as $cateData) {
+            $data = [];
+            if ($cateData['parent_id'] == 0) {
+                $data['title'] = $cateData['name'];
+                $data['id'] = $cateData['id'];
+                foreach ($categoriesData as $key_first => $firstCategory) {
+                    $firstData = [];
+                    if ($firstCategory['parent_id'] == $cateData['id']) {
+                        $firstData['title'] = $firstCategory['name'];
+                        $firstData['id'] = $firstCategory['id'];
+                        $secondData = [];
+                        foreach ($categoriesData as $key_second => $secondCategory) {
+                            $thirdData = [];
+                            if ($secondCategory['parent_id'] == $firstCategory['id']) {
+                                $thirdData['title'] = $secondCategory['name'];
+                                $thirdData['id'] = $secondCategory['id'];
+                                $secondData[] = $thirdData;
+                            }
+                        }
+                        $firstData['children'] = $secondData;
+                        $data['children'][] = $firstData;
+                    }
+                }
+                $allCateData[] = $data;
+            }
+        }
+        return $allCateData;
+    }
+
     public function create()
     {
         $categories = $this->baseCategories();
-
-        return view('admin.medium.create', compact('categories'));
+        $categoryData = $this->categoryData();
+        return view('admin.medium.create', compact('categories','categoryData'));
     }
 
     public function store(Request $request)
@@ -73,6 +118,7 @@ class MediumSourceController extends AdminController
         $params['title'] = (isset($request->title) && $request->title != '') ? $request->title : '';
         $params['description'] = (isset($request->description) && $request->description != '') ? $request->description : '';
         $params['media_type'] = (isset($request->media_type) && $request->media_type != '') ? $request->media_type : 0;
+        $params['category_id'] = (isset($request->category_id) && $request->category_id != '') ? $request->category_id : 0;
         $params['media_url'] = (isset($request->media_url) && $request->media_url != '') ? $request->media_url : '';
         $params['media_links'] = (isset($request->media_links) && $request->media_links != '') ? $request->media_links : '';
         $params['position'] = (isset($request->position) && $request->position != '') ? $request->position : 0;
@@ -119,8 +165,9 @@ class MediumSourceController extends AdminController
 
         //分类
         $categories = $this->baseCategories();
+        $categoryData = $this->categoryData();
 
-        return view('admin.medium.edit', compact('media', 'categories'));
+        return view('admin.medium.edit', compact('media', 'categories','categoryData'));
     }
 
     public function update($id, Request $request)
@@ -136,6 +183,9 @@ class MediumSourceController extends AdminController
         }
         if ($media_type = $request->input('media_type')) {
             $params['media_type'] = $media_type;
+        }
+        if ($category_id = $request->input('category_id')) {
+            $params['category_id'] = $category_id;
         }
         if ($media_url = $request->input('media_url')) {
             $params['media_url'] = $media_url;

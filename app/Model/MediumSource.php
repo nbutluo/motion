@@ -25,12 +25,21 @@ class MediumSource extends Model
         if (!empty($where)) {
             $toBaseCollection = $this->toBase();
             foreach ($where as $k => $w) {
-                $toBaseCollection = $toBaseCollection->where($k, $w);
+                if (is_array($w)) {
+                    $toBaseCollection = $toBaseCollection->whereIn($k, $w);
+                } else{
+                    $toBaseCollection = $toBaseCollection->where($k, $w);
+                }
             }
             if ($total = $toBaseCollection->getCountForPagination()) {
                 $forPageCollection = $this->forPage($page, $perPage);
                 foreach ($where as $k => $w) {
-                    $forPageCollection = $forPageCollection->where($k, $w);
+                    if (is_array($w)) {
+                        $forPageCollection = $forPageCollection->whereIn($k, $w);
+                    } else{
+                        $forPageCollection = $forPageCollection->where($k, $w);
+                    }
+//                    $forPageCollection = $forPageCollection->where($k, $w);
                 }
                 $results = $forPageCollection->get($columns);
                 //资源添加域名
@@ -42,6 +51,14 @@ class MediumSource extends Model
 //                        $result->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$result->media_url;
 //                    }
 //                }
+                foreach ($results as $res) {
+                    if (!isset($res->category_id) || $res->category_id == 0) {
+                        $res->category_id = '未分配';
+                    } else {
+                        $categoryData = MediumSourceCategory::findOrFail($res->category_id);
+                        $res->category_id = $categoryData->name;
+                    }
+                }
             } else {
                 $results = [];
             }
@@ -57,6 +74,14 @@ class MediumSource extends Model
 //                        $result->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$result->media_url;
 //                    }
 //                }
+                foreach ($results as $res) {
+                    if (!isset($res->category_id) || $res->category_id == 0) {
+                        $res->category_id = '未分配';
+                    } else {
+                        $categoryData = MediumSourceCategory::findOrFail($res->category_id);
+                        $res->category_id = $categoryData->name;
+                    }
+                }
             } else {
                 $results = [];
             }
