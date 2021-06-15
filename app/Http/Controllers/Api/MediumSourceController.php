@@ -23,22 +23,11 @@ class MediumSourceController extends ApiController
     public function getCategory()
     {
         $data = [];
-        $categories = MediumSourceCategory::all();
+        $categories = MediumSourceCategory::select(['id','name','parent_id','media_type'])->where('is_active',1)->get();
         foreach ($categories as $category) {
             $data[$category->id] = $category->toArray();
         }
         return $data;
-    }
-
-    public function getCategoryData($category_id)
-    {
-        $categories = [];
-        foreach ($this->getCategory() as $category) {
-            if ($category['id'] == $category_id || $category['parent_id'] == $category_id) {
-                $categories[] = $category['id'];
-            }
-        }
-        return $categories;
     }
 
     //获取各个分类下的二级分类
@@ -62,29 +51,45 @@ class MediumSourceController extends ApiController
     {
         $data = [];
         $data['category'] = $this->getSecondCategory(2);
+        $searchCategory = [];//获取搜索分类下的子分类id集合
+        $categoriesData = $this->getCategory();//获取所有分类信息
+        if (isset($request->category) && $request->category >= 1) {
+            foreach ($categoriesData as $allCategory) {
+                if ($allCategory['parent_id'] == $request->category) {
+                    $searchCategory[] = $allCategory['id'];
+                }
+            }
+        }
         if (isset($request->keywords) && $request->keywords != '' && isset($request->category) && $request->category >= 1) {
+            $data['search']['keywords'] = $request->keywords;
+            $data['search']['category'] = $request->category;
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',2)
                 ->where('is_active',1)
                 ->where('title','like','%'.$request->keywords.'%')
-                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->whereIn('category_id',$searchCategory)
                 ->get();
         } else if ((isset($request->keywords) && $request->keywords != '')) {
+            $data['search']['keywords'] = $request->keywords;
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',2)
                 ->where('is_active',1)
                 ->where('title','like','%'.$request->keywords.'%')
                 ->get();
         } elseif (isset($request->category) && $request->category >= 1) {
+            $data['search']['category'] = $request->category;
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',2)
                 ->where('is_active',1)
-                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->whereIn('category_id',$searchCategory)
                 ->get();
         } else {
+            $data['search']['keywords'] = '';
+            $data['search']['category'] = '';
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])->where('media_type',2)->where('is_active',1)->get();
         }
         if ($mediumData) {
+            $mediumSort = [];
             foreach ($mediumData as $md) {
                 if (isset($md->media_url) && $md->media_url != '') {
                     $md->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_url;
@@ -92,8 +97,26 @@ class MediumSourceController extends ApiController
                 if (isset($md->media_links) && $md->media_links != '') {
                     $md->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_links;
                 }
+                $mediumSort[$md->category_id][] = $md;//分离各个三级分类数据
             }
-            $data['list'] = $mediumData;
+            $sortData = [];//整理数据
+            $i = 2;
+            foreach ($mediumSort as $key_sort => $value_sort) {
+                $sortDataDetail = [];
+                $sortDataDetail['category_id'] = $key_sort;
+                $sortDataDetail['category_name'] = $categoriesData[$key_sort]['name'];
+                $sortDataDetail['child'] = $value_sort;
+                if (strpos($sortDataDetail['category_name'],'Product') !== false) {
+                    $sortData[0] = $sortDataDetail;
+                } elseif (strpos($sortDataDetail['category_name'],'Installation') !== false) {
+                    $sortData[1] = $sortDataDetail;
+                } else {
+                    $sortData[$i] = $sortDataDetail;
+                    $i++;
+                }
+            }
+            ksort($sortData);
+            $data['list'] = $sortData;
             return $this->success('success', $data);
         } else {
             return $this->fail('failure', 500, []);
@@ -104,29 +127,45 @@ class MediumSourceController extends ApiController
     {
         $data = [];
         $data['category'] = $this->getSecondCategory(3);
+        $searchCategory = [];//获取搜索分类下的子分类id集合
+        $categoriesData = $this->getCategory();//获取所有分类信息
+        if (isset($request->category) && $request->category >= 1) {
+            foreach ($categoriesData as $allCategory) {
+                if ($allCategory['parent_id'] == $request->category) {
+                    $searchCategory[] = $allCategory['id'];
+                }
+            }
+        }
         if (isset($request->keywords) && $request->keywords != '' && isset($request->category) && $request->category >= 1) {
+            $data['search']['keywords'] = $request->keywords;
+            $data['search']['category'] = $request->category;
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',3)
                 ->where('is_active',1)
                 ->where('title','like','%'.$request->keywords.'%')
-                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->whereIn('category_id',$searchCategory)
                 ->get();
         } else if ((isset($request->keywords) && $request->keywords != '')) {
+            $data['search']['keywords'] = $request->keywords;
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',3)
                 ->where('is_active',1)
                 ->where('title','like','%'.$request->keywords.'%')
                 ->get();
         } elseif (isset($request->category) && $request->category >= 1) {
+            $data['search']['category'] = $request->category;
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',3)
                 ->where('is_active',1)
-                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->whereIn('category_id',$searchCategory)
                 ->get();
         } else {
+            $data['search']['keywords'] = '';
+            $data['search']['category'] = '';
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])->where('media_type',3)->where('is_active',1)->get();
         }
         if ($mediumData) {
+            $mediumSort = [];
             foreach ($mediumData as $md) {
                 if (isset($md->media_url) && $md->media_url != '') {
                     $md->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_url;
@@ -134,8 +173,17 @@ class MediumSourceController extends ApiController
                 if (isset($md->media_links) && $md->media_links != '') {
                     $md->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_links;
                 }
+                $mediumSort[$md->category_id][] = $md;//分离各个三级分类数据
             }
-            $data['list'] = $mediumData;
+            $sortData = [];//整理数据
+            foreach ($mediumSort as $key_sort => $value_sort) {
+                $sortDataDetail = [];
+                $sortDataDetail['category_id'] = $key_sort;
+                $sortDataDetail['category_name'] = $categoriesData[$key_sort]['name'];
+                $sortDataDetail['child'] = $value_sort;
+                $sortData[] = $sortDataDetail;
+            }
+            $data['list'] = $sortData;
             return $this->success('success', $data);
         } else {
             return $this->fail('failure', 500, []);
@@ -146,29 +194,45 @@ class MediumSourceController extends ApiController
     {
         $data = [];
         $data['category'] = $this->getSecondCategory(4);
+        $searchCategory = [];//获取搜索分类下的子分类id集合
+        $categoriesData = $this->getCategory();//获取所有分类信息
+        if (isset($request->category) && $request->category >= 1) {
+            foreach ($categoriesData as $allCategory) {
+                if ($allCategory['parent_id'] == $request->category) {
+                    $searchCategory[] = $allCategory['id'];
+                }
+            }
+        }
         if (isset($request->keywords) && $request->keywords != '' && isset($request->category) && $request->category >= 1) {
+            $data['search']['keywords'] = $request->keywords;
+            $data['search']['category'] = $request->category;
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',4)
                 ->where('is_active',1)
                 ->where('title','like','%'.$request->keywords.'%')
-                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->whereIn('category_id',$searchCategory)
                 ->get();
         } else if ((isset($request->keywords) && $request->keywords != '')) {
+            $data['search']['keywords'] = $request->keywords;
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',4)
                 ->where('is_active',1)
                 ->where('title','like','%'.$request->keywords.'%')
                 ->get();
         } elseif (isset($request->category) && $request->category >= 1) {
+            $data['search']['category'] = $request->category;
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',4)
                 ->where('is_active',1)
-                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->whereIn('category_id',$searchCategory)
                 ->get();
         } else {
+            $data['search']['keywords'] = '';
+            $data['search']['category'] = '';
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])->where('media_type',4)->where('is_active',1)->get();
         }
         if ($mediumData) {
+            $mediumSort = [];
             foreach ($mediumData as $md) {
                 if (isset($md->media_url) && $md->media_url != '') {
                     $md->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_url;
@@ -176,8 +240,26 @@ class MediumSourceController extends ApiController
                 if (isset($md->media_links) && $md->media_links != '') {
                     $md->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_links;
                 }
+                $mediumSort[$md->category_id][] = $md;//分离各个三级分类数据
             }
-            $data['list'] = $mediumData;
+            $sortData = [];//整理数据
+            $i = 2;
+            foreach ($mediumSort as $key_sort => $value_sort) {
+                $sortDataDetail = [];
+                $sortDataDetail['category_id'] = $key_sort;
+                $sortDataDetail['category_name'] = $categoriesData[$key_sort]['name'];
+                $sortDataDetail['child'] = $value_sort;
+                if (strpos($sortDataDetail['category_name'],'Installation') !== false) {
+                    $sortData[0] = $sortDataDetail;
+                } elseif (strpos($sortDataDetail['category_name'],'Product') !== false) {
+                    $sortData[1] = $sortDataDetail;
+                } else {
+                    $sortData[$i] = $sortDataDetail;
+                    $i++;
+                }
+            }
+            ksort($sortData);
+            $data['list'] = $sortData;
             return $this->success('success', $data);
         } else {
             return $this->fail('failure', 500, []);
@@ -188,29 +270,45 @@ class MediumSourceController extends ApiController
     {
         $data = [];
         $data['category'] = $this->getSecondCategory(5);
+        $searchCategory = [];//获取搜索分类下的子分类id集合
+        $categoriesData = $this->getCategory();//获取所有分类信息
+        if (isset($request->category) && $request->category >= 1) {
+            foreach ($categoriesData as $allCategory) {
+                if ($allCategory['parent_id'] == $request->category) {
+                    $searchCategory[] = $allCategory['id'];
+                }
+            }
+        }
         if (isset($request->keywords) && $request->keywords != '' && isset($request->category) && $request->category >= 1) {
+            $data['search']['keywords'] = $request->keywords;
+            $data['search']['category'] = $request->category;
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',5)
                 ->where('is_active',1)
                 ->where('title','like','%'.$request->keywords.'%')
-                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->whereIn('category_id',$searchCategory)
                 ->get();
         } else if ((isset($request->keywords) && $request->keywords != '')) {
+            $data['search']['keywords'] = $request->keywords;
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',5)
                 ->where('is_active',1)
                 ->where('title','like','%'.$request->keywords.'%')
                 ->get();
         } elseif (isset($request->category) && $request->category >= 1) {
+            $data['search']['category'] = $request->category;
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
                 ->where('media_type',5)
                 ->where('is_active',1)
-                ->whereIn('category_id',$this->getCategoryData($request->category))
+                ->whereIn('category_id',$searchCategory)
                 ->get();
         } else {
+            $data['search']['keywords'] = '';
+            $data['search']['category'] = '';
             $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])->where('media_type',5)->where('is_active',1)->get();
         }
         if ($mediumData) {
+            $mediumSort = [];
             foreach ($mediumData as $md) {
                 if (isset($md->media_url) && $md->media_url != '') {
                     $md->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_url;
@@ -218,8 +316,26 @@ class MediumSourceController extends ApiController
                 if (isset($md->media_links) && $md->media_links != '') {
                     $md->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$md->media_links;
                 }
+                $mediumSort[$md->category_id][] = $md;//分离各个三级分类数据
             }
-            $data['list'] = $mediumData;
+            $sortData = [];//整理数据
+            $i = 2;
+            foreach ($mediumSort as $key_sort => $value_sort) {
+                $sortDataDetail = [];
+                $sortDataDetail['category_id'] = $key_sort;
+                $sortDataDetail['category_name'] = $categoriesData[$key_sort]['name'];
+                $sortDataDetail['child'] = $value_sort;
+                if (strpos($sortDataDetail['category_name'],'First') !== false) {
+                    $sortData[0] = $sortDataDetail;
+                } elseif (strpos($sortDataDetail['category_name'],'Second') !== false) {
+                    $sortData[1] = $sortDataDetail;
+                } else {
+                    $sortData[$i] = $sortDataDetail;
+                    $i++;
+                }
+            }
+            ksort($sortData);
+            $data['list'] = $sortData;
             return $this->success('success', $data);
         } else {
             return $this->fail('failure', 500, []);

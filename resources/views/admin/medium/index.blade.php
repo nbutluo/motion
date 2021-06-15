@@ -17,10 +17,10 @@
 {{--                            <option value="{{ $category->id }}">{{ $category->name }}</option>--}}
 {{--                        @endforeach--}}
                         @foreach($categoryData as $category)
-                            <option value="{{ $category['id'] }}" >{{ $category['title'] }}</option>
+                            <option value="{{ $category['id'] }}" disabled>{{ $category['title'] }}</option>
                             @if (isset($category['children']) && !empty($category['children']))
                                 @foreach($category['children'] as $firstCategory)
-                                    <option value="{{ $firstCategory['id'] }}" >-----{{ $firstCategory['title'] }}</option>
+                                    <option value="{{ $firstCategory['id'] }}" disabled>-----{{ $firstCategory['title'] }}</option>
                                     @if (isset($firstCategory['children']) && !empty($firstCategory['children']))
                                         @foreach($firstCategory['children'] as $secondCategory)
                                             <option value="{{ $secondCategory['id'] }}" >----------{{ $secondCategory['title'] }}</option>
@@ -32,7 +32,7 @@
                     </select>
                 </div>
                 <div class="layui-input-inline">
-                    <input type="text" name="title" id="title" placeholder="请输入资源名称" class="layui-input">
+                    <input type="text" name="title" id="title" placeholder="请输入完整资源名称" class="layui-input">
                 </div>
                 <button class="layui-btn" id="searchBtn">搜 索</button>
             </div>
