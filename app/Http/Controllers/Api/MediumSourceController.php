@@ -161,7 +161,7 @@ class MediumSourceController extends ApiController
                     }
                 }
             }
-            if (!empty($firstResult) && !empty($SecondResult)) {
+            if (!empty($firstResult) || !empty($SecondResult)) {
                 $result[0] = $firstResult;
                 $result[1] = $SecondResult;
             }
