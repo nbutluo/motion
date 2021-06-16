@@ -79,6 +79,7 @@ Route::group(['namespace' => 'Api'], function () {
     Route::post('medium/list/brochure','MediumSourceController@get_brochure')->name('medium.source.list.brochure');
     Route::post('medium/list/instruction','MediumSourceController@get_instruction')->name('medium.source.list.instruction');
     Route::post('medium/list/qcfile','MediumSourceController@get_qcfile')->name('medium.source.list.qcfile');
+    Route::post('medium/list/medium','MediumSourceController@get_medium')->name('medium.source.list.get_medium');
 
 
     //订单接口

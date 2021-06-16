@@ -48,6 +48,18 @@
                         {field: 'id', title: 'ID', sort: true, width: 80}
                         , {field: 'name', title: '分类名称', width: 200}
                         , {field: 'parent_id', title: '父级分类', width: 280}
+                        , {field: 'media_type', title: '资源类型', width: 280, templet: function (res) {
+                            $type = '未分配';
+                            switch (res.media_type) {
+                                case 1: $type = '图片'; break;
+                                case 2: $type = '视频'; break;
+                                case 3: $type = '宣传册'; break;
+                                case 4: $type = '安装信息'; break;
+                                case 5: $type = '资质认证'; break;
+                                default:break;
+                            }
+                            return $type;
+                        }}
                         , {field: 'is_active', title: '是否启用', templet: function (res) {return (res.is_active == 0) ? "否" : "是";}}
                         , {field: 'created_at', title: '创建时间'}
                         , {field: 'updated_at', title: '更新时间'}

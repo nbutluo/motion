@@ -47,6 +47,132 @@ class MediumSourceController extends ApiController
         return $categoryData;
     }
 
+    public function getThirdCategory($media_type,$categoryId=0)
+    {
+
+        if ($media_type == 2 || $media_type == 4) {
+            $categoryName = 'Standing Desk';
+        }elseif ($media_type == 5) {
+            $categoryName = 'United States';
+        }
+        $thirdCategory = [];
+        $categories = $this->getCategory();
+        if ($categoryId != 0) {
+            $thirdCategory[$categoryId] = [];
+            foreach ($categories as $category) {
+                if ($category['parent_id'] == $categoryId && $category['media_type'] == $media_type) {
+                    $thirdCategory[$categoryId][] = $category['id'];
+                }
+            }
+        } else {
+            foreach ($categories as $category) {
+                if ($category['media_type'] == $media_type) {//默认第二级分类
+                    if ($media_type == 3) {
+                        foreach ($categories as $cate) {
+                            if ($cate['parent_id'] == $category['id']) {
+                                foreach ($categories as $ca) {
+                                    if ($ca['parent_id'] == $cate['id']) {
+                                        $thirdCategory[$cate['id']][] = $ca['id'];
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    } else {
+                        if ($category['name'] == $categoryName) {
+                            foreach ($categories as $ca) {//第三级分类
+                                if ($ca['parent_id'] == $category['id']) {
+                                    $thirdCategory[$category['id']][] = $ca['id'];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $thirdCategory;
+    }
+
+    public function get_medium(Request $request)
+    {
+        try {
+            if (!isset($request->medium_type) || !in_array($request->medium_type,[2,3,4,5])) {
+                throw new Exception('please enter medium_type!');
+            }
+            $data = [];
+            $thirdCategory = $this->getThirdCategory($request->medium_type,$request->category);
+            foreach ($thirdCategory as $thirdKey => $thirdValue)
+            {
+                $data['search']['category'] = $thirdKey;
+                $thirdCategory = $thirdValue;
+            }
+
+            $data['category'] = $this->getSecondCategory($request->medium_type);
+
+            $categoriesData = $this->getCategory();//获取所有分类信息
+
+            $data['search']['keywords'] = (isset($request->keywords) && $request->keywords != '') ? $request->keywords : '';
+//        $data['search']['category'] = (isset($request->category) && $request->category != '') ? $request->category : '';
+            if (isset($request->keywords) && $request->keywords != '') {
+                $data['search']['keywords'] = $request->keywords;
+                $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
+                    ->where('media_type',$request->medium_type)
+                    ->where('is_active',1)
+                    ->where('title','like','%'.$request->keywords.'%')
+                    ->whereIn('category_id',$thirdCategory)
+                    ->get();
+            } else {
+                $mediumData = MediumSource::select(['id','title','description','media_type','category_id','lable','media_url','media_links','position'])
+                    ->where('media_type',$request->medium_type)
+                    ->where('is_active',1)
+                    ->whereIn('category_id',$thirdCategory)
+                    ->get();
+            }
+            $firstKey = '';  $secondKey = '';
+            if ($request->medium_type == 2) {
+                $firstKey = 'Product';  $secondKey = 'Installation';
+            } elseif ($request->medium_type == 3) {
+
+            } elseif ($request->medium_type == 4) {
+                $firstKey = 'Installation';  $secondKey = 'Product';
+            } elseif ($request->medium_type == 5) {
+                $firstKey = 'First';  $secondKey = 'Second';
+            }
+            $result = [];
+            $firstResult = []; $SecondResult = [];
+            $i = 2;
+            foreach ($mediumData as $medium) {
+                if (isset($medium->media_url) && $medium->media_url != '') {
+                    $medium->media_url = HTTP_TEXT . $_SERVER["HTTP_HOST"] . $medium->media_url;
+                }
+                if (isset($medium->media_links) && $medium->media_links != '') {
+                    $medium->media_links = HTTP_TEXT . $_SERVER["HTTP_HOST"] . $medium->media_links;
+                }
+                if ($request->medium_type == 3) {
+                    $result[0][] = $medium;
+                } else {
+                    if (strpos($categoriesData[$medium->category_id]['name'],$firstKey) !== false) {
+                        $firstResult[] = $medium->toArray();
+                    } elseif (strpos($categoriesData[$medium->category_id]['name'],$secondKey) !== false) {
+                        $SecondResult[] = $medium->toArray();
+                    } else {
+                        $result[$i] = $medium;
+                        $i++;
+                    }
+                }
+            }
+            if (!empty($firstResult) && !empty($SecondResult)) {
+                $result[0] = $firstResult;
+                $result[1] = $SecondResult;
+            }
+            $data['list'] = $result;
+            return $this->success('success', $data);
+        } catch (Exception $exception) {
+            return $this->fail($exception->getMessage(), 4003, []);
+        }
+
+    }
+
     public function get_video(Request $request)
     {
         $data = [];
