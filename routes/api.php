@@ -109,6 +109,6 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('company/profile','CompanyProfileController@getProfile')->name('company.profile');
 
 //    //订阅
-//    Route::post('store-subscription','SubscriptionController@store')->name('subscription.store');
+    Route::post('store-subscription','SubscriptionController@store')->name('subscription.store');
 });
 
