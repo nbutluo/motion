@@ -47,7 +47,7 @@ class MediumSourceController extends ApiController
         return $categoryData;
     }
 
-    public function getThirdCategory($media_type,$categoryId=0)
+    public function getThirdCategory($media_type,$categoryId = 0)
     {
 
         if ($media_type == 2 || $media_type == 4) {
@@ -70,6 +70,7 @@ class MediumSourceController extends ApiController
                     if ($media_type == 3) {
                         foreach ($categories as $cate) {
                             if ($cate['parent_id'] == $category['id']) {
+                                $thirdCategory[$cate['id']] = [];
                                 foreach ($categories as $ca) {
                                     if ($ca['parent_id'] == $cate['id']) {
                                         $thirdCategory[$cate['id']][] = $ca['id'];
@@ -80,6 +81,7 @@ class MediumSourceController extends ApiController
                         break;
                     } else {
                         if ($category['name'] == $categoryName) {
+                            $thirdCategory[$category['id']] = [];
                             foreach ($categories as $ca) {//第三级分类
                                 if ($ca['parent_id'] == $category['id']) {
                                     $thirdCategory[$category['id']][] = $ca['id'];
