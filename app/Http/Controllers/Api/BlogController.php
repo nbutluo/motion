@@ -51,9 +51,11 @@ class BlogController extends ApiController
 
         $category_id = $request->input('category_id');
         $data = app(Blog::class)->getCategoryPostList($category_id, $page, $pageSize);
-        foreach ($data['list'] as $item) {
-            if (isset($item->featured_img) && !empty($item->featured_img)) {
-                $item->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$item->featured_img;
+        if (!empty($data['list'])) {
+            foreach ($data['list'] as $item) {
+                if (isset($item->featured_img) && !empty($item->featured_img)) {
+                    $item->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$item->featured_img;
+                }
             }
         }
         if ($data) {
