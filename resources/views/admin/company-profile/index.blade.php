@@ -39,7 +39,7 @@
                 //用户表格初始化
                 var dataTable = table.render({
                     elem: '#dataTable'
-                    , autoSort: false
+                    , autoSort: true
                     , height: 500
                     , url: "{{ route('admin.company.profile.data') }}" //数据接口
                     , page: true //开启分页

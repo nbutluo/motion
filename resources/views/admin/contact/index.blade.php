@@ -46,7 +46,7 @@
                 //用户表格初始化
                 var dataTable = table.render({
                     elem: '#dataTable'
-                    , autoSort: false
+                    , autoSort: true
                     , height: 500
                     , url: "{{ route('admin.contact.data') }}"
                     , page: true //开启分页

@@ -130,13 +130,13 @@ class AdminUsersTableSeeder extends Seeder
                 'child' => [
                     [
                         'name' => 'information.category',
-                        'display_name' => 'bolg分类管理',
+                        'display_name' => 'blog分类管理',
                         'route' => 'admin.blog.category',
                         'is_menu' => 1,
                         'child' => [
-                            ['name' => 'information.category.create', 'display_name' => '添加bolg分类','route'=>'admin.category.create'],
-                            ['name' => 'information.category.edit', 'display_name' => '编辑bolg分类','route'=>'admin.category.edit'],
-                            ['name' => 'information.category.destroy', 'display_name' => '删除bolg分类','route'=>'admin.category.destroy'],
+                            ['name' => 'information.category.create', 'display_name' => '添加blog分类','route'=>'admin.category.create'],
+                            ['name' => 'information.category.edit', 'display_name' => '编辑blog分类','route'=>'admin.category.edit'],
+                            ['name' => 'information.category.destroy', 'display_name' => '删除blog分类','route'=>'admin.category.destroy'],
                         ]
                     ],
                     [
