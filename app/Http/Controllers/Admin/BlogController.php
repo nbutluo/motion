@@ -24,10 +24,12 @@ class BlogController extends AdminController
         $limit = $request->input('limit', 10);
 
         $res = app(Blog::class)->getPageList($page, $limit);
-        foreach ($res['list'] as $re) {
-            if (isset($re->category_id) && !empty($re->category_id) && $re->category_id != 0) {
-                $category = BlogCategory::findOrFail($re->category_id);
-                $re->category_id = $category->title;
+        if (!empty($res['list'])) {
+            foreach ($res['list'] as $re) {
+                if (isset($re->category_id) && !empty($re->category_id) && $re->category_id != 0) {
+                    $category = BlogCategory::findOrFail($re->category_id);
+                    $re->category_id = $category->title;
+                }
             }
         }
 
