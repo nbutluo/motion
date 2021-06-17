@@ -68,6 +68,8 @@ class BlogController extends ApiController
                     if (isset($item->featured_img) && !empty($item->featured_img)) {
                         $item->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$item->featured_img;
                     }
+                    $item->month = date('M',strtotime($item->publish_time));
+                    $item->day = date('d',strtotime($item->publish_time));
                 }
             }
             return $this->success('success', $data);
