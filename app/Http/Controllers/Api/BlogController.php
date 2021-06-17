@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Model\Blog\Blog;
 use App\Model\Blog\BlogCategory;
 use Illuminate\Http\Request;
+use mysql_xdevapi\Exception;
 
 class BlogController extends ApiController
 {
@@ -43,25 +44,35 @@ class BlogController extends ApiController
         return $this->success('success', $data);
     }
 
+    public function getCategoryId($categoryName)
+    {
+        $categories = BlogCategory::select(['category_id'])->where('title',$categoryName)->first();
+        return $categories['category_id'];
+    }
+
     // 获取对应分类下博客内容
     public function getCategoriesBlog(Request $request)
     {
-        $page = $request->input('page', 1);
-        $pageSize = $request->input('pageSize', 10);
+        try {
+            $page = $request->input('page', 1);
+            $pageSize = $request->input('pageSize', 10);
 
-        $category_id = $request->input('category_id');
-        $data = app(Blog::class)->getCategoryPostList($category_id, $page, $pageSize);
-        if (!empty($data['list'])) {
-            foreach ($data['list'] as $item) {
-                if (isset($item->featured_img) && !empty($item->featured_img)) {
-                    $item->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$item->featured_img;
+            $category_name = $request->category_name;
+            $category_id = $this->getCategoryId($category_name);
+            if (!isset($category_id)) {
+                throw new \Exception('category name is wrong!');
+            }
+            $data = app(Blog::class)->getCategoryPostList($category_id, $page, $pageSize);
+            if (!empty($data['list'])) {
+                foreach ($data['list'] as $item) {
+                    if (isset($item->featured_img) && !empty($item->featured_img)) {
+                        $item->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$item->featured_img;
+                    }
                 }
             }
-        }
-        if ($data) {
             return $this->success('success', $data);
-        } else {
-            return $this->fail('failure', 500, []);
+        } catch (\Exception $exception) {
+            return $this->fail($exception->getMessage(), 500, []);
         }
     }
 
