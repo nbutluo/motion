@@ -60,7 +60,7 @@ class BlogCategory extends Model
     public function getCategoriesInHome()
     {
         // is_active \ include_in_menu \ position DESC
-        return $this->select('category_id', 'title', 'identifier', 'content', 'position')->where('is_active', '1')->where('include_in_menu', '1')->orderBy('position', 'DESC')->get()->toArray();
+        return $this->select('category_id', 'title', 'identifier', 'content', 'position')->where('is_active', '1')/*->where('include_in_menu', '1')*/->orderBy('position', 'DESC')->get()->toArray();
     }
 
     // 更新激活状态

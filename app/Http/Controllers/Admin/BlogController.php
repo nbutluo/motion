@@ -59,17 +59,20 @@ class BlogController extends AdminController
     {
         $content = $request->input('content', '');
         $short_content = $request->input('short_content', '');
-        $is_active = $request->input('is_active', 0);
+        $is_active = $request->is_active == 1 ? $request->is_active : 0;
         $title = $request->input('title', '');
         if (empty($title)) return redirect::back()->withErrors('添加失败，缺少标题');
-        $image = $request->input('featured_img');
+        $image = isset($request->featured_img) ? $request->featured_img : '';
         $params = [
             'title' => $title,
             'content' => $content,
             'short_content' => $short_content,
             'publish_time' => date('Y-m-d H:i:s'),
             'is_active' => $is_active,
+            'show_in_home' => $request->show_in_home,
             'featured_img' => $image,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
         ];
 
         if ($category_id = $request->input('category_id')) {
@@ -78,7 +81,7 @@ class BlogController extends AdminController
         if ($keywords = $request->input('keywords')) {
             $params['keywords'] = $keywords;
         }
-        if ($relate = $request->input('relate_id')) {
+        if ($relate = $request->relate_id) {
             $relate_text = '';
             foreach ($relate as $rela) {
                 $relate_text = ($relate_text == '') ? $rela : $relate_text.','.$rela;

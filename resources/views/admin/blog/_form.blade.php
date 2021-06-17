@@ -37,7 +37,7 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">是否启用</label>
     <div class="layui-input-block">
-        <select name="show_in_home">
+        <select name="is_active">
             <option value="0" @if(isset($post->is_active)&&$post->is_active==0)selected @endif>否</option>
             <option value="1" @if(isset($post->is_active)&&$post->is_active==1)selected @endif>是</option>
         </select>
