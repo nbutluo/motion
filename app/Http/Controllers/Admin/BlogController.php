@@ -57,31 +57,32 @@ class BlogController extends AdminController
 
     public function addPost(Request $request)
     {
-        $content = $request->input('content', '');
-        $short_content = $request->input('short_content', '');
-        $is_active = $request->is_active == 1 ? $request->is_active : 0;
-        $title = $request->input('title', '');
+        $data = $request->toArray();
+        $content = isset($data['content']) ? $data['content'] : '';
+        $short_content = isset($data['short_content']) ? $data['short_content'] : '';
+        $is_active = $data['is_active'] == 1 ? $data['is_active'] : 0;
+        $title = isset($data['title']) ? $data['title'] : '';
         if (empty($title)) return redirect::back()->withErrors('添加失败，缺少标题');
-        $image = isset($request->featured_img) ? $request->featured_img : '';
+        $image = isset($data['featured_img']) ? $data['featured_img'] : '';
         $params = [
             'title' => $title,
             'content' => $content,
             'short_content' => $short_content,
             'publish_time' => date('Y-m-d H:i:s'),
             'is_active' => $is_active,
-            'show_in_home' => $request->show_in_home,
+            'show_in_home' => $data['show_in_home'],
             'featured_img' => $image,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
-        if ($category_id = $request->input('category_id')) {
+        if (isset($data['category_id']) && $category_id = $data['category_id']) {
             $params['category_id'] = $category_id;
         }
-        if ($keywords = $request->input('keywords')) {
+        if (isset($data['keywords']) && $keywords = $data['keywords']) {
             $params['keywords'] = $keywords;
         }
-        if ($relate = $request->relate_id) {
+        if (isset($data['relate_id']) && $relate = $data['relate_id']) {
             $relate_text = '';
             foreach ($relate as $rela) {
                 $relate_text = ($relate_text == '') ? $rela : $relate_text.','.$rela;
@@ -109,28 +110,29 @@ class BlogController extends AdminController
 
     public function update($id, Request $request)
     {
+        $data = $request->toArray();
         if (empty($id)) return redirect::back()->withErrors('参数错误，缺少ID');
 
         $params = [];
-        if ($title = $request->input('title')) {
+        if ($title = $data['title']) {
             $params['title'] = $title;
         }
-        if ($content = $request->input('content')) {
+        if ($content = $data['content']) {
             $params['content'] = $content;
         }
-        if ($short_content = $request->input('short_content')) {
+        if ($short_content = $data['short_content']) {
             $params['short_content'] = $short_content;
         }
-        if ($category_id = $request->input('category_id')) {
+        if ($category_id = $data['category_id']) {
             $params['category_id'] = $category_id;
         }
-        if ($keywords = $request->input('keywords')) {
+        if ($keywords = $data['keywords']) {
             $params['keywords'] = $keywords;
         }
-        if ($image = $request->input('featured_img')) {
+        if ($image = $data['featured_img']) {
             $params['featured_img'] = $image;
         }
-        if ($relate = $request->input('relate_id')) {
+        if (isset($data['relate_id']) && $relate = $data['relate_id']) {
             $relate_text = '';
             foreach ($relate as $rela) {
                 $relate_text = ($relate_text == '') ? $rela : $relate_text.','.$rela;
@@ -139,8 +141,8 @@ class BlogController extends AdminController
         }
 
         // 首页显示状态 1、是 2、否
-        $params['show_in_home'] = $request->input('show_in_home', 1);
-        $params['is_active'] = $request->input('is_active', 1);
+        $params['show_in_home'] = isset($data['show_in_home']) ? $data['show_in_home'] : 1;
+        $params['is_active'] = isset($data['is_active']) ? $data['is_active'] : 1;
 
         try {
             app(Blog::class)->updatePost($id, $params);
