@@ -50,12 +50,13 @@
                     , cols: [[ //表头
                         {checkbox: true, fixed: true}
                         , {field: 'id', title: 'ID', sort: true, width: 80}
-                        , {field: 'username', title: '用户名'}
+                        , {field: 'username', title: '用户名',sort: true}
                         , {field: 'nickname', title: '昵称'}
                         , {field: 'email', title: '邮箱'}
                         , {field: 'phone', title: '电话'}
-                        , {field: 'created_at', title: '创建时间'}
-                        , {field: 'updated_at', title: '更新时间'}
+                        , {field: 'deleted_at', title: '状态',sort: true, templet: function (res) {return (res.deleted_at != null) ? "已删除" : "正常";}}
+                        , {field: 'created_at', title: '创建时间',sort: true}
+                        , {field: 'updated_at', title: '更新时间',sort: true}
                         , {fixed: 'right',title: '操作', width: 320, align: 'center', toolbar: '#options'}
                     ]]
                 });

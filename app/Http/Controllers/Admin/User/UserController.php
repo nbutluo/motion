@@ -32,7 +32,7 @@ class UserController extends Controller
      */
     public function data(Request $request)
     {
-        $users = AdminUser::paginate($request->get('limit',30));
+        $users = AdminUser::withTrashed()->paginate($request->get('limit',30));
         $data = [
             'code' => 0,
             'msg' => 'loading....',
@@ -60,6 +60,10 @@ class UserController extends Controller
     {
         $data = $request->all();
         try {
+            $user = AdminUser::withTrashed()->select(['id'])->where('username',$data['username'])->first();
+            if (isset($user->id)) {
+                throw new \Exception('user has exists!');
+            }
             AdminUser::create([
                 'username' => $data['username'],
                 'nickname' => $data['nickname'],
