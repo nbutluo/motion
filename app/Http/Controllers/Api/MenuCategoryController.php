@@ -25,6 +25,12 @@ class MenuCategoryController extends ApiController
                         if ($category_title->parent_id == $category->id) {
                             $list2['title'] = $category_title->category_name;
                             $list2['sort'] = $category_title->sort;
+                            if (isset($category_title->image) && $category_title->image != '') {
+                                $list2['image'] = $category_title->image;
+                            }
+                            if (isset($category_title->description) && $category_title->description != '') {
+                                $list2['description'] = $category_title->description;
+                            }
                             $list3 = [];
                             foreach ($categories as $category_label) {
                                 if ($category_label->parent_id == $category_title->id) {
