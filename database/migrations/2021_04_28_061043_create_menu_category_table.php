@@ -18,6 +18,7 @@ class CreateMenuCategoryTable extends Migration
             $table->bigIncrements('id');
             $table->string('category_name',255)->default('')->comment('分类名称');
             $table->integer('parent_id')->default(0)->comment('father id');
+            $table->string('image')->default('')->comment('Image');
             $table->integer('sort')->default(0)->comment('分类排序');
             $table->tinyInteger('status')->default(1)->comment('1启用，2禁用');
             $table->timestamps();
