@@ -61,9 +61,7 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">内容</label>
     <div class="layui-input-block">
-        <script id="container" name="content" type="text/plain" style="width: 98%">
-            {!! $question->content??old('content') !!}
-        </script>
+        <textarea name="content" id="container" cols="30" rows="10">{{$question->content??old('content')}}</textarea>
     </div>
 </div>
 

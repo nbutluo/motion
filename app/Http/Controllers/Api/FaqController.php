@@ -27,6 +27,7 @@ class FaqController extends ApiController
 
             $questions = []; $category_question = []; $all_question = [];
             foreach ($question as $quest) {
+                $quest->content = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$quest->content);
                 if ($quest['product_id'] == $product->id) {
                     $questions[] = $quest;
                 } elseif($quest['category_id'] == $categoryId) {
@@ -52,6 +53,7 @@ class FaqController extends ApiController
     {
         try {
             $question = Question::findOrFail($questionId);
+            $question->content = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$question->content);
             return $this->success('success', $question);
         } catch (\Exception $exception) {
             return $this->fail('failure', 404, []);
@@ -62,6 +64,9 @@ class FaqController extends ApiController
     {
         try {
             $question = Question::select(['id','title','short_content','content'])->where('is_active',1)->limit(8)->get();
+            foreach ($question as $ques) {
+                $ques->content = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$ques->content);
+            }
             return $this->success('success', $question);
         } catch (\Exception $exception) {
             return $this->fail('failure', 404, []);

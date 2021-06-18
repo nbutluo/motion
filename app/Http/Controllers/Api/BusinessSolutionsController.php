@@ -24,6 +24,9 @@ class BusinessSolutionsController extends ApiController
                 ->orderBy('position','DESC')
                 ->offset(($page-1)*$request->page_size)
                 ->limit($page_size)->get();
+            foreach ($solutions as $solution) {
+                $solution->content = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$solution->content);
+            }
             $data = [];
             $data['totle'] = count($totalSolutions);
             $data['totle_pageNum'] = ceil($data['totle'] / $page_size);
