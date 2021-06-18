@@ -97,12 +97,18 @@ class BlogController extends ApiController
     //获取最近更新帖子
     public function lastUpdate()
     {
+        $catefories = BlogCategory::select(['category_id','title'])->where('is_active',1)->get();
+        $categoryData = [];
+        foreach ($catefories as $catefory) {
+            $categoryData[$catefory->category_id] = $catefory->title;
+        }
         try {
-            $news = Blog::select(['post_id','title','featured_img','short_content','content'])->where('is_active',1)->orderBy('updated_at','desc')->limit(3)->get();
+            $news = Blog::select(['post_id','category_id','title','featured_img','short_content','content'])->where('is_active',1)->orderBy('updated_at','desc')->limit(3)->get();
             foreach ($news as $new) {
                 if (isset($new->featured_img) && $new->featured_img) {
                     $new->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$new->featured_img;
                 }
+                $new->category_name = $categoryData[$new->category_id];
             }
             return $this->success('success', $news);
         } catch (\Exception $exception) {
