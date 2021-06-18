@@ -23,7 +23,7 @@ class BlogController extends AdminController
         $page = $request->input('page', 1);
         $limit = $request->input('limit', 10);
 
-        $res = app(Blog::class)->getPageList($page, $limit);
+        $res = app(Blog::class)->getPageList($page, $limit,['post_id','title','keywords','is_active','category_id','show_in_home','created_at','updated_at']);
         if (!empty($res['list'])) {
             foreach ($res['list'] as $re) {
                 if (isset($re->category_id) && !empty($re->category_id) && $re->category_id != 0) {
@@ -117,9 +117,7 @@ class BlogController extends AdminController
         if ($title = $data['title']) {
             $params['title'] = $title;
         }
-        if ($content = $data['content']) {
-            $params['content'] = $content;
-        }
+        $params['content'] = isset($data['content']) ? $data['content'] : '';
         if ($short_content = $data['short_content']) {
             $params['short_content'] = $short_content;
         }
