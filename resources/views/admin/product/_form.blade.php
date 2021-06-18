@@ -36,22 +36,6 @@
     </div>
 </div>
 
-{{--<div class="layui-form-item">--}}
-{{--    <label for="" class="layui-form-label">主图</label>--}}
-{{--    <div class="layui-input-block">--}}
-{{--        <div class="layui-upload">--}}
-{{--            <button type="button" class="layui-btn layui-btn-sm uploadPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>--}}
-{{--            <div class="layui-upload-list" >--}}
-{{--                <ul class="layui-upload-box layui-clear">--}}
-{{--                    @if(isset($product->image))--}}
-{{--                        <li><img src="{{ $product->image }}" /><p>上传成功</p></li>--}}
-{{--                    @endif--}}
-{{--                </ul>--}}
-{{--                <input type="hidden" name="image" class="layui-upload-input" value="{{ $product->image??'' }}">--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--</div>--}}
 <div class="layui-form-item">
     <label for="" class="layui-form-label">图片</label>
     <div class="layui-upload">
@@ -97,18 +81,13 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">产品内容</label>
     <div class="layui-input-block">
-        <script id="container" name="description" type="text/plain" style="width: 98%">
-            {!! $product->description??old('description') !!}
-        </script>
+        <textarea name="description" id="container" cols="30" rows="10">{{$product->description??old('description')}}</textarea>
     </div>
 </div>
-
 <div class="layui-form-item">
     <label for="" class="layui-form-label">产品参数</label>
     <div class="layui-input-block">
-        <script id="parameters" name="parameters" type="text/plain" style="width: 98%">
-            {!! $product->parameters??old('parameters') !!}
-        </script>
+        <textarea name="parameters" id="parameters" cols="30" rows="10">{{$product->parameters??old('parameters')}}</textarea>
     </div>
 </div>
 
@@ -122,6 +101,6 @@
 <div class="layui-form-item">
     <div class="layui-input-block">
         <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">确 认</button>
-        <a class="layui-btn" onclick="goBack()" >返 回</a>
+        <a class="layui-btn" href="{{route('admin.catalog.product')}}" >返 回</a>
     </div>
 </div>

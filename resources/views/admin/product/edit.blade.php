@@ -15,11 +15,11 @@
 @endsection
 
 {{-- 必须这个位置，DOM元素预先加载进缓存才能调用方案 --}}
-<script>
-    function goBack(){
-        window.history.back()
-    }
-</script>
+{{--<script>--}}
+{{--    function goBack(){--}}
+{{--        window.history.back()--}}
+{{--    }--}}
+{{--</script>--}}
 
 @section('script')
     @include('admin.product._js')
