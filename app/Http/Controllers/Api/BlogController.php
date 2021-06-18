@@ -34,6 +34,7 @@ class BlogController extends ApiController
         if(isset($data['featured_img']) && !empty($data['featured_img'])) {
             $data['featured_img'] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$data['featured_img'];
         }
+        $data['content'] = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$data['content']);
         return $this->success('success', $data);
     }
 

@@ -95,6 +95,7 @@
             elem: "#container"
             , height: 600
             , width:'100%',
+            convert_urls: false,
             images_upload_handler: function (blobInfo, success, failure, progress) {
                 var xhr, formData;
                 xhr = new XMLHttpRequest();
