@@ -144,17 +144,9 @@ class ProductOptionController extends AdminController
             'sort_order' => $request->input('sort_order')
         ];
 
-        if ($image = $request->input('image')) {
-            $params['image'] = $image;
-        }
-
-        if ($option_color = $request->input('option_color')) {
-            $params['option_color'] = $option_color;
-        }
-
-        if ($option_size = $request->input('option_size')) {
-            $params['option_size'] = $option_size;
-        }
+        $params['image'] = isset($request->image) ? $request->input('image') : '';
+        $params['option_color'] = isset($request->option_color) ? $request->input('option_color') : '';
+        $params['option_size'] = isset($request->option_size) ? $request->input('option_size') : '';
 
         try {
             if ($params['type'] == 2 && (!isset($params['option_color']) || empty($params['option_color']))) {
