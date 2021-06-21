@@ -91,6 +91,8 @@ class ProductController extends ApiController
             ];
 
             $data = $this->productModel->getDetailForApi($id, $select);
+            $data['description'] = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$data['description']);
+            $data['parameters'] = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$data['parameters']);
             if (isset($data['image']) && $data['image'] !='') {
                 $images = explode(';',$data['image']);
                 $imageData = [];
