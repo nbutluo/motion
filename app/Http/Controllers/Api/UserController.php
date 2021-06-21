@@ -9,10 +9,12 @@ use App\Model\DirectoryCountryRegion;
 
 class UserController extends ApiController
 {
-    public function getUser($uid)
+    public function getUser(Request $request)
     {
         try {
-            $user = Users::findOrFail($uid);
+//            $user = Users::findOrFail($uid);
+            $token = $request->header('Authorization');
+            $user = Users::where('api_token',$token)->first();
             if (isset($user->avatar) && !empty($user->avatar)) {
                 $user->avatar = HTTP_TEXT.$_SERVER["HTTP_HOST"].'/'.$user->avatar;
             } else {

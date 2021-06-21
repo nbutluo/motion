@@ -57,7 +57,7 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('faq/search','FaqController@getSearch')->name('faq.search.data');
 
     //个人中心
-    Route::get('user/{id}','UserController@getUser')->name('user.info');
+    Route::get('user','UserController@getUser')->name('user.info');
     Route::post('edit/user','UserController@editUser')->name('user.edit');
     Route::get('region','UserController@getRegion')->name('user.region');
     Route::post('user/update/avatar','UpdateController@update')->name('user.update.avatar');
@@ -108,7 +108,10 @@ Route::group(['namespace' => 'Api'], function () {
     //企业介绍
     Route::get('company/profile','CompanyProfileController@getProfile')->name('company.profile');
 
-//    //订阅
+    //订阅
     Route::post('store-subscription','SubscriptionController@store')->name('subscription.store');
+
+    //sitemap
+    Route::get('sitemap','SitemapController@sitemap')->name('sitemap');
 });
 
