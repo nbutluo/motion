@@ -148,7 +148,7 @@ class MediumSourceController extends ApiController
                     $medium->media_url = HTTP_TEXT . $_SERVER["HTTP_HOST"] . $medium->media_url;
                 }
                 if (isset($medium->media_links) && $medium->media_links != '') {
-                    $medium->media_links = HTTP_TEXT . $_SERVER["HTTP_HOST"] . $medium->media_links;
+                    $medium->media_links = $medium->media_links;
                 }
                 if ($request->medium_type == 3) {
                     $result[0][] = $medium;
