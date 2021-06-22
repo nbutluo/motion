@@ -53,7 +53,7 @@ class MediumSourceController extends ApiController
         if ($media_type == 2 || $media_type == 4) {
             $categoryName = 'Standing Desk';
         }elseif ($media_type == 5) {
-            $categoryName = 'United States';
+            $categoryName = 'Adaptor';
         }
         $thirdCategory = [];
         $categories = $this->getCategory();
