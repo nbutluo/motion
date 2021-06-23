@@ -33,6 +33,22 @@ class BannerController extends AdminController
     {
         $pageNames = [
             'Index','Index-mobile','productList','productList-mobile','productDetail','productDetail-mobile','FAQ','FAQ-mobile','News','News-mobile','Infomation','Infomation-mobile','AboutUs','AboutUs-mobile','ContactUs','ContactUs-mobile','HomeSolution','HomeSolution-mobile','OfficeSolution','OfficeSolution-mobile',
+            'Home Solutions','Home Solutions-mobile',
+            'Office Solutions','Office Solutions-mobile',
+            'Gaming Desks','Gaming Desks-mobile',
+            'Kids Study Desks','Kids Study Desks-mobile',
+            'C Tables','C Tables-mobile',
+            'Single Motor','Single Motor-mobile',
+            'Dual Motors','Dual Motors-mobile',
+            'Multi Motors','Multi Motors-mobile',
+            'Crank Handle','Crank Handle-mobile',
+            'Full','Full-mobile',
+            'Twin XL','Twin XL-mobile',
+            'Queen','Queen-mobile',
+            'Desk Converters','Desk Converters-mobile',
+            'Monitor Arms','Monitor Arms-mobile',
+            'Deskside Bikes','Deskside Bikes-mobile',
+            'Accessories','Accessories-mobile',
         ];
         return $pageNames;
     }
