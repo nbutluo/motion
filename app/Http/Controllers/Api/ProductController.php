@@ -106,14 +106,14 @@ class ProductController extends ApiController
             }
             if (!empty($data)) {
                 // option 选项配置
-                $option_size = $this->optionModel->select(['id','sku','title'])->where('product_id', $data['id'])->where('type', 2)->where('is_active', 1)->orderBy('sort_order', 'desc')->get();
+                $option_size = $this->optionModel->select(['id','sku','title','option_size'])->where('product_id', $data['id'])->where('type', 2)->where('is_active', 1)->orderBy('sort_order', 'desc')->get();
 //                foreach ($option_size as $o_s) {
 //                    if ($o_s['image'] != '') {
 //                        $o_s['image'] = $_SERVER["HTTP_HOST"].$o_s['image'];
 //                    }
 //                }
                 $data['option_size'] = $option_size;
-                $option_color = $this->optionModel->select(['id','sku','title'])->where('product_id', $data['id'])->where('type', 1)->where('is_active', 1)->orderBy('sort_order', 'desc')->get();
+                $option_color = $this->optionModel->select(['id','sku','title','option_color'])->where('product_id', $data['id'])->where('type', 1)->where('is_active', 1)->orderBy('sort_order', 'desc')->get();
                 foreach ($option_color as $o_c) {
                     if (isset($o_c['image']) && $o_c['image'] != '') {
                         $o_c['image'] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$o_c['image'];
