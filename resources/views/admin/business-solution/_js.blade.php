@@ -8,6 +8,7 @@
             upload.render({
                 elem: $(elem)
                 , url: '{{ route("admin.upload.media") }}'
+                , accept: 'file'  // 视频等文件需要增加该参数
                 , multiple: false
                 , data: {"_token": "{{ csrf_token() }}"}
                 , done: function (res) {
@@ -22,7 +23,7 @@
                     }
                 }
             });
-        })
+        });
 
     })
     // layer.photos({

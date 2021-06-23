@@ -22,6 +22,7 @@ class CreateBusinessSolutionsTable extends Migration
             $table->tinyInteger('is_active')->default(1)->comment('Is Active');
             $table->integer('position')->default(0)->comment('Position');
             $table->string('media_link')->nullable()->comment('media Link');
+            $table->string('media_alt')->nullable()->comment('Media Alt');
             $table->softDeletes();
             $table->timestamps();
         });

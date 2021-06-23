@@ -35,6 +35,13 @@
 </div>
 
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">solution alt</label>
+    <div class="layui-input-block">
+        <input type="text" name="media_alt" value="{{$solution->media_alt??old('media_alt')}}" placeholder="请输alt值(上传图片时需要填写)" class="layui-input" >
+    </div>
+</div>
+
+<div class="layui-form-item">
     <label for="" class="layui-form-label">solution内容</label>
     <div class="layui-input-block">
         <textarea name="content" id="container" cols="30" rows="10">{{$solution->content??old('content')}}</textarea>

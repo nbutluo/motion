@@ -18,7 +18,7 @@ class BusinessSolutionsController extends ApiController
                 ->where('category_type',$request->type)
                 ->orderBy('position','DESC')
                 ->get();
-            $solutions = Business_solutions::select(['id','title','content','media_link'])
+            $solutions = Business_solutions::select(['id','title','content','media_link','media_alt'])
                 ->where('is_active',1)
                 ->where('category_type',$request->type)
                 ->orderBy('position','DESC')

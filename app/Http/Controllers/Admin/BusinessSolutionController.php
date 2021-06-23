@@ -47,6 +47,9 @@ class BusinessSolutionController extends AdminController
             if ($data['media_link'] != '') {
                 $params['media_link'] = $data['media_link'];
             }
+            if ($data['media_alt'] != '') {
+                $params['media_alt'] = $data['media_alt'];
+            }
             if ($data['position'] != '') {
                 $params['position'] = $data['position'];
             }
@@ -76,6 +79,7 @@ class BusinessSolutionController extends AdminController
             $params['category_type'] = (isset($data['category_type']) && $data['category_type']) ? $data['category_type'] : 1;
             $params['title'] = (isset($data['title']) && $data['title']) ? $data['title'] : '';
             $params['media_link'] = (isset($data['media_link']) && $data['media_link']) ? $data['media_link'] : '';
+            $params['media_alt'] = (isset($data['media_alt']) && $data['media_alt']) ? $data['media_alt'] : '';
             $params['is_active'] = (isset($data['is_active']) && $data['is_active']) ? $data['is_active'] : 1;
             $params['position'] = (isset($data['position']) && $data['position']) ? $data['position'] : 0;
             $params['content'] = (isset($data['content']) && $data['content']) ? $data['content'] : '';
