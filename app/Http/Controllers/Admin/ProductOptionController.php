@@ -101,6 +101,10 @@ class ProductOptionController extends AdminController
             $params['option_size'] = $option_size;
         }
 
+        if (isset($request->image_alt) && $request->image_alt != '' && isset($params['image']) && $params['image'] != '') {
+            $params['image_alt'] = $request->image_alt;
+        }
+
         if ($sort_order = $request->input('sort_order')) {
             $params['sort_order'] = $sort_order;
         } else {
@@ -108,9 +112,9 @@ class ProductOptionController extends AdminController
         }
 
         try {
-            if ($params['type'] == 2 && (!isset($params['option_color']) || empty($params['option_color']))) {
-                throw new \Exception('必须设置对应颜色');
-            }
+//            if ($params['type'] == 2 && (!isset($params['option_color']) || empty($params['option_color']))) {
+//                throw new \Exception('必须设置对应颜色');
+//            }
             $this->optionModel->insertGetId($params);
             return redirect::to(URL::route('admin.catalog.option'))->with(['success' => '添加成功']);
         } catch (\Exception $e) {
@@ -145,13 +149,14 @@ class ProductOptionController extends AdminController
         ];
 
         $params['image'] = isset($request->image) ? $request->input('image') : '';
-        $params['option_color'] = isset($request->option_color) ? $request->input('option_color') : '';
-        $params['option_size'] = isset($request->option_size) ? $request->input('option_size') : '';
+        $params['image_alt'] = isset($request->image_alt) ? $request->image_alt : '';
+        $params['option_color'] = isset($request->option_color) ? $request->option_color : '';
+        $params['option_size'] = isset($request->option_size) ? $request->option_size : '';
 
         try {
-            if ($params['type'] == 2 && (!isset($params['option_color']) || empty($params['option_color']))) {
-                throw new \Exception('必须设置对应颜色');
-            }
+//            if ($params['type'] == 2 && (!isset($params['option_color']) || empty($params['option_color']))) {
+//                throw new \Exception('必须设置对应颜色');
+//            }
             $option->update($params);
             return redirect::to(URL::route('admin.catalog.option'))->with(['success' => '添加成功']);
         } catch (\Exception $e) {

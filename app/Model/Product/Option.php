@@ -9,6 +9,7 @@ class Option extends Model
 {
     protected $table = 'catalog_product_option';
     protected $primaryKey = 'id';
+    protected $fillable = ['sku','product_id','title','type','description','is_active','sort_order','image','image_alt','image_alt','option_color','option_size'];
 
     //考虑到性能问题，通常$columns我们不以*号为值。可传入需要查询的字段替代。这里只做演示。无此要求
     public function paginate($perPage = null, $columns = ['*'], $page = null, $pageName = 'page', $where = [])

@@ -44,19 +44,26 @@
 </div>
 
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">主图</label>
+    <label for="" class="layui-form-label">desk图片</label>
     <div class="layui-input-block">
         <div class="layui-upload">
             <button type="button" class="layui-btn layui-btn-sm uploadPic"><i class="layui-icon">&#xe67c;</i>图片上传</button>
             <div class="layui-upload-list" >
                 <ul class="layui-upload-box layui-clear">
-                    @if(isset($product->image))
+                    @if(isset($product->image) && $product->image != '')
                         <li><img src="{{ $product->image }}" /><p>上传成功</p></li>
                     @endif
                 </ul>
                 <input type="hidden" name="image" class="layui-upload-input" value="{{ $product->image??'' }}">
             </div>
         </div>
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">desk图片alt</label>
+    <div class="layui-input-inline">
+        <input type="text" name="image_alt" value="{{$product->image_alt??old('image_alt')}}" placeholder="请输入desk图片alt属性值" class="layui-input" >
     </div>
 </div>
 

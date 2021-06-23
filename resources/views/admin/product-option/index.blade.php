@@ -53,11 +53,11 @@
                     , url: "{{ route('admin.catalog.option.data') }}" //数据接口
                     , page: true //开启分页
                     , cols: [[ //表头
-                        {checkbox: true, fixed: true}
-                        , {field: 'id', title: 'ID', sort: true, width: 80}
+                        // {checkbox: true, fixed: true},
+                        {field: 'id', title: 'ID', sort: true, width: 80}
                         , {field: 'sku', title: 'SKU', width: 200}
                         , {field: 'title', title: 'Title', width: 200}
-                        , {field: 'type', title: '产品选项类型', width: 280, templet: function (res) {
+                        , {field: 'type', title: '产品选项类型', width: 120, templet: function (res) {
                                 $type_string = '未知';
                                 // switch (res.type) {
                                 //     case 1: $type_string = '桌板颜色'; break;
@@ -76,13 +76,13 @@
                                 }
                                 return $type_string;
                             }}
-                        , {field: 'product_id', title: '所属产品ID', width: 200}
-                        , {field: 'description', title: '描述', width: 200}
+                        , {field: 'product_id', title: '所属产品ID', width: 100}
+                        , {field: 'description', title: '描述', width: 120}
                         , {field: 'is_active', title: '是否启用', templet: function (res) {return (res.is_active == 0) ? "否" : "是";}}
                         , {field: 'sort_order', title: '位置权重'}
                         , {field: 'created_at', title: '创建时间'}
                         , {field: 'updated_at', title: '更新时间'}
-                        , {fixed: 'right',title: '操作', width: 140, align: 'center', toolbar: '#options'}
+                        , {fixed: 'right',title: '操作', width: 100, align: 'center', toolbar: '#options'}
                     ]]
                 });
 

@@ -24,6 +24,7 @@ class CreateCatalogProductOptionTable extends Migration
             $table->smallInteger('is_active')->nullable()->comment('Layer');
             $table->integer('sort_order')->default(0)->comment('Sort Order');
             $table->text('image')->nullable()->comment('Image');
+            $table->string('image_alt')->nullable()->comment('Image Alt');
             $table->string('option_color')->nullable()->comment('Option Color');
             $table->string('option_size')->nullable()->comment('Option Size');
             $table->text('dependency')->nullable()->comment('Dependency options');
