@@ -19,6 +19,7 @@ class CreateMediumBannerTable extends Migration
             $table->string('page_name')->nullable()->comment('Page Name');
             $table->string('description')->nullable()->comment('Description');
             $table->string('media_url')->nullable()->comment('Media Url');
+            $table->string('banner_alt')->default('')->comment('Banner Alt');
             $table->tinyInteger('is_active')->default(1)->comment('Is Active');
             $table->softDeletes();
             $table->timestamps();

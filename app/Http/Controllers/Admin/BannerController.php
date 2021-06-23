@@ -56,6 +56,7 @@ class BannerController extends AdminController
             MediumBanner::create([
                 'page_name' => $data['page_name'],
                 'media_url' => $images,
+                'banner_alt' => $data['banner_alt'],
                 'is_active' => $data['is_active'],
                 'description' => $data['description'],
             ]);
@@ -79,7 +80,7 @@ class BannerController extends AdminController
 
     public function update(Request $request,$id)
     {
-        $data = $request->only(['page_name','media_url','is_active','description']);
+        $data = $request->only(['page_name','media_url','is_active','description','banner_alt']);
         $medis_url = '';
         if (!empty($data['media_url'])) {
             foreach ($data['media_url'] as $media) {

@@ -40,13 +40,20 @@
                 @if (isset($banner->media_url) && $banner->media_url != '')
                     @foreach($banner->media_url as $image)
                         <div onclick="delMultipleImgs(this)">
-                            <img style="float:left;" src="{{$image}}" alt="{{$image}}" id="{{$image}}"{{-- onclick="delMultipleImgs(this)"--}}>
+                            <img style="float:left;width:100%;height:auto;" src="{{$image}}" alt="{{$image}}" id="{{$image}}"{{-- onclick="delMultipleImgs(this)"--}}>
                             <input type="hidden" name="media_url[]" class="{{$image}}" value="{{$image}}">
                         </div>
                     @endforeach
                 @endif
             </div>
         </blockquote>
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">banner图片alt</label>
+    <div class="layui-input-block">
+        <input type="text" name="banner_alt" value="{{$banner->banner_alt??old('banner_alt')}}" lay-verify="required" placeholder="请输入banner图片alt属性值" class="layui-input" >
     </div>
 </div>
 

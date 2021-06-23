@@ -42,7 +42,9 @@
                         {field: 'id', title: 'ID', sort: true, width: 80}
                         , {field: 'page_name', title: '页面名称'}
                         , {field: 'description', title: '描述'}
-                        , {field: 'media_url', title: '链接'}
+                        , {field: 'media_url', title: '链接',templet:function(res){
+                                return '<div onclick="show_img(this)"><img src="'+res.media_url+'" alt=""></div>';
+                            }}
                         , {field: 'is_active', title: '标题', templet: function (res) {return (res.is_active == 0) ? "否" : "是";}}
                         , {field: 'created_at', title: '创建时间'}
                         , {field: 'updated_at', title: '修改时间'}
@@ -76,7 +78,22 @@
                         location.href = data.id + '/edit';
                     }
                 });
-            })
+            });
+            //点击放发图片
+            function show_img(t) {
+                var t = $(t).find("img");
+                //页面层
+                layer.open({
+                    type: 1,
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['100%', 'auto'], //宽高
+                    shadeClose: true, //开启遮罩关闭
+                    end: function (index, layero) {
+                        return false;
+                    },
+                    content: '<div style="text-align:center"><img src="' + $(t).attr('src') + '" style="width:100%;height:auto;" /></div>'
+                });
+            }
         </script>
     @endcan
 @endsection
