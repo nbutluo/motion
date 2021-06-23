@@ -17,9 +17,8 @@ class RegisterController extends ApiController
     public function create(Request $request)
     {
         try {
-            $code = $request->code;
-            $verify = $request->verify_code;
-            $verifyCode = session($code);
+            $verify = $request->verification;
+            $verifyCode = session($request->username);
             if ($verify == $verifyCode) {
                 $this->checkParams($request);
                 $params = [];
@@ -31,7 +30,7 @@ class RegisterController extends ApiController
                 $params['api_token'] = Hash::make(Str::random(60));
                 $userSave = Users::create($params);
                 if ($userSave) {
-                    Session::pull($code,'');//清除session
+                    Session::pull($request->username,'');//清除session
                     $result['code'] = 200;
                     $result['data']['message'] = 'register successful!';
                     return $this->success('register successful!',$userSave);
