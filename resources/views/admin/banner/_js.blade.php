@@ -41,17 +41,41 @@
                 $('#images_show').append('<div onclick="delMultipleImgs(this)"><img style="float:left;width:100%;height:auto;" src="'+ res.url +'" id="'+res.url+'" alt="'+ res.url +'" class="layui-upload-img" title="单击删除"><input type="hidden" name="media_url[]" id="'+res.url+'" value="'+ res.url +'"></div>');
             }
         });
+        upload.render({
+            elem: '#images_mobile'
+            ,url: '{{route('admin.upload.media')}}' //改成您自己的上传接口
+            ,multiple: true
+            , data: {"_token": "{{ csrf_token() }}"}
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){});
+            }
+            ,done: function(res){
+                //上传完毕
+                $('#images_show_mobile').append('<div onclick="delMultipleImgsMobile(this)"><img style="float:left;width:100%;height:auto;" src="'+ res.url +'" id="'+res.url+'" alt="'+ res.url +'" class="layui-upload-img" title="单击删除"><input type="hidden" name="media_url_mobile[]" id="'+res.url+'" value="'+ res.url +'"></div>');
+            }
+        });
     })
     /**
      * 多图清除按钮点击事件
      */
     $("#btn_image_clear").click(function () {
         $('#images_show').html("");
-        $(".upload_image_url").val('');
+        // $(".upload_image_url").val('');
+    });
+    $("#btn_image_clear_mobile").click(function () {
+        $('#images_show_mobile').html("");
     });
     //单图删除操作
     function delMultipleImgs(obj) {
-        obj.remove();
+        if (confirm('删除后资源将丢失，确认要删除么？')) {
+            obj.remove();
+        }
+    }
+    function delMultipleImgsMobile(obj) {
+        if (confirm('删除后资源将丢失，确认要删除么？')) {
+            obj.remove();
+        }
     }
     layer.photos({
         photos: '#layer-picture'

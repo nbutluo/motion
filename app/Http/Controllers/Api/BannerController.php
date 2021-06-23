@@ -15,7 +15,7 @@ class BannerController extends ApiController
                 'media_img' => [],
                 'mob_img' => []
             ];
-            $banner = MediumBanner::select(['page_name','media_url','banner_alt'])->where('is_active',1)->where('page_name','like',$pageName.'%')->get();
+            $banner = MediumBanner::select(['page_name','media_url','banner_alt','media_url_mobile','banner_alt_mobile'])->where('is_active',1)->where('page_name',$pageName)->get();
             foreach ($banner as $ban) {
                 if (isset($ban->media_url) && $ban->media_url != '') {
                     $medias = explode(';',$ban->media_url);
@@ -23,13 +23,16 @@ class BannerController extends ApiController
                     foreach ($medias as $media) {
                         $mediaData[] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$media;
                     }
-                    if (strpos($ban->page_name,'mobile') !== false) {
-                        $data['mob_img'] = $mediaData;
-                        $data['mob_img_alt'] = $ban->banner_alt;
-                    } else {
-                        $data['media_img'] = $mediaData;
-                        $data['media_img_alt'] = $ban->banner_alt;
+                    $medias_mobile = explode(';',$ban->media_url_mobile);
+                    $mediaData_mobile = [];
+                    foreach ($medias_mobile as $media_mobile) {
+                        $mediaData_mobile[] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$media_mobile;
                     }
+                    $data['mob_img'] = $mediaData_mobile;
+                    $data['mob_img_alt'] = $ban->banner_alt_mobile;
+                    $data['media_img'] = $mediaData;
+                    $data['media_img_alt'] = $ban->banner_alt;
+
                 }
             }
             return $this->success('success', $data);

@@ -58,6 +58,36 @@
 </div>
 
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">banner图片-手机端</label>
+    <div class="layui-upload">
+        <button type="button" class="layui-btn" id="images_mobile">多图片上传</button>
+        <button type="button" class="layui-btn" id="btn_image_clear_mobile">清空多图</button>
+        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
+            预览图:<span style="color:#8d8d8d;">(单击删除)</span>
+            <div class="layui-upload-list" id="images_show_mobile">
+                @if (isset($banner->media_url_mobile) && $banner->media_url_mobile != '')
+                    @foreach($banner->media_url_mobile as $image_mobile)
+                        <div onclick="delMultipleImgsMobile(this)">
+                            <img style="float:left;width:100%;height:auto;" src="{{$image_mobile}}" alt="{{$image_mobile}}" id="{{$image_mobile}}">
+                            <input type="hidden" name="media_url_mobile[]" class="{{$image_mobile}}" value="{{$image_mobile}}">
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+        </blockquote>
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">banner图片alt-手机端</label>
+    <div class="layui-input-block">
+        <input type="text" name="banner_alt_mobile" value="{{$banner->banner_alt_mobile??old('banner_alt_mobile')}}" lay-verify="required" placeholder="请输入手机端banner图片alt属性值" class="layui-input" >
+    </div>
+</div>
+
+
+
+<div class="layui-form-item">
     <label for="" class="layui-form-label">是否启用</label>
     <div class="layui-input-block">
         <select name="is_active">

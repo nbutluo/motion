@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
 use App\Model\MediumBanner;
+use App\Model\Product\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
@@ -20,6 +21,12 @@ class BannerController extends AdminController
     public function getList(Request $request)
     {
         $banner = MediumBanner::paginate($request->get('limit',30));
+        foreach ($banner as $ban) {
+            $image = explode(';',$ban->media_url);
+            $ban->media_url = $image;
+            $image_mobile = explode(';',$ban->media_url_mobile);
+            $ban->media_url_mobile = $image_mobile;
+        }
         $data = [
             'code' => 0,
             'msg' => 'loading....',
@@ -31,25 +38,18 @@ class BannerController extends AdminController
 
     public function getPageName()
     {
-        $pageNames = [
-            'Index','Index-mobile','productList','productList-mobile','productDetail','productDetail-mobile','FAQ','FAQ-mobile','News','News-mobile','Infomation','Infomation-mobile','AboutUs','AboutUs-mobile','ContactUs','ContactUs-mobile','HomeSolution','HomeSolution-mobile','OfficeSolution','OfficeSolution-mobile',
-            'Home Solutions','Home Solutions-mobile',
-            'Office Solutions','Office Solutions-mobile',
-            'Gaming Desks','Gaming Desks-mobile',
-            'Kids Study Desks','Kids Study Desks-mobile',
-            'C Tables','C Tables-mobile',
-            'Single Motor','Single Motor-mobile',
-            'Dual Motors','Dual Motors-mobile',
-            'Multi Motors','Multi Motors-mobile',
-            'Crank Handle','Crank Handle-mobile',
-            'Full','Full-mobile',
-            'Twin XL','Twin XL-mobile',
-            'Queen','Queen-mobile',
-            'Desk Converters','Desk Converters-mobile',
-            'Monitor Arms','Monitor Arms-mobile',
-            'Deskside Bikes','Deskside Bikes-mobile',
-            'Accessories','Accessories-mobile',
-        ];
+        $pageNames = ['Index','productList','productDetail','FAQ','News','Infomation','AboutUs','ContactUs','HomeSolution','OfficeSolution'];
+        $categories = Category::select(['id','name','parent_id'])->where('is_active',1)->get();
+        foreach ($categories as $category) {
+            if ($category->parent_id == 0) {
+                $pageNames[] = $category->name;
+                foreach ($categories as $catego) {
+                    if ($catego->parent_id == $category->id) {
+                        $pageNames[] = $catego->name;
+                    }
+                }
+            }
+        }
         return $pageNames;
     }
 
@@ -68,11 +68,19 @@ class BannerController extends AdminController
                 $images = ($images == '') ? $image : $images.';'.$image;
             }
         }
+        $images_mobile = '';
+        if (!empty($data['media_url_mobile'])) {
+            foreach ($data['media_url_mobile'] as $image_mobile) {
+                $images_mobile = ($images_mobile == '') ? $image_mobile : $images_mobile.';'.$image_mobile;
+            }
+        }
         try {
             MediumBanner::create([
                 'page_name' => $data['page_name'],
                 'media_url' => $images,
                 'banner_alt' => $data['banner_alt'],
+                'media_url_mobile' => $images_mobile,
+                'banner_alt_mobile' => $data['banner_alt_mobile'],
                 'is_active' => $data['is_active'],
                 'description' => $data['description'],
             ]);
@@ -91,12 +99,16 @@ class BannerController extends AdminController
             $image = explode(';',$banner->media_url);
             $banner->media_url = $image;
         }
+        if (isset($banner->media_url) && $banner->media_url != '') {
+            $image_mobile = explode(';',$banner->media_url_mobile);
+            $banner->media_url_mobile = $image_mobile;
+        }
         return view('admin.banner.edit',compact('pageNames','id','banner'));
     }
 
     public function update(Request $request,$id)
     {
-        $data = $request->only(['page_name','media_url','is_active','description','banner_alt']);
+        $data = $request->only(['page_name','media_url','is_active','description','banner_alt','media_url_mobile','banner_alt_mobile']);
         $medis_url = '';
         if (!empty($data['media_url'])) {
             foreach ($data['media_url'] as $media) {
@@ -104,6 +116,13 @@ class BannerController extends AdminController
             }
         }
         $data['media_url'] = $medis_url;
+        $medis_url_mobile = '';
+        if (!empty($data['media_url_mobile'])) {
+            foreach ($data['media_url_mobile'] as $media_mobile) {
+                $medis_url_mobile = ($medis_url_mobile == '') ? $media_mobile : $medis_url_mobile.';'.$media_mobile;
+            }
+        }
+        $data['media_url_mobile'] = $medis_url_mobile;
         try {
             $banner = MediumBanner::findOrFail($id);
             $banner->update($data);
