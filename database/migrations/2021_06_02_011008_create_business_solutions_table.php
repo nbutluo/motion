@@ -21,6 +21,7 @@ class CreateBusinessSolutionsTable extends Migration
             $table->text('content')->nullable()->comment('content');
             $table->tinyInteger('is_active')->default(1)->comment('Is Active');
             $table->integer('position')->default(0)->comment('Position');
+            $table->tinyInteger('media_type')->default(1)->comment('Media Type:1 视频 , 2 图片');
             $table->string('media_link')->nullable()->comment('media Link');
             $table->string('media_alt')->nullable()->comment('Media Alt');
             $table->softDeletes();

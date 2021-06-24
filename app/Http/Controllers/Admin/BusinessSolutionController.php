@@ -57,6 +57,7 @@ class BusinessSolutionController extends AdminController
                 $params['content'] = $data['content'];
             }
             $params['is_active'] = $data['is_active'];
+            $params['media_type'] = $data['media_type'];
 //            var_dump($params);
             Business_solutions::create($params);
             return Redirect::to(URL::route('admin.solution.index'))->with(['success'=>'添加成功']);
@@ -78,6 +79,7 @@ class BusinessSolutionController extends AdminController
             $params = [];
             $params['category_type'] = (isset($data['category_type']) && $data['category_type']) ? $data['category_type'] : 1;
             $params['title'] = (isset($data['title']) && $data['title']) ? $data['title'] : '';
+            $params['media_type'] = (isset($data['media_type']) && $data['media_type']) ? $data['media_type'] : '';
             $params['media_link'] = (isset($data['media_link']) && $data['media_link']) ? $data['media_link'] : '';
             $params['media_alt'] = (isset($data['media_alt']) && $data['media_alt']) ? $data['media_alt'] : '';
             $params['is_active'] = (isset($data['is_active']) && $data['is_active']) ? $data['is_active'] : 1;

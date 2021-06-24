@@ -9,5 +9,5 @@ class Business_solutions extends Model
 {
     use SoftDeletes;
     protected $table = 'business_solutions';
-    protected $fillable = ['category_type','title','content','media_link','position','is_active','media_alt'];
+    protected $fillable = ['category_type','title','content','media_link','position','is_active','media_alt','media_type'];
 }

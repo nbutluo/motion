@@ -47,6 +47,7 @@
                         , {field: 'title', title: '标题'}
                         , {field: 'content', title: '内容', width: 100}
                         , {field: 'is_active', title: '是否启用', templet: function (res) {return (res.is_active == 0) ? "否" : "是";}}
+                        , {field: 'media_type', title: '资源类型', templet: function (res) {return (res.media_type == 1) ? "视频" : "图片";}}
                         , {field: 'media_link', title: '资源链接'}
                         , {field: 'position', title: '权重', width: 250,}
                         , {field: 'created_at', title: '创建时间'}

@@ -18,6 +18,16 @@
 </div>
 
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">资源类型</label>
+    <div class="layui-input-block">
+        <select name="media_type">
+            <option value="1" @if(isset($solution->media_type)&&$solution->media_type==1)selected @endif>视频</option>
+            <option value="2" @if(isset($solution->media_type)&&$solution->media_type==2)selected @endif>图片</option>
+        </select>
+    </div>
+</div>
+
+<div class="layui-form-item">
     <label for="" class="layui-form-label">solution资源</label>
     <div class="layui-input-block">
         <div class="layui-upload">
