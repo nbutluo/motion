@@ -75,6 +75,13 @@
 </div>
 
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">图片alt</label>
+    <div class="layui-input-block">
+        <input type="text" name="lable" value="{{$media->lable??old('lable')}}" placeholder="请输入图片alt属性值" class="layui-input" >
+    </div>
+</div>
+
+<div class="layui-form-item">
     <label for="" class="layui-form-label">资源文件</label>
     <div class="layui-input-block">
         <div class="layui-upload">

@@ -12,6 +12,7 @@ class MediumSource extends Model
 
     protected $table = 'medium_source';
     protected $primaryKey = 'id';
+    protected $fillable = ['label'];
 
     protected $dates = ['deleted_at'];
 

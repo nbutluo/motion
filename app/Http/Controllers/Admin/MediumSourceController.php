@@ -120,6 +120,7 @@ class MediumSourceController extends AdminController
         $params['media_type'] = (isset($request->media_type) && $request->media_type != '') ? $request->media_type : 0;
         $params['category_id'] = (isset($request->category_id) && $request->category_id != '') ? $request->category_id : 0;
         $params['media_url'] = (isset($request->media_url) && $request->media_url != '') ? $request->media_url : '';
+        $params['lable'] = (isset($request->lable) && $request->lable != '') ? $request->lable : '';
         $params['media_links'] = (isset($request->media_links) && $request->media_links != '') ? $request->media_links : '';
         $params['position'] = (isset($request->position) && $request->position != '') ? $request->position : 0;
         $params['is_active'] = (isset($request->is_active) && $request->is_active != '') ? $request->is_active : 0;
@@ -186,6 +187,9 @@ class MediumSourceController extends AdminController
         }
         if ($category_id = $request->input('category_id')) {
             $params['category_id'] = $category_id;
+        }
+        if (isset($request->lable) && $lable = $request->input('lable')) {
+            $params['lable'] = $lable;
         }
         if ($media_url = $request->input('media_url')) {
             $params['media_url'] = $media_url;
