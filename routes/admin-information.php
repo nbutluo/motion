@@ -126,3 +126,18 @@ Route::group(['middleware' => ['auth', 'permission:customer']],function() {
         });
     });
 });
+
+//about loctek 管理
+Route::group(['middleware' => ['auth', 'permission:about.loctek']],function() {
+    Route::group(['middleware' => ['permission:about.loctek.list']],function(){
+        Route::group(['namespace' => 'Admin'], function () {
+            Route::get('aboutLoctek/index','AboutLoctekController@index')->name('admin.about.loctek.index');
+            Route::get('aboutLoctek/data','AboutLoctekController@getList')->name('admin.about.loctek.data');
+            Route::get('aboutLoctek/create','AboutLoctekController@create')->name('admin.about.loctek.create')->middleware('permission:about.loctek.create');
+            Route::post('aboutLoctek/add','AboutLoctekController@add')->name('admin.about.loctek.add')->middleware('permission:about.loctek.create');
+            Route::get('aboutLoctek/{id}/edit','AboutLoctekController@edit')->name('admin.about.loctek.edit')->middleware('permission:about.loctek.edit');
+            Route::post('aboutLoctek/update','AboutLoctekController@update')->name('admin.about.loctek.update')->middleware('permission:about.loctek.edit');
+            Route::delete('aboutLoctek/destory','AboutLoctekController@destory')->name('admin.about.loctek.destory')->middleware('permission:about.loctek.destory');
+        });
+    });
+});

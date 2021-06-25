@@ -272,6 +272,17 @@ class AdminUsersTableSeeder extends Seeder
                             ['name' => 'medium.list.edit', 'display_name' => '编辑资源','route'=>'admin.medium.edit'],
                         ]
                     ],
+                    [
+                        'name' => 'medium.category.list',
+                        'display_name' => '资源分类列表',
+                        'route' => 'admin.medium.category.index',
+                        'is_menu' => 1,
+                        'child' => [
+                            ['name' => 'medium.category.create', 'display_name' => '新增资源分类','route'=>'admin.medium.category.create'],
+                            ['name' => 'medium.category.edit', 'display_name' => '编辑资源分类','route'=>'admin.medium.category.edit'],
+                            ['name' => 'medium.category.destory', 'display_name' => '删除资源分类','route'=>'admin.medium.category.destory'],
+                        ]
+                    ],
                 ],
             ],
             [
@@ -345,6 +356,25 @@ class AdminUsersTableSeeder extends Seeder
                             ['name' => 'customer.create', 'display_name' => '新建customer','route'=>'admin.customer.create'],
                             ['name' => 'customer.edit', 'display_name' => '编辑customer','route'=>'admin.customer.edit'],
                             ['name' => 'customer.destory', 'display_name' => '删除customer','route'=>'admin.customer.destory'],
+                        ]
+                    ],
+                ],
+            ],
+            [
+                'name' => 'about.loctek',
+                'display_name' => 'AboutLoctek管理',
+                'route' => '',
+                'icon' => 'layui-icon-about',
+                'child' => [
+                    [
+                        'name' => 'about.loctek.list',
+                        'display_name' => 'AboutLoctek列表',
+                        'route' => 'admin.about.loctek.index',
+                        'is_menu' => 1,
+                        'child' => [
+                            ['name' => 'about.loctek.create', 'display_name' => 'AboutLoctek新建','route'=>'admin.about.loctek.create'],
+                            ['name' => 'about.loctek.edit', 'display_name' => 'AboutLoctek编辑','route'=>'admin.about.loctek.edit'],
+                            ['name' => 'about.loctek.destory', 'display_name' => 'AboutLoctek删除','route'=>'admin.about.loctek.destory'],
                         ]
                     ],
                 ],
