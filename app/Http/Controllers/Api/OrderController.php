@@ -20,7 +20,7 @@ class OrderController extends ApiController
             $token = $request->header('Authorization');
             $user = Users::where('api_token',$token)->first();
             if (!isset($user)) {
-                throw new \Exception('please login!');
+                throw new \Exception('please login!',4003);
             }
             $pendingOrder = $request->toArray();
             $items = json_decode($pendingOrder['items'],true);
@@ -76,7 +76,8 @@ class OrderController extends ApiController
             }
             return $this->success('success', $data);
         } catch(\Exception $exception) {
-            return $this->fail($exception->getMessage(), 4003, []);
+            $code = ($exception->getCode() == 4003) ? 4003 : 4004;
+            return $this->fail($exception->getMessage(), $code, []);
         }
     }
 
@@ -235,23 +236,23 @@ class OrderController extends ApiController
         $getData = $request->toArray();
         try {
             if (!isset($user)) {
-                throw new \Exception('please login!');
+                throw new \Exception('please login!',4003);
             } else {
                 if ($order->customer_id != $user->id) {
-                    throw new \Exception('User does not match the order!');
+                    throw new \Exception('User does not match the order!',4004);
                 }
             }
             foreach (json_decode($getData['items'],true) as $item) {
                 $itemData = SalesOrderItem::findOrFail($item['item_id']);
                 if (!isset($itemData) || $itemData->order_id != $order->id) {
-                    throw new \Exception('item is not in order!');
+                    throw new \Exception('item is not in order!',4004);
                 }
                 $itemData->qty_ordered = $item['number'];
                 $itemData->save();
             }
             return $this->success('success', []);
         } catch (\Exception $exception) {
-            return $this->fail($exception->getMessage(), 4003, []);
+            return $this->fail($exception->getMessage(), $exception->getCode(), []);
         }
     }
 }
