@@ -116,6 +116,7 @@ class ProductController extends AdminController
             'category_id' => (int)$request->input('category_id', 0),
             'short_description' => $request->input('short_description'),
             'description' => $request->input('description'),
+            'description_mobile' => $request->description_mobile,
             'is_active' => $request->input('is_active', 0),
 //            'image' => $request->input('image'),//单图
             'image' => $images,//多图
@@ -207,6 +208,9 @@ class ProductController extends AdminController
         }
         if ($description = $request->input('description')) {
             $params['description'] = $description;
+        }
+        if ($description_mobile = $request->input('description_mobile')) {
+            $params['description_mobile'] = $description_mobile;
         }
         if ($parameters = $request->input('parameters')) {
             $params['parameters'] = $parameters;

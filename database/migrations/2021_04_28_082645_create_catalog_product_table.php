@@ -20,6 +20,7 @@ class CreateCatalogProductTable extends Migration
             $table->string('sku',64)->nullable()->comment('SKU');
             $table->smallInteger('category_id')->default(0)->comment('Parent Category ID');
             $table->longText('description')->nullable()->comment('Description');
+            $table->longText('description_mobile')->nullable()->comment('Description Mobile');
             $table->longText('parameters')->nullable()->comment('Parameters');
             $table->longText('short_description')->nullable()->comment('Short Description');
             $table->string('url_key')->nullable()->comment('Url Key');

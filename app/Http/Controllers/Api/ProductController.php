@@ -87,11 +87,12 @@ class ProductController extends ApiController
     {
         try {
             $select = [
-                'id', 'name', 'sku', 'description','parameters', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label','relate_ids'
+                'id', 'name', 'sku', 'description', 'description_mobile','parameters', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label','relate_ids'
             ];
 
             $data = $this->productModel->getDetailForApi($id, $select);
             $data['description'] = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$data['description']);
+            $data['description_mobile'] = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$data['description_mobile']);
             $data['parameters'] = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$data['parameters']);
             if (isset($data['image']) && $data['image'] !='') {
                 $images = explode(';',$data['image']);

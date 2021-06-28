@@ -85,6 +85,12 @@
     </div>
 </div>
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">手机端产品内容</label>
+    <div class="layui-input-block">
+        <textarea name="description_mobile" id="container-mobile" cols="30" rows="10">{{$product->description_mobile??old('description_mobile')}}</textarea>
+    </div>
+</div>
+<div class="layui-form-item">
     <label for="" class="layui-form-label">产品参数</label>
     <div class="layui-input-block">
         <textarea name="parameters" id="parameters" cols="30" rows="10">{{$product->parameters??old('parameters')}}</textarea>
