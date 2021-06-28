@@ -17,12 +17,17 @@ class OrderController extends ApiController
     public function addOrder(Request $request)
     {
         try {
+            $token = $request->header('Authorization');
+            $user = Users::where('api_token',$token)->first();
+            if (!isset($user)) {
+                throw new \Exception('please login!');
+            }
             $pendingOrder = $request->toArray();
             $items = json_decode($pendingOrder['items'],true);
             //创建订单
-            $userData = Users::findOrFail($pendingOrder['uid']);
+            $userData = Users::findOrFail($user->id);
             $orderUser = [];
-            $orderUser['customer_id'] = $pendingOrder['uid'];
+            $orderUser['customer_id'] = $user->id;
             $orderUser['status'] = 'pending';
             $orderUser['customer_name'] = $userData->username;
             $orderUser['customer_email'] = $userData->email;
@@ -223,10 +228,24 @@ class OrderController extends ApiController
 
     public function update(Request $request)
     {
+        $token = $request->header('Authorization');
+        $user = Users::where('api_token',$token)->first();
+        $order = SalesOrder::select(['id','customer_id'])->where('id',$request->order_id)->first();
+
         $getData = $request->toArray();
         try {
+            if (!isset($user)) {
+                throw new \Exception('please login!');
+            } else {
+                if ($order->customer_id != $user->id) {
+                    throw new \Exception('User does not match the order!');
+                }
+            }
             foreach (json_decode($getData['items'],true) as $item) {
                 $itemData = SalesOrderItem::findOrFail($item['item_id']);
+                if (!isset($itemData) || $itemData->order_id != $order->id) {
+                    throw new \Exception('item is not in order!');
+                }
                 $itemData->qty_ordered = $item['number'];
                 $itemData->save();
             }
