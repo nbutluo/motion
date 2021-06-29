@@ -8,6 +8,7 @@ use App\Model\Permission;
 use App\Model\Role;
 use App\Model\User\AdminUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\UserCreateRequest;
 use Illuminate\Support\Facades\Redirect;
@@ -69,7 +70,7 @@ class UserController extends Controller
                 'nickname' => $data['nickname'],
                 'email' => $data['email'],
                 'phone' => $data['phone'],
-                'password' => $data['password'],
+                'password' => Hash::make($data['password']),
                 'api_token' => hash('sha256', Str::random(60)),
             ]);
             return Redirect::to(URL::route('admin.user'))->with(['success'=>'添加成功']);
