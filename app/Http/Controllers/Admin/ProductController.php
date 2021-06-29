@@ -171,7 +171,7 @@ class ProductController extends AdminController
     public function update($id, Request $request)
     {
         if (empty($id)) return redirect::back()->withErrors('参数错误，缺少ID');
-
+        $params = [];
         $images = '';
         if ($request->input('images') != '') {
             foreach ($request->input('images') as $image) {
@@ -185,7 +185,7 @@ class ProductController extends AdminController
             }
             $params['relate_ids'] = $relate_ids;
         }
-        $params = [];
+
         if ($sku = $request->input('sku')) {
             $params['sku'] = $sku;
         }
@@ -196,10 +196,7 @@ class ProductController extends AdminController
             $params['category_id'] = $category_id;
         }
         $params['image'] = $images;
-
-//        if ($image = $request->input('image')) {
-//            $params['image'] = $image;
-//        }
+        
         if ($image_label = $request->input('image_label')) {
             $params['image_label'] = $image_label;
         }

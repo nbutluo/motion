@@ -9,6 +9,7 @@ class Product extends Model
 {
     protected $table = 'catalog_product';
     protected $primaryKey = 'id';
+    protected $fillable = ['name','sku','category_id','description','description_mobile','parameters','short_description','relate_ids','url_key','price','position','is_active','image','image_label','small_image','small_image_label'];
 
     //考虑到性能问题，通常$columns我们不以*号为值。可传入需要查询的字段替代。这里只做演示。无此要求
     public function paginate($perPage = null, $columns = ['*'], $page = null, $pageName = 'page', $where = [])

@@ -164,12 +164,7 @@
                 xhr.send(formData);
             },
         });
-    });
-    layui.extend({
-        tinymce: '/layui-tinymce/layui_exts/tinymce/tinymce',
-    }).use(['tinymce', 'util', 'layer'], function () {
-        var tinymce = layui.tinymce;
-        var edit = tinymce.render({
+        var edit_mobile = tinymce.render({
             elem: "#container-mobile",
             height: 600,
             width:'100%',
@@ -212,12 +207,7 @@
                 xhr.send(formData);
             },
         });
-    });
-    layui.extend({
-        tinymce: '/layui-tinymce/layui_exts/tinymce/tinymce',
-    }).use(['tinymce', 'util', 'layer'], function () {
-        var tinymce = layui.tinymce;
-        var edit = tinymce.render({
+        var edit_parameters = tinymce.render({
             elem: "#parameters",
             height: 600,
             width:'100%',
