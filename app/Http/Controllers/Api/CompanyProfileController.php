@@ -17,6 +17,11 @@ class CompanyProfileController extends ApiController
                 if (isset($profile->media_link) && $profile->media_link != '') {
                     $profile->media_link = HTTP_TEXT.$_SERVER["HTTP_HOST"].$profile->media_link;
                 }
+                if (strpos($profile->media_link,'.jpg') !== false || strpos($profile->media_link,'.png') !== false || strpos($profile->media_link,'.gif') !== false) {
+                    $profile->media_type = 1;
+                } else {
+                    $profile->media_type = 2;
+                }
             }
             return $this->success('success', $profiles);
         } catch (\Exception $exception) {
