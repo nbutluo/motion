@@ -192,6 +192,7 @@ class ProductController extends ApiController
                     $relate->thirdCategory = '';
                 }
                 if (isset($relate->image) && $relate->image != '') {
+                    $relate->image = [];
                     $imageData = [];
                     $images = explode(';',$relate->image);
                     foreach ($images as $image) {
