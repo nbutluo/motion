@@ -60,22 +60,26 @@ class ProductController extends ApiController
 
             foreach ($data['list'] as $list) {
                 if (isset($list->image) && $list->image != '') {
-                    $list->image = [];
                     $imageData = [];
                     $images = explode(';',$list->image);
+                    $list->image = [];
                     foreach ($images as $image) {
                         $imageData[] =HTTP_TEXT.$_SERVER["HTTP_HOST"].$image;
                     }
                     $list->image = $imageData;
+                } else {
+                    $list->image = [];
                 }
                 if (isset($list->small_image) && $list->small_image != '') {
-                    $list->small_image = [];
                     $smallImages = explode(';',$list->small_image);
+                    $list->small_image = [];
                     $smallImageData = [];
                     foreach ($smallImages as $smallImage) {
                         $smallImageData[] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$smallImage;
                     }
                     $list->small_image = $smallImageData;
+                } else {
+                    $list->small_image = [];
                 }
             }
 
@@ -104,6 +108,8 @@ class ProductController extends ApiController
                     $imageData[] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$image;
                 }
                 $data['image'] = $imageData;
+            } else {
+                $data['image'] = [];
             }
             if (isset($data['small_image']) && $data['small_image'] !='') {
                 $data['small_image'] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$data['small_image'];
@@ -150,10 +156,13 @@ class ProductController extends ApiController
                         $relateProduct = Product::select(['id','name','image'])->findOrFail($relate);
                         if (isset($relateProduct->image) && $relateProduct->image != '') {
                             $relateImages = explode(';',$relateProduct->image);
+                            $relateProduct->image = [];
                             foreach ($relateImages as &$relateImage) {
                                 $relateImage = HTTP_TEXT.$_SERVER["HTTP_HOST"].$relateImage;
                             }
                             $relateProduct->image = $relateImages;
+                        } else {
+                            $relateProduct->image = [];
                         }
                         $relateData[] = $relateProduct;
                     }
@@ -195,13 +204,15 @@ class ProductController extends ApiController
                     $relate->thirdCategory = '';
                 }
                 if (isset($relate->image) && $relate->image != '') {
-                    $relate->image = [];
                     $imageData = [];
                     $images = explode(';',$relate->image);
+                    $relate->image = [];
                     foreach ($images as $image) {
                         $imageData[] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$image;
                     }
                     $relate->image = $imageData;
+                } else {
+                    $relate->image = [];
                 }
             }
             return $this->success('success', $relates);
