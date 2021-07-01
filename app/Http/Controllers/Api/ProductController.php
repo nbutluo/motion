@@ -60,6 +60,7 @@ class ProductController extends ApiController
 
             foreach ($data['list'] as $list) {
                 if (isset($list->image) && $list->image != '') {
+                    $list->image = [];
                     $imageData = [];
                     $images = explode(';',$list->image);
                     foreach ($images as $image) {
@@ -68,6 +69,7 @@ class ProductController extends ApiController
                     $list->image = $imageData;
                 }
                 if (isset($list->small_image) && $list->small_image != '') {
+                    $list->small_image = [];
                     $smallImages = explode(';',$list->small_image);
                     $smallImageData = [];
                     foreach ($smallImages as $smallImage) {
@@ -97,6 +99,7 @@ class ProductController extends ApiController
             if (isset($data['image']) && $data['image'] !='') {
                 $images = explode(';',$data['image']);
                 $imageData = [];
+                $data['image'] = [];
                 foreach ($images as $image) {
                     $imageData[] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$image;
                 }
