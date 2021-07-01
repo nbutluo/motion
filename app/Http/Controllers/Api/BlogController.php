@@ -63,10 +63,11 @@ class BlogController extends ApiController
             if (!isset($category_id)) {
                 throw new \Exception('category name is wrong!');
             }
+            $allData = Blog::select(['post_id'])->where('category_id',$category_id)->get();
             $data = app(Blog::class)->getCategoryPostList($category_id, $page, $pageSize);
             $data['total'] = 0;
-            if (!empty($data['list'])) {
-                $data['total'] = count($data['list']);
+            if (isset($allData) && !empty($data['list'])) {
+                $data['total'] = count($allData);
                 foreach ($data['list'] as $item) {
                     if (isset($item->featured_img) && !empty($item->featured_img)) {
                         $item->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$item->featured_img;
