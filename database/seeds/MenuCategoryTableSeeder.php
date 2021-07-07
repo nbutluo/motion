@@ -123,6 +123,9 @@ class MenuCategoryTableSeeder extends Seeder
                     ],
                 ],
             ],
+            [
+                'category' => 'Contact Us',
+            ],
         ];
         foreach ($datas as $data) {
             $category = MenuCategory::create([

@@ -15,19 +15,15 @@ class FooterLinksTableSeeder extends Seeder
         $data = [
             [
                 'label' => 'info',
-                'value' => 'info',
+                'value' => 'LoctekMotion is the leading manufacturer of electric linear actuators, lifting columns and control systems that help create innovative solutions for a multitude of product applications.',
                 'son' => [
                     [
-                        'label' => 'address',
-                        'value' => 'Ningbo,Zhejiang,China'
+                        'label' => 'Address',
+                        'value' => 'Ningbo, Zhejiang, China'
                     ],
                     [
-                        'label' => 'Phone',
-                        'value' => '+86-574-56809465'
-                    ],
-                    [
-                        'label' => 'Fax',
-                        'value' => '+86-574-56809465'
+                        'label' => 'Email',
+                        'value' => 'catherine@loctekmotion.com'
                     ],
                 ],
             ],
@@ -36,26 +32,42 @@ class FooterLinksTableSeeder extends Seeder
                 'value' => 'PRODUCTS',
                 'son' => [
                     [
-                        'label' => 'Lifting Columns',
-                        'value' => 'Lifting Columns',
+                        'label' => 'Standing Desks',
+                        'value' => 'Standing Desks',
                     ],
                     [
-                        'label' => 'Control Box',
-                        'value' => 'Control Box',
-                    ]
+                        'label' => 'Desk Frames',
+                        'value' => 'Desk Frames',
+                    ],
+                    [
+                        'label' => 'Electric Beds',
+                        'value' => 'Electric Beds',
+                    ],
+                    [
+                        'label' => 'Accessories',
+                        'value' => 'Accessories',
+                    ],
                 ],
             ],[
-                'label' => 'TECHNOLOGY',
-                'value' => 'TECHNOLOGY',
+                'label' => 'RESOURCE',
+                'value' => 'RESOURCE',
                 'son' => [
                     [
-                        'label' => 'Handset',
-                        'value' => 'Handset',
+                        'label' => 'Videos',
+                        'value' => 'Videos',
                     ],
                     [
-                        'label' => 'Control Box',
-                        'value' => 'Control Box',
-                    ]
+                        'label' => 'Brochure',
+                        'value' => 'Brochure',
+                    ],
+                    [
+                        'label' => 'Installation Information',
+                        'value' => 'Installation Information',
+                    ],
+                    [
+                        'label' => 'Certifications',
+                        'value' => 'Certifications',
+                    ],
                 ],
             ],
             [
@@ -63,12 +75,12 @@ class FooterLinksTableSeeder extends Seeder
                 'value' => 'ABOUT US',
                 'son' => [
                     [
-                        'label' => 'About LoctekMotion',
-                        'value' => 'About LoctekMotion',
+                        'label' => 'About Loctek',
+                        'value' => 'About Loctek',
                     ],
                     [
-                        'label' => 'Our History',
-                        'value' => 'Our History',
+                        'label' => 'Contact Us',
+                        'value' => 'Contact Us',
                     ]
                 ],
             ]
