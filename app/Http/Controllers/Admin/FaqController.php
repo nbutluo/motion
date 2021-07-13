@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Model\Product\Category;
 use App\Model\Product\Product;
+use App\Model\Sitemap;
 use Illuminate\Http\Request;
 use App\Model\Question;
 use Illuminate\Support\Facades\Redirect;
@@ -59,6 +60,15 @@ class FaqController extends Controller
                 'content' => $data['content'],
                 'is_active' => $data['is_active'],
             ]);
+            $new = Question::select(['id'])->where('title',$data['title'])->first();
+            $siteMap = [
+                'type' => 10,
+                'methed' => 1,
+                'name' => '文章详情',
+                'url' => '/FAQ/'.$data['title'],
+                'origin' => '/loctek/faq/info/'.$new->id
+            ];
+            Sitemap::create($siteMap);
             return Redirect::to(URL::route('admin.faq.info'))->with(['success'=>'添加成功']);
         } catch (\Exception $exception) {
             return Redirect::back()->withErrors('添加失败');

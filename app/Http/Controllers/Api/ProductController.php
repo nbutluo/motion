@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Model\Product\Category;
 use App\Model\Product\Option;
 use App\Model\Product\Product;
+use App\Model\Sitemap;
 use App\Model\User\Users;
 use Exception;
 use Illuminate\Http\Request;
@@ -59,6 +60,8 @@ class ProductController extends ApiController
             $data = $this->productModel->getPageList($page, $pageSize, $where, $select);
 
             foreach ($data['list'] as $list) {
+                $url_key = Sitemap::select(['url'])->where('origin','/loctek/product/info/'.$list->id)->first();
+                $list->url_key = $url_key->url;
                 if (isset($list->image) && $list->image != '') {
                     $imageData = [];
                     $images = explode(';',$list->image);
@@ -188,6 +191,8 @@ class ProductController extends ApiController
             }
             $relates = Product::select(['id','name','category_id','image'])->where('is_active',1)->orderBy('created_at','DESC')->limit(4)->get();
             foreach ($relates as $relate) {
+                $url_key = Sitemap::select(['url'])->where('origin','/loctek/product/info/'.$relate->id)->first();
+                $relate->url_key = $url_key->url;
                 //添加分类信息
                 if ($relate->category_id != 0) {
                     $third_id = $relate->category_id;

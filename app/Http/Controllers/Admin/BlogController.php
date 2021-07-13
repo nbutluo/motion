@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\AdminController;
 use App\Model\Blog\Blog;
 use App\Model\Blog\BlogCategory;
+use App\Model\Sitemap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
@@ -92,6 +93,16 @@ class BlogController extends AdminController
 
         try {
             app(Blog::class)->addPost($params);
+            $new = Blog::select(['post_id'])->where('title',$title)->first();
+            //添加siteMap
+            $siteMap = [
+                'type' => 10,
+                'methed' => 1,
+                'name' => '文章详情',
+                'url' => '/blog/'.$title,
+                'origin' => '/loctek/blog/'.$new->post_id
+            ];
+            Sitemap::create($siteMap);
             return redirect::to(URL::route('admin.blog.article'))->with(['success' => '添加成功']);
         } catch (\Exception $exception) {
             return redirect::back()->withErrors('添加失败');

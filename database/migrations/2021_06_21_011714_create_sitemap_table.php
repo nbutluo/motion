@@ -20,7 +20,7 @@ class CreateSitemapTable extends Migration
             $table->tinyInteger('method')->default(1)->comment('Method Type：1:GET,2:POST');
             $table->string('name')->nullable()->comment('Url Name');
             $table->string('url')->unique()->comment('Url');
-            $table->string('origin')->unique()->comment('Origin');
+            $table->string('origin')->nullable()->comment('Origin');
             $table->timestamps();
         });
     }

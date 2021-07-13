@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 
 use App\Model\Product\Category;
 use App\Model\Product\Product;
+use App\Model\Sitemap;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -137,6 +138,28 @@ class ProductController extends AdminController
         }
         try {
             $this->productModel->insertGetId($params);
+            $new = Product::select(['id'])->where('sku',$request->sku)->first();
+            //添加siteMap
+            $categoryData = [];
+            $categories = Category::select(['id','name','parent_id'])->get();
+            foreach ($categories as $category) {
+                $categoryData[$category->id]['name'] = $category->name;
+                $categoryData[$category->id]['parent_id'] = $category->parent_id;
+            }
+            $parent = '';
+            if ($categoryData[$request->category_id]['parent_id'] == 0) {
+                $parent = '/'.$categoryData[$request->category_id]['name'];
+            } else {
+                $parent = '/'.$categoryData[$categoryData[$request->category_id]['parent_id']]['name'].'/'.$categoryData[$request->category_id]['name'];
+            }
+            $siteMap = [
+                'type' => 10,
+                'methed' => 1,
+                'name' => '文章详情',
+                'url' => $parent.'/'.$request->sku,
+                'origin' => '/loctek/product/info/'.$new->id
+            ];
+            Sitemap::create($siteMap);
             return redirect::to(URL::route('admin.catalog.product'))->with(['success' => '添加成功']);
         } catch (\Exception $e) {
             Log::info($e->getMessage());
@@ -196,7 +219,7 @@ class ProductController extends AdminController
             $params['category_id'] = $category_id;
         }
         $params['image'] = $images;
-        
+
         if ($image_label = $request->input('image_label')) {
             $params['image_label'] = $image_label;
         }

@@ -16,7 +16,7 @@ class CreateBlogPostTable extends Migration
         Schema::create('blog_post', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->bigIncrements('post_id');
-            $table->string('title')->nullable()->comment('Post Title');
+            $table->string('title')->unique()->nullable()->comment('Post Title');
             $table->text('keywords')->nullable()->comment('Post Meta Keywords');
             $table->text('meta_description')->nullable()->comment('Post Meta Description');
             $table->string('identifier',100)->nullable()->comment('Post String Identifier');
