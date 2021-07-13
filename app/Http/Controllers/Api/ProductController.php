@@ -94,12 +94,25 @@ class ProductController extends ApiController
 
     public function detail($id, Request $request)
     {
+        $categories = Category::select(['id','name','parent_id'])->get();
+        $allCateData = [];
+        foreach ($categories as $category) {
+            $allCateData[$category->id]['name'] = $category->name;
+            $allCateData[$category->id]['parent_id'] = $category->parent_id;
+        }
         try {
             $select = [
-                'id', 'name', 'sku', 'description', 'description_mobile','parameters', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label','relate_ids'
+                'id', 'name', 'sku', 'description', 'description_mobile','parameters', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label','relate_ids','category_id'
             ];
 
             $data = $this->productModel->getDetailForApi($id, $select);
+            if ($allCateData[$data['category_id']]['parent_id'] == 0) {
+                $data['secondCategory'] = $allCateData[$data['category_id']]['name'];
+                $data['thirdCategory'] = '';
+            } else {
+                $data['secondCategory'] = $allCateData[$allCateData[$data['category_id']]['parent_id']]['name'];
+                $data['thirdCategory'] = $allCateData[$data['category_id']]['name'];
+            }
             $data['description'] = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$data['description']);
             $data['description_mobile'] = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$data['description_mobile']);
             $data['parameters'] = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$data['parameters']);

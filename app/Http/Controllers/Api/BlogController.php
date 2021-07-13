@@ -28,9 +28,10 @@ class BlogController extends ApiController
         }
     }
 
-    public function getDetail($post_id)
+    public function getDetail($title)
     {
-        $data = app(Blog::class)->getSelectFind($post_id);
+//        $data = app(Blog::class)->getSelectFind($post_id);
+        $data = Blog::where('title',$title)->first()->toArray();
         if(isset($data['featured_img']) && !empty($data['featured_img'])) {
             $data['featured_img'] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$data['featured_img'];
         }

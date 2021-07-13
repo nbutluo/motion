@@ -64,6 +64,9 @@ class ProductController extends AdminController
         if ($category_id = $request->input('category_id')) {
             $where['category_id'] = $category_id;
         }
+        if ($sku = $request->input('sku')) {
+            $where['sku'] = $sku;
+        }
 
         $res = $this->productModel->getPageList($page, $limit, $where);
 

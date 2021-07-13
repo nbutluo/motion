@@ -141,3 +141,15 @@ Route::group(['middleware' => ['auth', 'permission:about.loctek']],function() {
         });
     });
 });
+
+//Site Map 管理
+Route::group(['middleware' => ['auth', 'permission:siteMap']],function() {
+    Route::group(['middleware' => ['permission:siteMap.list']],function(){
+        Route::group(['namespace' => 'Admin'], function () {
+            Route::get('siteMap/index','SiteMapController@index')->name('admin.site.map.index')->middleware('permission:siteMap.list');
+            Route::get('siteMap/data','SiteMapController@getList')->name('admin.site.map.data')->middleware('permission:siteMap.list');
+            Route::get('siteMap/{id}/edit','SiteMapController@edit')->name('admin.site.map.edit')->middleware('permission:siteMap.edit');
+            Route::post('siteMap/update','SiteMapController@update')->name('admin.site.map.update')->middleware('permission:siteMap.edit');
+        });
+    });
+});

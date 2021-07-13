@@ -72,9 +72,11 @@ class SitemapController extends ApiController
                 //产品分类map
                 foreach ($procate as $key_category => $value_catgory) {
                     if ($value_catgory['parent_id'] == 0) {
+                        $value_catgory['name'] = str_replace(' ','-',$value_catgory['name']);
                         Sitemap::firstOrCreate(['url' => '/'.$value_catgory['name']],['name' => '产品分类链接','method' => 1,'origin' => '/loctek/product/list','type' => 7]);
                         foreach ($procate as $key_cate => $value_cate) {
                             if ($value_cate['parent_id'] == $key_category) {
+                                $value_cate['name'] = str_replace(' ','-',$value_cate['name']);
                                 Sitemap::firstOrCreate(['url' => '/'.$value_catgory['name'].'/'.$value_cate['name']],['name' => '产品分类链接','method' => 1,'origin' => '/loctek/product/list','type' => 7]);
                             }
                         }
@@ -88,6 +90,8 @@ class SitemapController extends ApiController
                     } else {
                         $category_dir = $procate[$procate[$product->category_id]['parent_id']]['name'].'/'.$procate[$product->category_id]['name'];
                     }
+                    $category_dir = str_replace(' ','-',$category_dir);
+                    $product->sku = str_replace(' ','-',$product->sku);
                     Sitemap::firstOrCreate(['url' => '/'.$category_dir.'/'.$product->sku],['name' => '产品详情','method' => 1,'origin' => '/loctek/product/info/'.$product->id,'type' => 8]);
                 }
 
@@ -96,17 +100,21 @@ class SitemapController extends ApiController
                 $newsCategory = BlogCategory::select(['category_id','title'])->get();
                 foreach ($newsCategory as $newsCate) {
                     $news_category[$newsCate->category_id] = $newsCate->title;
-                    Sitemap::firstOrCreate(['url' => '/blog/'.$newsCate->title],['name' => 'blog分类','method' => 1,'origin' => '/loctek/category/blog-list','type' => 9]);
+                    $newsCate->title = str_replace(' ','-',$newsCate->title);
+                    Sitemap::firstOrCreate(['url' => '/news/'.$newsCate->title],['name' => 'blog分类','method' => 1,'origin' => '/loctek/category/blog-list','type' => 9]);
                 }
                 //生成新闻链接
                 $news = Blog::select(['post_id','title','category_id'])->get();
                 foreach ($news as $new) {
-                    Sitemap::firstOrCreate(['url' => '/blog/'.$news_category[$new->category_id].'/'.$new->title],['name' => '文章详情','method' => 1,'origin' => '/loctek/blog/'.$new->post_id,'type' => 10]);
+                    $news_category[$new->category_id] = str_replace(' ','-',$news_category[$new->category_id]);
+                    $new->title = str_replace(' ','-',$new->title);
+                    Sitemap::firstOrCreate(['url' => '/news/'.$news_category[$new->category_id].'/'.$new->title],['name' => '文章详情','method' => 1,'origin' => '/loctek/blogDetail/'.$new->title,'type' => 10]);
                 }
 
                 //生成FAQ链接
                 $faqs = Question::select(['id','title'])->get();
                 foreach ($faqs as $faq) {
+                    $faq->title = str_replace(' ','-',$faq->title);
                     Sitemap::firstOrCreate(['url' => '/FAQ/'.$faq->title],['name' => 'FAQ详情','method' => 1,'origin' => '/loctek/faq/info/'.$faq->id,'type' => 11]);
                 }
             } catch (\Exception $exception) {

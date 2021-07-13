@@ -45,18 +45,18 @@
                         , {field: 'media_url', title: '链接',width:300,templet:function(res){
                             $img = '';
                             for (var i=0;i<res.media_url.length;i++) {
-                                $img += '<div style="float:left;" onclick="show_img(this)"><img src="'+res.media_url[i]+'" alt=""></div>';
+                                $img += '<div style="float:left;" onclick="show_img(this)"><img loading="lazy" src="'+res.media_url[i]+'" alt=""></div>';
                             }
                             return $img;
                         }}
                         , {field: 'media_url_mobile', title: '手机端链接',width:300,templet:function(res){
                                 $img_mobile = '';
                                 for (var i=0;i<res.media_url_mobile.length;i++) {
-                                    $img_mobile += '<div style="float:left;" onclick="show_img(this)"><img src="'+res.media_url_mobile[i]+'" alt=""></div>';
+                                    $img_mobile += '<div style="float:left;" onclick="show_img(this)"><img loading="lazy" src="'+res.media_url_mobile[i]+'" alt=""></div>';
                                 }
                                 return $img_mobile;
                             }}
-                        , {field: 'is_active', title: '标题', templet: function (res) {return (res.is_active == 0) ? "否" : "是";}}
+                        , {field: 'is_active', title: '启用', templet: function (res) {return (res.is_active == 0) ? "否" : "是";}}
                         , {field: 'created_at', title: '创建时间'}
                         , {field: 'updated_at', title: '修改时间'}
                         , {fixed: 'right',title: '操作', width: 140, align: 'center', toolbar: '#options'}
