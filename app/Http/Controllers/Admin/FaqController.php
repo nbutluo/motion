@@ -65,7 +65,7 @@ class FaqController extends Controller
                 'type' => 10,
                 'methed' => 1,
                 'name' => '文章详情',
-                'url' => '/FAQ/'.$data['title'],
+                'url' => '/FAQ/'.str_replace(' ','-',$data['title']),
                 'origin' => '/loctek/faq/info/'.$new->id
             ];
             Sitemap::create($siteMap);

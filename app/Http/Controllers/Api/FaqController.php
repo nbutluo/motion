@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Model\Product\Category;
 use App\Model\Product\Product;
 use App\Model\Question;
+use App\Model\Sitemap;
 use Illuminate\Http\Request;
 
 class FaqController extends ApiController
@@ -27,12 +28,13 @@ class FaqController extends ApiController
 
             $questions = []; $category_question = []; $all_question = [];
             foreach ($question as $quest) {
+                $quest->url_key = $this->getFaqUrlKey($quest->id);
                 $quest->content = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$quest->content);
-                if ($quest['product_id'] == $product->id) {
+                if ($quest->product_id == $product->id) {
                     $questions[] = $quest;
-                } elseif($quest['category_id'] == $categoryId) {
+                } elseif($quest->category_id == $categoryId) {
                     $category_question[] = $quest;
-                } elseif($quest['category_id'] == 0 && $quest['product_id'] == 0) {
+                } elseif($quest->category_id == 0 && $quest->product_id == 0) {
                     $all_question[] = $quest;
                 }
             }
@@ -44,9 +46,19 @@ class FaqController extends ApiController
             }
             return $this->success('success', $questions);
         } catch (\Exception $exception) {
-            return $this->fail('failure', 404, []);
+            return $this->fail($exception->getMessage(), 404, []);
         }
 
+    }
+
+    public function getFaqUrlKey($id)
+    {
+        $siteMap = Sitemap::select(['url'])->where('origin','/loctek/faq/info/'.$id)->first();
+        if ($siteMap) {
+            return $siteMap->url;
+        } else {
+            return '';
+        }
     }
 
     public function getInfo($questionId)
@@ -65,6 +77,7 @@ class FaqController extends ApiController
         try {
             $question = Question::select(['id','title','short_content','content'])->where('is_active',1)->limit(8)->get();
             foreach ($question as $ques) {
+//                $ques->url_key = $this->getFaqUrlKey($ques->id);
                 $ques->content = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$ques->content);
             }
             return $this->success('success', $question);
