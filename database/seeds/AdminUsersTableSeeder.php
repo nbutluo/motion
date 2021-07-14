@@ -379,6 +379,25 @@ class AdminUsersTableSeeder extends Seeder
                     ],
                 ],
             ],
+            [
+                'name' => 'siteMap',
+                'display_name' => 'Site Map管理',
+                'route' => '',
+                'icon' => 'layui-icon-website',
+                'child' => [
+                    [
+                        'name' => 'siteMap.list',
+                        'display_name' => 'Site Map列表',
+                        'route' => 'admin.site.map.index',
+                        'is_menu' => 1,
+                        'child' => [
+                            ['name' => 'siteMap.create', 'display_name' => 'Site Map新建','route'=>'admin.site.map.create'],
+                            ['name' => 'siteMap.edit', 'display_name' => 'Site Map编辑','route'=>'admin.site.map.edit'],
+                            ['name' => 'siteMap.destory', 'display_name' => 'Site Map删除','route'=>'admin.site.map.destory'],
+                        ]
+                    ],
+                ],
+            ],
         ];
 
         foreach ($permissions as $pem1) {
