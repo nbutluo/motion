@@ -42,6 +42,7 @@
     </div>
 </div>
 <hr class="layui-border-black">
+@if (isset($data['items']) && !empty($data['items']))
 @foreach($data['items'] as $key => $item)
     <h2>产品{{$key+1}}</h2>
     <div class="layui-form-item">
@@ -98,7 +99,7 @@
     @endif
     <hr class="layui-border-cyan">
 @endforeach
-
+@endif
 <div class="layui-form-item">
     <div class="layui-input-block">
         <button type="submit" class="layui-btn" lay-submit="" lay-filter="formDemo">确 认</button>

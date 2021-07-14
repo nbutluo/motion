@@ -170,6 +170,8 @@ class ProductController extends ApiController
                     $relateData = [];
                     foreach ($relates as $relate) {
                         $relateProduct = Product::select(['id','name','image'])->findOrFail($relate);
+                        $relate_urlKey = Sitemap::select(['url'])->where('origin','/loctek/product/info/'.$relate)->first();
+                        $relateProduct->url_key = $relate_urlKey->url;
                         if (isset($relateProduct->image) && $relateProduct->image != '') {
                             $relateImages = explode(';',$relateProduct->image);
                             $relateProduct->image = [];

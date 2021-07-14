@@ -179,7 +179,7 @@ class AddToCartController extends ApiController
                 }
                 $allCateData[$category->id] = $category->toArray();
             }
-            $relates = Product::whereIn('category_id',$categoryData)->orderBy('position','DESC')->get();
+            $relates = Product::select(['id','name','sku','category_id','short_description','image'])->whereIn('category_id',$categoryData)->orderBy('position','DESC')->get();
             foreach ($relates as $relate) {
                 //添加分类信息
                 if ($relate->category_id != 0) {

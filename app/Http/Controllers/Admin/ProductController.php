@@ -155,10 +155,11 @@ class ProductController extends AdminController
             } else {
                 $parent = '/'.$categoryData[$categoryData[$request->category_id]['parent_id']]['name'].'/'.$categoryData[$request->category_id]['name'];
             }
+            $parent = str_replace(' ','-',$parent);
             $siteMap = [
                 'type' => 10,
                 'methed' => 1,
-                'name' => '文章详情',
+                'name' => '产品详情',
                 'url' => $parent.'/'.$request->sku,
                 'origin' => '/loctek/product/info/'.$new->id
             ];

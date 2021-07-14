@@ -58,7 +58,7 @@ class ProductCategoryController extends AdminController
                 'type' => 7,
                 'methed' => 1,
                 'name' => '产品分类链接',
-                'url' => ($data['parent_id'] == 0) ? '/'.$data['name'] : '/'.$categoryData[$data['parent_id']].'/'.$data['name'],
+                'url' => ($data['parent_id'] == 0) ? '/'.str_replace(' ','-',$data['name']) : '/'.str_replace(' ','-',$categoryData[$data['parent_id']]).'/'.str_replace(' ','-',$data['name']),
                 'origin' => '/loctek/product/list'
             ];
             Sitemap::create($siteMap);

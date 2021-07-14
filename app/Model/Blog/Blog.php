@@ -40,7 +40,8 @@ class Blog extends Model
         $where = [
             'category_id' => $category_id
         ];
-        $select = ['post_id', 'title', 'identifier', 'content', 'views_count', 'short_content', 'category_id','featured_img','publish_time'];
+//        $select = ['post_id', 'title', 'identifier', 'content', 'views_count', 'short_content', 'category_id','featured_img','publish_time'];
+        $select = ['post_id', 'title', /*'identifier', 'content', 'views_count','category_id',*/ 'short_content', 'featured_img','publish_time'];
         return $this->paginate($pageSize, $select, $page, 'page', $where);
     }
 

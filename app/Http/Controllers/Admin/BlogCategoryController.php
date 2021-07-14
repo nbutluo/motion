@@ -63,7 +63,7 @@ class BlogCategoryController extends AdminController
             'type' => 9,
             'methed' => 1,
             'name' => 'blog分类',
-            'url' => '/blog/'.$title,
+            'url' => '/news/'.str_replace(' ','-',$title),
             'origin' => '/loctek/category/blog-list'
         ];
         try {

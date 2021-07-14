@@ -122,14 +122,14 @@ class BlogController extends ApiController
     }
 
     //获取相关文章
-    public function relateBlog($id)
+    public function relateBlog($title)
     {
         try {
-            $blog = Blog::select(['post_id','title','relate_id','featured_img','short_content','content'])->where('is_active',1)->where('post_id',$id)->first();
+            $blog = Blog::select(['post_id','title','relate_id'/*,'featured_img','short_content','content'*/])->where('is_active',1)->where('title',$title)->first();
             if (isset($blog->relate_id) && $blog->relate_id !='') {
                 $relates = explode(',',$blog->relate_id);
             }
-            $news = Blog::select(['post_id','title','featured_img','short_content','content'])->where('is_active',1)->whereIn('post_id',$relates)->get();
+            $news = Blog::select(['post_id','title','featured_img','short_content'/*,'content'*/])->where('is_active',1)->whereIn('post_id',$relates)->get();
             foreach ($news as $new) {
                 if (isset($new->featured_img) && $new->featured_img) {
                     $new->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$new->featured_img;

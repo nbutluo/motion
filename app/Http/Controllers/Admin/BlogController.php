@@ -99,7 +99,7 @@ class BlogController extends AdminController
                 'type' => 10,
                 'methed' => 1,
                 'name' => '文章详情',
-                'url' => '/blog/'.$title,
+                'url' => '/news/'.str_replace(' ','-',$title),
                 'origin' => '/loctek/blog/'.$new->post_id
             ];
             Sitemap::create($siteMap);
