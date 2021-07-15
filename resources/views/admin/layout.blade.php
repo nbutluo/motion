@@ -23,11 +23,11 @@
                         <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
                     </a>
                 </li>
-                <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                    <a>
-                        <i class="layui-icon layui-icon-website"></i>
-                    </a>
-                </li>
+{{--                <li class="layui-nav-item layui-hide-xs" lay-unselect>--}}
+{{--                    <a>--}}
+{{--                        <i class="layui-icon layui-icon-website"></i>--}}
+{{--                    </a>--}}
+{{--                </li>--}}
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;" layadmin-event="refresh" title="刷新">
                         <i class="layui-icon layui-icon-refresh-3"></i>
@@ -68,7 +68,7 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                    <a href="javascript:;"><i class="layui-icon layui-icon-more-vertical"></i></a>
+                    <a href="javascript:;" layadmin-event="about"><i class="layui-icon layui-icon-more-vertical"></i></a>
                 </li>
                 <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-unselect>
                     <a href="javascript:;" ><i class="layui-icon layui-icon-more-vertical"></i></a>
