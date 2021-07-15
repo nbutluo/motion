@@ -30,7 +30,6 @@ class SendEmailController extends ApiController
                 session([$request->username => $verifiCode]);
                 $data = [
                     'user' => $request->username,
-//                    'code' => $sessionCode
                 ];
                 Mail::to([$email])->send(new LoctekMail($sendData));
                 return $this->success('send email successful!',$data);

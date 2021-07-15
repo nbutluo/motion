@@ -15,9 +15,8 @@ class RetrievePasswordController extends ApiController
     public function changePassword(Request $request)
     {
         try {
-            $code = $request->code;
             $verify = $request->verify_code;
-            $verifyCode = session($code);
+            $verifyCode = session($request->username);
             if ($verify == $verifyCode) {
                 $username = $request->username;
                 $password = $request->password;
@@ -25,7 +24,7 @@ class RetrievePasswordController extends ApiController
                 if (isset($password) && isset($password_confirmation) && $password != '' && $password_confirmation != '' && $password == $password_confirmation) {
                     $user = Users::where('username',$username)->first();
                     if ($user) {
-                        Session::pull($code,'');//清除session
+                        Session::pull($request->username,'');//清除session
                         $parames['password'] = Hash::make($password);
                         $parames['api_token'] = Hash::make(Str::random(60));
                         Users::where('username',$username)->update($parames);
