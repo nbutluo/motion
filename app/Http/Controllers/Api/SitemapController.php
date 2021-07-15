@@ -107,8 +107,7 @@ class SitemapController extends ApiController
                 $news = Blog::select(['post_id','title','category_id'])->get();
                 foreach ($news as $new) {
                     $news_category[$new->category_id] = str_replace(' ','-',$news_category[$new->category_id]);
-                    $new->title = str_replace(' ','-',$new->title);
-                    Sitemap::firstOrCreate(['url' => '/news/'.$news_category[$new->category_id].'/'.$new->title],['name' => '文章详情','method' => 1,'origin' => '/loctek/blogDetail/'.$new->title,'type' => 10]);
+                    Sitemap::firstOrCreate(['url' => '/news/'.$news_category[$new->category_id].'/'.str_replace(' ','-',$new->title)],['name' => '文章详情','method' => 1,'origin' => '/loctek/blogDetail/'.$new->title,'type' => 10]);
                 }
 
                 //生成FAQ链接
