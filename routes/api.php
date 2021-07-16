@@ -53,7 +53,7 @@ Route::group(['namespace' => 'Api'], function () {
 
     Route::get('product/category','ProductCategoryController@getList')->name('product.category.menu');
     Route::get('faq/list/{productId}','FaqController@getList')->name('faq.info.list');
-    Route::get('faq/info/{questionId}','FaqController@getInfo')->name('faq.info.data');
+    Route::get('faq/info/{title}','FaqController@getInfo')->name('faq.info.data');
     Route::get('faq/search','FaqController@getSearch')->name('faq.search.data');
 
     //个人中心

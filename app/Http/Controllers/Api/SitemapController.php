@@ -113,8 +113,7 @@ class SitemapController extends ApiController
                 //生成FAQ链接
                 $faqs = Question::select(['id','title'])->get();
                 foreach ($faqs as $faq) {
-                    $faq->title = str_replace(' ','-',$faq->title);
-                    Sitemap::firstOrCreate(['url' => '/FAQ/'.$faq->title],['name' => 'FAQ详情','method' => 1,'origin' => '/loctek/faq/info/'.$faq->id,'type' => 11]);
+                    Sitemap::firstOrCreate(['url' => '/FAQ/'.str_replace(' ','-',$faq->title)],['name' => 'FAQ详情','method' => 1,'origin' => '/loctek/faq/info/'.$faq->title,'type' => 11]);
                 }
             } catch (\Exception $exception) {
                 return $this->fail($exception->getMessage(), 404);
