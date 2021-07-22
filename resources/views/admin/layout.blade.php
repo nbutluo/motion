@@ -186,13 +186,20 @@
                 url:'{{route("admin.front.package.index")}}',
                 data:{"_token": "{{ csrf_token() }}"},
                 cache: false,
-                async: false,
+                async: true,
                 success:function(data){
                     result = data;
                     console.log(data);
+                    layer.close(loading);
+                    alert(data['message']);
                 },
+                error:function (data) {
+                    console.log(data);
+                    layer.close(loading);
+                    alert(data['message'])
+                }
             });
-            layer.close(loading);
+            // layer.close(loading);
         }, 100)
     }
 </script>
