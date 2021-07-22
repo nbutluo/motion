@@ -67,4 +67,5 @@ Route::group(['middleware' => 'permission:system.website_seo'],function () {
     Route::put('website_seo/{id}/update','Admin\SystemConfigController@update')->name('admin.website_seo.update')->middleware('permission:system.website_seo.edit');
     //删除
     Route::delete('website_seo/destroy','Admin\SystemConfigController@destroy')->name('admin.website_seo.destroy')->middleware('permission:system.website_seo.destroy');
+    Route::post('frontPackage/index','Admin\SiteMapController@frontPackage')->name('admin.front.package.index');
 });

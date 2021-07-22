@@ -105,7 +105,7 @@ class MenuCategoryTableSeeder extends Seeder
                         'category_label' => [],
                     ],
                     [
-                        'category_name' => 'Certifications',
+                        'category_name' => 'Certification',
                         'category_label' => [],
                     ],
                 ],

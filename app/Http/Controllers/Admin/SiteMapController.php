@@ -51,4 +51,25 @@ class SiteMapController extends AdminController
             return Redirect::back()->withErrors($exception->getMessage());
         }
     }
+
+    public function frontPackage()
+    {
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36');
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 300);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 300);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL, 'http://52.156.128.157:3000/');
+            $file_contents = curl_exec($ch);
+            curl_close($ch);
+
+            file_put_contents(storage_path('logs/package.log'), 'date :  ' .  date('Y-m-d H:i:s') . '  msg: '.$file_contents. PHP_EOL, FILE_APPEND);
+            return $file_contents;
+        } catch (\Exception $exception) {
+            file_put_contents(storage_path('logs/package.log'), 'date :  ' .  date('Y-m-d H:i:s') . '  code : 400' .'msg: '.$exception->getMessage() . PHP_EOL, FILE_APPEND);
+            return '400';
+        }
+    }
 }

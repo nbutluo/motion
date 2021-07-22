@@ -23,11 +23,11 @@
                         <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
                     </a>
                 </li>
-{{--                <li class="layui-nav-item layui-hide-xs" lay-unselect>--}}
-{{--                    <a>--}}
-{{--                        <i class="layui-icon layui-icon-website"></i>--}}
-{{--                    </a>--}}
-{{--                </li>--}}
+                <li class="layui-nav-item layui-hide-xs" lay-unselect style="cursor: pointer;">
+                    <a>
+                        <i onclick="frontPackage()" class="layui-icon layui-icon-website"></i>
+                    </a>
+                </li>
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;" layadmin-event="refresh" title="刷新">
                         <i class="layui-icon layui-icon-refresh-3"></i>
@@ -174,6 +174,23 @@
 
     function iframeLoad(e) {
         $(e).contents().find("#layui-admin-content").fadeIn();
+    }
+
+    function frontPackage() {
+        var result = '';
+        $.ajax({
+            type:"post",
+            dataType:"json",
+            url:'{{route("admin.front.package.index")}}',
+            data:{"_token": "{{ csrf_token() }}"},
+            cache: false,
+            async: false,
+            success:function(data){
+                result = data;
+                console.log(data);
+                alert(data['message']);
+            },
+        });
     }
 </script>
 @include('admin.common.js.pic_check_js')
