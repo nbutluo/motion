@@ -177,20 +177,23 @@
     }
 
     function frontPackage() {
+        var loading = layer.msg('正在刷新', {icon: 16, shade: 0.3, time:0});
         var result = '';
-        $.ajax({
-            type:"post",
-            dataType:"json",
-            url:'{{route("admin.front.package.index")}}',
-            data:{"_token": "{{ csrf_token() }}"},
-            cache: false,
-            async: false,
-            success:function(data){
-                result = data;
-                console.log(data);
-                alert(data['message']);
-            },
-        });
+        setTimeout(() => {
+            $.ajax({
+                type:"post",
+                dataType:"json",
+                url:'{{route("admin.front.package.index")}}',
+                data:{"_token": "{{ csrf_token() }}"},
+                cache: false,
+                async: false,
+                success:function(data){
+                    result = data;
+                    console.log(data);
+                },
+            });
+            layer.close(loading);
+        }, 100)
     }
 </script>
 @include('admin.common.js.pic_check_js')

@@ -33,9 +33,9 @@ class SitemapController extends ApiController
 
     public function createSiteMap()
     {
-        $siteMap = Sitemap::select(['id'])->get();
-
-        if (!isset($siteMap[0])) {
+//        $siteMap = Sitemap::select(['id'])->get();
+//
+//        if (!isset($siteMap[0])) {
             $type1 = [
                 '/aboutUs' => ['name'=> '关于我们','method' => 1,'origin' => '/loctek/about-us','type' => 1],
                 '/contactUs' => ['name'=> '联系我们','method' => 2,'origin' => '/loctek/contact-us','type' => 2],
@@ -118,7 +118,7 @@ class SitemapController extends ApiController
             } catch (\Exception $exception) {
                 return $this->fail($exception->getMessage(), 404);
             }
-        }
+//        }
         return true;
     }
 }

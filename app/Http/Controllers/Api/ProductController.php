@@ -61,7 +61,7 @@ class ProductController extends ApiController
 
             foreach ($data['list'] as $list) {
                 $url_key = Sitemap::select(['url'])->where('origin','/loctek/product/info/'.$list->id)->first();
-                $list->url_key = $url_key->url;
+                $list->url_key = isset($url_key->url) ? $url_key->url : null;
                 if (isset($list->image) && $list->image != '') {
                     $imageData = [];
                     $images = explode(';',$list->image);
