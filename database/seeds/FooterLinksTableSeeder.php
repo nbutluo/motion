@@ -53,8 +53,8 @@ class FooterLinksTableSeeder extends Seeder
                 'value' => 'RESOURCE',
                 'son' => [
                     [
-                        'label' => 'Videos',
-                        'value' => 'Videos',
+                        'label' => 'Video',
+                        'value' => 'Video',
                     ],
                     [
                         'label' => 'Brochure',
@@ -65,8 +65,8 @@ class FooterLinksTableSeeder extends Seeder
                         'value' => 'Installation Information',
                     ],
                     [
-                        'label' => 'Certifications',
-                        'value' => 'Certifications',
+                        'label' => 'Certification',
+                        'value' => 'Certification',
                     ],
                 ],
             ],
@@ -75,8 +75,8 @@ class FooterLinksTableSeeder extends Seeder
                 'value' => 'ABOUT US',
                 'son' => [
                     [
-                        'label' => 'About Loctek',
-                        'value' => 'About Loctek',
+                        'label' => 'About us',
+                        'value' => 'About us',
                     ],
                     [
                         'label' => 'Contact Us',
