@@ -75,8 +75,8 @@ class FooterLinksTableSeeder extends Seeder
                 'value' => 'ABOUT US',
                 'son' => [
                     [
-                        'label' => 'About us',
-                        'value' => 'About us',
+                        'label' => 'About Us',
+                        'value' => 'About Us',
                     ],
                     [
                         'label' => 'Contact Us',

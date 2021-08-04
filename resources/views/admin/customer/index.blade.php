@@ -72,6 +72,7 @@
                         , {field: 'avatar', title: '头像',width:100,templet:function(res){
                             return '<div onclick="show_img(this)"><img src="/'+res.avatar+'" alt="" width="60px" height="60px"></div>';
                             }}
+                        , {field: 'country', title: '国家'}
                         , {field: 'sex', title: '性别',width:60, templet: function (res) {return (res.sex == 0) ? "女" : "男";}}
                         , {field: 'phone', title: '电话',width:120}
                         , {field: 'salesman', title: '业务员',width:280}

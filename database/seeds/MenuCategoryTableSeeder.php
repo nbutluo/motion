@@ -111,17 +111,7 @@ class MenuCategoryTableSeeder extends Seeder
                 ],
             ],
             [
-                'category' => 'About Loctek',
-//                'category_title' => [
-//                    [
-//                        'category_name' => 'Mission&Vision',
-//                        'category_label' => [],
-//                    ],
-//                    [
-//                        'category_name' => 'Company History',
-//                        'category_label' => [],
-//                    ],
-//                ],
+                'category' => 'About Us',
             ],
             [
                 'category' => 'Contact Us',

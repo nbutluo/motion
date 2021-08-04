@@ -65,8 +65,12 @@ class FaqController extends ApiController
     {
         try {
             $question = Question::where('title',$title)->first();
-            $question->content = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$question->content);
-            return $this->success('success', $question);
+            if ($question) {
+                $question->content = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$question->content);
+                return $this->success('success', $question);
+            } else {
+                throw new \Exception('FAQ title is wrong!');
+            }
         } catch (\Exception $exception) {
             return $this->fail($exception->getMessage(), 404, []);
         }

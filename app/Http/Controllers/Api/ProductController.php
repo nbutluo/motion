@@ -204,7 +204,7 @@ class ProductController extends ApiController
             foreach ($categories as $category) {
                 $allCateData[$category->id] = $category->toArray();
             }
-            $relates = Product::select(['id','name','category_id','image'])->where('is_active',1)->orderBy('created_at','DESC')->limit(4)->get();
+            $relates = Product::select(['id','name','category_id','image'])->where('is_active',1)->orderBy('updated_at','DESC')->limit(4)->get();
             foreach ($relates as $relate) {
                 $url_key = Sitemap::select(['url'])->where('origin','/loctek/product/info/'.$relate->id)->first();
                 $relate->url_key = $url_key->url;

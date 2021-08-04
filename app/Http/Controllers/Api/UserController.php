@@ -58,9 +58,9 @@ class UserController extends ApiController
                 $country['child'] = $province;
                 $region[] = $country;
             }
-            return $this->success('获取成功', $region);
+            return $this->success('success', $region);
         } catch (\Exception $exception) {
-            return $this->fail('获取失败', 404);
+            return $this->fail($exception->getMessage(), $exception->getCode());
         }
     }
 

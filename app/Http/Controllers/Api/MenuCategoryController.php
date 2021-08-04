@@ -46,9 +46,9 @@ class MenuCategoryController extends ApiController
                 }
             }
 
-            return $this->success('获取成功', $data);
+            return $this->success('successful', $data);
         } catch (Exception $e) {
-            return $this->fail('程序异常，获取失败。', 500);
+            return $this->fail($e->getMessage(), $e->getCode());
         }
     }
 }

@@ -48,18 +48,20 @@ class OrderController extends ApiController
                     $productOption['name'] = $productData->name;
                     $productOption['price'] = $productData->price;
                     foreach ($product['options'] as $option) {
-                        $optionData = Option::findOrFail($option['option_id']);
-                        $optionText = [];
-                        $optionText['option_id'] = $optionData->id;
-                        $optionText['sku'] = $optionData->sku;
-                        $optionText['title'] = $optionData->title;
-                        $optionText['type'] = $optionData->type;
-                        $optionText['option_color'] = $optionData->option_color;
-                        $optionText['option_size'] = $optionData->option_size;
-                        $optionText['image'] = $optionData->image;
-                        $optionText['pre_sale'] = $optionData->pre_sale;
-                        $productOption['options'][] = $optionText;
-                        $data['child'][] = $optionData->toArray();
+                        if (isset($option['option_id'])) {
+                            $optionData = Option::findOrFail($option['option_id']);
+                            $optionText = [];
+                            $optionText['option_id'] = $optionData->id;
+                            $optionText['sku'] = $optionData->sku;
+                            $optionText['title'] = $optionData->title;
+                            $optionText['type'] = $optionData->type;
+                            $optionText['option_color'] = $optionData->option_color;
+                            $optionText['option_size'] = $optionData->option_size;
+                            $optionText['image'] = $optionData->image;
+                            $optionText['pre_sale'] = $optionData->pre_sale;
+                            $productOption['options'][] = $optionText;
+                            $data['child'][] = $optionData->toArray();
+                        }
                     }
                     //创建item
                     $addOption = [];

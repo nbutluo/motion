@@ -7,6 +7,7 @@ use App\Model\AddToCart;
 use App\Model\Product\Category;
 use App\Model\Product\Option;
 use App\Model\Product\Product;
+use App\Model\Sitemap;
 use App\Model\User\Users;
 use Illuminate\Http\Request;
 
@@ -168,6 +169,7 @@ class AddToCartController extends ApiController
 
     public function getRelateProducts()
     {
+        $productSite = $this->getSiteMapForProduct();
         try {
             $categories = Category::all();
             $allCateData = [];
@@ -179,7 +181,7 @@ class AddToCartController extends ApiController
                 }
                 $allCateData[$category->id] = $category->toArray();
             }
-            $relates = Product::select(['id','name','sku','category_id','short_description','image'])->whereIn('category_id',$categoryData)->orderBy('position','DESC')->get();
+            $relates = Product::select(['id','name','sku','category_id','short_description','image'])->whereIn('category_id',$categoryData)->orderBy('position','DESC')->limit(6)->get();
             foreach ($relates as $relate) {
                 //添加分类信息
                 if ($relate->category_id != 0) {
@@ -204,10 +206,25 @@ class AddToCartController extends ApiController
                     }
                     $relate->image = $imageData;
                 }
+                $relate->url_key = '';
+                if (isset($relate->id) && isset($productSite['/loctek/product/info/'.$relate->id])) {
+                    $relate->url_key = $productSite['/loctek/product/info/'.$relate->id];
+                }
             }
             return $this->success('success', $relates);
         } catch (\Exception $exception) {
             return $this->fail($exception->getMessage(), 4003, []);
         }
+    }
+    public function getSiteMapForProduct()
+    {
+        $productSiteMap = [];
+        $siteMaps = Sitemap::select(['url','origin'])->where('type',8)->get();
+        if ($siteMaps) {
+            foreach ($siteMaps as $siteMap) {
+                $productSiteMap[$siteMap->origin] = $siteMap->url;
+            }
+        }
+        return $productSiteMap;
     }
 }

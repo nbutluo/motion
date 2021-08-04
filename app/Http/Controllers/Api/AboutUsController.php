@@ -37,9 +37,9 @@ class AboutUsController extends ApiController
             $data['aboutPage'] = $page;
             $data['list'] = $show;
 
-            return $this->success('获取成功', $data);
+            return $this->success('success', $data);
         } catch (Exception $e) {
-            return $this->fail('程序异常，获取失败。', 500);
+            return $this->fail($e->getMessage(), $e->getCode());
         }
     }
 }

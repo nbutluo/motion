@@ -25,7 +25,7 @@ class UpdateController extends ApiController
             } else {
                 throw new \Exception('please login!');
             }
-            return $this->success('更新成功', $file_path);
+            return $this->success('success', $file_path);
         } catch (\Exception $exception) {
             return $this->fail($exception->getMessage(), 404);
         }
