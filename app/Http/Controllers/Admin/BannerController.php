@@ -126,6 +126,7 @@ class BannerController extends AdminController
         try {
             $banner = MediumBanner::findOrFail($id);
             $banner->update($data);
+            file_put_contents(storage_path('logs/banner.log'), 'date :  ' .  date('Y-m-d H:i:s') . '  msg: '.$id.'=>'.var_export($data, true). PHP_EOL, FILE_APPEND);
             return Redirect::to(URL::route('admin.banner.index'))->with(['success' => '更新成功']);
         } catch (\Exception $exception) {
             return Redirect::back()->withErrors($exception->getMessage());

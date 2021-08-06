@@ -79,7 +79,7 @@ class FaqController extends ApiController
     public function getSearch()
     {
         try {
-            $question = Question::select(['id','title','short_content','content'])->where('is_active',1)->limit(8)->get();
+            $question = Question::select(['id','title','short_content','content'])->where('is_active',1)->get();
             foreach ($question as $ques) {
 //                $ques->url_key = $this->getFaqUrlKey($ques->id);
                 $ques->content = str_replace('src="/uploads','src="'.HTTP_TEXT.$_SERVER["HTTP_HOST"].'/uploads',$ques->content);
