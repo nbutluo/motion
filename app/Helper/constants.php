@@ -11,4 +11,4 @@ const FOOTER_FAX = '+86-574-56809465';
 const CONTACT_US_EMAIL = 'sales@loctek.com';
 const CONTACT_US_TELEPHONE = '400-700-0303';
 const CONTACT_US_BASE_INFOMATION = '我们将为您提供专业的产品支持以及产品预订服务';
-const HTTP_TEXT = 'http://';
+const HTTP_TEXT = 'https://';
