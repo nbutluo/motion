@@ -24,7 +24,7 @@ class BlogController extends AdminController
         $page = $request->input('page', 1);
         $limit = $request->input('limit', 10);
 
-        $res = app(Blog::class)->getPageList($page, $limit,['post_id','title','keywords','is_active','category_id','show_in_home','created_at','updated_at']);
+        $res = app(Blog::class)->getPageList($page, $limit,[],['post_id','title','keywords','is_active','category_id','show_in_home','created_at','updated_at']);
         if (!empty($res['list'])) {
             foreach ($res['list'] as $re) {
                 if (isset($re->category_id) && !empty($re->category_id) && $re->category_id != 0) {

@@ -14,7 +14,7 @@ class BlogController extends ApiController
     {
         $page = $request->input('page', 1);
         $pageSize = $request->input('pageSize', 10);
-        $data = app(Blog::class)->getPageList($page, $pageSize);
+        $data = app(Blog::class)->getPageList($page, $pageSize,['is_active' => 1]);
         foreach ($data['list'] as $list) {
             if (isset($list->featured_img) && !empty($list->featured_img)) {
                 $list->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$list->featured_img;
