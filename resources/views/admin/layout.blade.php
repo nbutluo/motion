@@ -23,11 +23,11 @@
                         <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
                     </a>
                 </li>
-                <li class="layui-nav-item layui-hide-xs" lay-unselect style="cursor: pointer;">
+                {{--<li class="layui-nav-item layui-hide-xs" lay-unselect style="cursor: pointer;">
                     <a>
                         <i onclick="frontPackage()" class="layui-icon layui-icon-website"></i>
                     </a>
-                </li>
+                </li>--}}
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;" layadmin-event="refresh" title="刷新">
                         <i class="layui-icon layui-icon-refresh-3"></i>
