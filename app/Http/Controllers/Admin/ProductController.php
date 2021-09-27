@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Handlers\Base64ImageHandler;
 use App\Http\Controllers\AdminController;
 
 use App\Model\Product\Category;
@@ -26,7 +27,7 @@ class ProductController extends AdminController
 
     public function index()
     {
-        $categories = Category::where('is_active',1)->orderBy('position', 'asc')->get();
+        $categories = Category::where('is_active', 1)->orderBy('position', 'asc')->get();
         return view('admin.product.index', compact('categories'));
     }
 
@@ -34,9 +35,9 @@ class ProductController extends AdminController
     {
         if ($request->product_id != 0) {
             $productData = Product::findOrFail($request->product_id);
-            $relates = explode(',',$productData->relate_ids);
+            $relates = explode(',', $productData->relate_ids);
         }
-        $products = Product::select(['id','name'])->where('is_active',1)->orderBy('position', 'asc')->get();
+        $products = Product::select(['id', 'name'])->where('is_active', 1)->orderBy('position', 'asc')->get();
         foreach ($products as $product) {
             $product->value = $product->id;
             $product->title = $product->name;
@@ -44,7 +45,7 @@ class ProductController extends AdminController
                 if ($product->id == $request->product_id) {
                     $product->disabled = true;
                 }
-                if (in_array($product->id,$relates)) {
+                if (in_array($product->id, $relates)) {
                     $product->checked = 'checked';
                 }
             }
@@ -88,7 +89,7 @@ class ProductController extends AdminController
     public function create()
     {
         //分类
-        $category = Category::where('is_active',1)->orderBy('position', 'asc')->get();
+        $category = Category::where('is_active', 1)->orderBy('position', 'asc')->get();
         //分类重新排序
         $categories = [];
         foreach ($category as $cate) {
@@ -110,7 +111,7 @@ class ProductController extends AdminController
         $images = '';
         if ($request->input('images') != '') {
             foreach ($request->input('images') as $image) {
-                $images = ($images == '') ? $image : $images.';'.$image;
+                $images = ($images == '') ? $image : $images . ';' . $image;
             }
         }
 
@@ -122,8 +123,8 @@ class ProductController extends AdminController
             'description' => $request->input('description'),
             'description_mobile' => $request->description_mobile,
             'is_active' => $request->input('is_active', 0),
-//            'image' => $request->input('image'),//单图
-            'image' => $images,//多图
+            //            'image' => $request->input('image'),//单图
+            'image' => $images, //多图
             'image_label' => $request->input('image_label'),
             'position' => $request->input('position', 0),
             'small_image' => $request->input('small_image'),
@@ -132,7 +133,7 @@ class ProductController extends AdminController
         $relate_ids = '';
         if (isset($request->relate_id) && !empty($request->relate_id)) {
             foreach ($request->relate_id as $relate) {
-                $relate_ids = ($relate_ids == '') ? $relate : $relate_ids.','.$relate;
+                $relate_ids = ($relate_ids == '') ? $relate : $relate_ids . ',' . $relate;
             }
             $params['relate_ids'] = $relate_ids;
         }
@@ -141,27 +142,27 @@ class ProductController extends AdminController
         }
         try {
             $this->productModel->insertGetId($params);
-            $new = Product::select(['id'])->where('sku',$request->sku)->first();
+            $new = Product::select(['id'])->where('sku', $request->sku)->first();
             //添加siteMap
             $categoryData = [];
-            $categories = Category::select(['id','name','parent_id'])->get();
+            $categories = Category::select(['id', 'name', 'parent_id'])->get();
             foreach ($categories as $category) {
                 $categoryData[$category->id]['name'] = $category->name;
                 $categoryData[$category->id]['parent_id'] = $category->parent_id;
             }
             $parent = '';
             if ($categoryData[$request->category_id]['parent_id'] == 0) {
-                $parent = '/'.$categoryData[$request->category_id]['name'];
+                $parent = '/' . $categoryData[$request->category_id]['name'];
             } else {
-                $parent = '/'.$categoryData[$categoryData[$request->category_id]['parent_id']]['name'].'/'.$categoryData[$request->category_id]['name'];
+                $parent = '/' . $categoryData[$categoryData[$request->category_id]['parent_id']]['name'] . '/' . $categoryData[$request->category_id]['name'];
             }
-            $parent = str_replace(' ','-',$parent);
+            $parent = str_replace(' ', '-', $parent);
             $siteMap = [
                 'type' => 10,
                 'methed' => 1,
                 'name' => '产品详情',
-                'url' => $parent.'/'.$request->sku,
-                'origin' => '/loctek/product/info/'.$new->id
+                'url' => $parent . '/' . $request->sku,
+                'origin' => '/loctek/product/info/' . $new->id
             ];
             Sitemap::create($siteMap);
             return redirect::to(URL::route('admin.catalog.product'))->with(['success' => '添加成功']);
@@ -174,12 +175,12 @@ class ProductController extends AdminController
     public function edit($id)
     {
         $product = $this->productModel->findOrFail($id);
-        if (isset($product->image) && !empty($product->image)) {
-            $images = explode(';',$product->image);
-            $product->image = $images;
-        }
+        // if (isset($product->image) && !empty($product->image)) {
+        //     $images = explode(';', $product->image);
+        //     $product->image = $images;
+        // }
         //分类
-        $category = Category::where('is_active',1)->orderBy('position', 'asc')->get();
+        $category = Category::where('is_active', 1)->orderBy('position', 'asc')->get();
         //分类重新排序
         $categories = [];
         foreach ($category as $cate) {
@@ -195,20 +196,22 @@ class ProductController extends AdminController
         return view('admin.product.edit', compact('product', 'categories'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, Request $request, Base64ImageHandler $uploader)
     {
+        $data = $request->all();
         if (empty($id)) return redirect::back()->withErrors('参数错误，缺少ID');
         $params = [];
-        $images = '';
-        if ($request->input('images') != '') {
-            foreach ($request->input('images') as $image) {
-                $images = ($images == '') ? $image : $images.';'.$image;
+        foreach ($data['image'] as $key => $value) {
+            if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $value)) {
+                $res = $uploader->base64_image_content($value, 'product');
+                $data['image'][$key] = $res;
             }
         }
+
         $relate_ids = '';
         if (isset($request->relate_id) && !empty($request->relate_id)) {
             foreach ($request->relate_id as $relate) {
-                $relate_ids = ($relate_ids == '') ? $relate : $relate_ids.','.$relate;
+                $relate_ids = ($relate_ids == '') ? $relate : $relate_ids . ',' . $relate;
             }
             $params['relate_ids'] = $relate_ids;
         }
@@ -222,7 +225,8 @@ class ProductController extends AdminController
         if ($category_id = $request->input('category_id')) {
             $params['category_id'] = $category_id;
         }
-        $params['image'] = $images;
+
+        $params['image'] = implode(';', $data['image']);
 
         if ($image_label = $request->input('image_label')) {
             $params['image_label'] = $image_label;
