@@ -106,14 +106,15 @@ class ProductController extends AdminController
         return view('admin.product.create', compact('categories'));
     }
 
-    public function addProduct(Request $request)
+    public function addProduct(Request $request, Base64ImageHandler $uploader)
     {
-        $images = '';
-        if ($request->input('images') != '') {
-            foreach ($request->input('images') as $image) {
-                $images = ($images == '') ? $image : $images . ';' . $image;
-            }
+        $data = $request->all();
+
+        foreach ($data['image'] as $key => $value) {
+            $res = $uploader->base64_image_content($value, 'product');
+            $data['image'][$key] = $res;
         }
+        $images = implode(';', $data['image']);
 
         $params = [
             'sku' => $request->input('sku', ''),

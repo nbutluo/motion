@@ -111,6 +111,8 @@
     var cupload = new Cupload ({
         ele: "#product-image",
         num: 5,
+        @isset($product)
         data:"{{ $product->image }}".split(';'),
+        @endisset
     });
 </script>
