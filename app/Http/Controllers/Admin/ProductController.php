@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Handlers\Base64ImageHandler;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Requests\ProductRequest;
 use App\Model\Product\Category;
 use App\Model\Product\Product;
 use App\Model\Sitemap;
@@ -106,10 +106,10 @@ class ProductController extends AdminController
         return view('admin.product.create', compact('categories'));
     }
 
-    public function addProduct(Request $request, Base64ImageHandler $uploader)
+    public function addProduct(ProductRequest $request, Base64ImageHandler $uploader)
     {
         $data = $request->all();
-
+        // dda($data);
         foreach ($data['image'] as $key => $value) {
             $res = $uploader->base64_image_content($value, 'product');
             $data['image'][$key] = $res;
@@ -130,7 +130,13 @@ class ProductController extends AdminController
             'position' => $request->input('position', 0),
             'small_image' => $request->input('small_image'),
             'small_image_label' => $request->input('small_image_label'),
+            'video_url' => $request->input('video_url'),
         ];
+
+        if ($video_poster = $request->input('video_poster')) {
+            $params['video_poster'] = $uploader->base64_image_content($video_poster[0]);
+        }
+
         $relate_ids = '';
         if (isset($request->relate_id) && !empty($request->relate_id)) {
             foreach ($request->relate_id as $relate) {
@@ -197,9 +203,11 @@ class ProductController extends AdminController
         return view('admin.product.edit', compact('product', 'categories'));
     }
 
-    public function update($id, Request $request, Base64ImageHandler $uploader)
+    public function update($id, ProductRequest $request, Base64ImageHandler $uploader)
     {
+        // -------  start -----
         $data = $request->all();
+        // dda($data);
         if (empty($id)) return redirect::back()->withErrors('参数错误，缺少ID');
         $params = [];
         foreach ($data['image'] as $key => $value) {
@@ -208,6 +216,7 @@ class ProductController extends AdminController
                 $data['image'][$key] = $res;
             }
         }
+        // -------  end -----
 
         $relate_ids = '';
         if (isset($request->relate_id) && !empty($request->relate_id)) {
@@ -243,6 +252,20 @@ class ProductController extends AdminController
         }
         if ($parameters = $request->input('parameters')) {
             $params['parameters'] = $parameters;
+        }
+
+        if ($video_poster = $request->input('video_poster')[0]) {
+            if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $video_poster)) {
+                $params['video_poster'] = $uploader->base64_image_content($video_poster);
+            }
+        } else {
+            $params['video_poster'] = null;
+        }
+
+        if ($video_url = $request->input('video_url')) {
+            $params['video_url'] = $video_url;
+        } else {
+            $params['video_url'] = null;
         }
 
         $params['is_active'] = $request->input('is_active', 1);

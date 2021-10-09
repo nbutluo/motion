@@ -3,16 +3,15 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">名称</label>
     <div class="layui-input-block">
-        <input type="text" name="name" value="{{$product->name??old('name')}}" lay-verify="required"
-               placeholder="请输入产品标题" class="layui-input">
+        <input type="text" name="name" value="{{$product->name??old('name')}}" placeholder="请输入产品标题"
+               class="layui-input">
     </div>
 </div>
 
 <div class="layui-form-item">
     <label for="" class="layui-form-label">SKU</label>
     <div class="layui-input-block">
-        <input type="text" name="sku" value="{{$product->sku??old('sku')}}" lay-verify="required" placeholder="请输入SKU"
-               class="layui-input">
+        <input type="text" name="sku" value="{{$product->sku??old('sku')}}" placeholder="请输入SKU" class="layui-input">
     </div>
 </div>
 
@@ -30,7 +29,7 @@
     <label for="" class="layui-form-label">分类</label>
     <div class="layui-input-inline">
         <select name="category_id">
-            <option value="0">未选择</option>
+            <option value="">未选择</option>
             @foreach($categories as $category)
             <option value="{{ $category->id }}" @if(isset($product->
                 category_id)&&$product->category_id==$category->id)selected @endif >@if($category->level ==2)
@@ -44,6 +43,21 @@
     <label for="" class="layui-form-label">图片</label>
     <div class="layui-input-block">
         <div id="product-image"></div>
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">视频 URL</label>
+    <div class="layui-input-block">
+        <input type="text" name="video_url" value="{{ $product->video_url ?? old('video_url') }}" class="layui-input"
+               placeholder="http://xxxx.mp4">
+    </div>
+</div>
+
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">视频封面</label>
+    <div class="layui-input-block">
+        <div id="product_video_poster"></div>
     </div>
 </div>
 
@@ -110,9 +124,20 @@
 <script type="text/javascript">
     var cupload = new Cupload ({
         ele: "#product-image",
+        name:'image',
         num: 5,
         @isset($product)
         data:"{{ $product->image }}".split(';'),
+        @endisset
+    });
+</script>
+
+<script type="text/javascript">
+    var cupload = new Cupload ({
+        ele: "#product_video_poster",
+        name:'video_poster',
+        @isset($product->video_poster)
+        data:"{{ $product->video_poster }}".split(';'),
         @endisset
     });
 </script>
