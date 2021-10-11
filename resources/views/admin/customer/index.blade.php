@@ -1,48 +1,48 @@
 @extends('admin.base')
 
 @section('content')
-    <div class="layui-card">
-        <div class="layui-card-header layuiadmin-card-header-auto">
-            <div class="layui-btn-group ">
-                @can('customer.create')
-                    <a class="layui-btn layui-btn-sm" href="{{route('admin.customer.create')}}">添 加</a>
-                @endcan
-            </div>
-            <div class="layui-form">
-{{--                <div class="layui-input-inline">--}}
-{{--                    <select name="user_level" lay-verify="required" id="user_level">--}}
-{{--                        <option value="">请选择用户等级</option>--}}
-{{--                            <option value="0">普通用户</option>--}}
-{{--                            <option value="1">一级用户</option>--}}
-{{--                            <option value="2">二级用户</option>--}}
-{{--                    </select>--}}
-{{--                </div>--}}
-{{--                <div class="layui-input-inline">--}}
-{{--                    <input type="text" name="username" id="username" placeholder="请输入用户名" class="layui-input">--}}
-{{--                </div>--}}
-{{--                <button class="layui-btn" id="searchBtn">搜 索</button>--}}
-            </div>
+<div class="layui-card">
+    <div class="layui-card-header layuiadmin-card-header-auto">
+        <div class="layui-btn-group ">
+            @can('customer.create')
+            <a class="layui-btn layui-btn-sm" href="{{route('admin.customer.create')}}">添 加</a>
+            @endcan
         </div>
-        <div class="layui-card-body">
-            <table id="dataTable" lay-filter="dataTable"></table>
-            <script type="text/html" id="options">
-                <div class="layui-btn-group">
-                    @can('customer.edit')
-                        <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
-                    @endcan
-{{--                    @can('customer.destory')--}}
-{{--                        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">禁用</a>--}}
-{{--                    @endcan--}}
-                </div>
-            </script>
+        <div class="layui-form">
+            {{--                <div class="layui-input-inline">--}}
+            {{--                    <select name="user_level" lay-verify="required" id="user_level">--}}
+            {{--                        <option value="">请选择用户等级</option>--}}
+            {{--                            <option value="0">普通用户</option>--}}
+            {{--                            <option value="1">一级用户</option>--}}
+            {{--                            <option value="2">二级用户</option>--}}
+            {{--                    </select>--}}
+            {{--                </div>--}}
+            {{--                <div class="layui-input-inline">--}}
+            {{--                    <input type="text" name="username" id="username" placeholder="请输入用户名" class="layui-input">--}}
+            {{--                </div>--}}
+            {{--                <button class="layui-btn" id="searchBtn">搜 索</button>--}}
         </div>
     </div>
+    <div class="layui-card-body">
+        <table id="dataTable" lay-filter="dataTable"></table>
+        <script type="text/html" id="options">
+            <div class="layui-btn-group">
+                @can('customer.edit')
+                <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
+                @endcan
+                {{--                    @can('customer.destory')--}}
+                {{--                        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">禁用</a>--}}
+                {{--                    @endcan--}}
+            </div>
+        </script>
+    </div>
+</div>
 @endsection
 
 @section('script')
-    @can('customer.list')
-        <script>
-            layui.use(['layer', 'table', 'form'], function () {
+@can('customer.list')
+<script>
+    layui.use(['layer', 'table', 'form'], function () {
                 // var $ = layui.jquery;
                 var layer = layui.layer;
                 var form = layui.form;
@@ -58,7 +58,6 @@
                         // {checkbox: true, fixed: true},
                         {field: 'id', title: 'ID', sort: true,width:60}
                         , {field: 'username', title: '用户名'}
-                        , {field: 'nickname', title: '昵称'}
                         , {field: 'user_level', title: '用户等级',width:100, templet: function (res) {
                             $level = '普通用户';
                             if (res.user_level == 1) {
@@ -69,12 +68,7 @@
                             }
                             return $level;
                         }}
-                        , {field: 'avatar', title: '头像',width:100,templet:function(res){
-                            return '<div onclick="show_img(this)"><img src="/'+res.avatar+'" alt="" width="60px" height="60px"></div>';
-                            }}
                         , {field: 'country', title: '国家'}
-                        , {field: 'sex', title: '性别',width:60, templet: function (res) {return (res.sex == 0) ? "女" : "男";}}
-                        , {field: 'phone', title: '电话',width:120}
                         , {field: 'salesman', title: '业务员',width:280}
                         , {field: 'created_at', title: '创建时间'}
                         , {field: 'updated_at', title: '更新时间'}
@@ -158,6 +152,6 @@
                     content: '<div style="text-align:center"><img src="' + $(t).attr('src') + '" /></div>'
                 });
             }
-        </script>
-    @endcan
+</script>
+@endcan
 @endsection
