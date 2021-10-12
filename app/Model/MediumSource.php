@@ -28,7 +28,7 @@ class MediumSource extends Model
             foreach ($where as $k => $w) {
                 if (is_array($w)) {
                     $toBaseCollection = $toBaseCollection->whereIn($k, $w);
-                } else{
+                } else {
                     $toBaseCollection = $toBaseCollection->where($k, $w);
                 }
             }
@@ -37,21 +37,21 @@ class MediumSource extends Model
                 foreach ($where as $k => $w) {
                     if (is_array($w)) {
                         $forPageCollection = $forPageCollection->whereIn($k, $w);
-                    } else{
+                    } else {
                         $forPageCollection = $forPageCollection->where($k, $w);
                     }
-//                    $forPageCollection = $forPageCollection->where($k, $w);
+                    //                    $forPageCollection = $forPageCollection->where($k, $w);
                 }
                 $results = $forPageCollection->get($columns);
                 //资源添加域名
-//                foreach ($results as $result) {
-//                    if (isset($result->media_links) && $result->media_links != '') {
-//                        $result->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$result->media_links;
-//                    }
-//                    if (isset($result->media_url) && $result->media_url != '') {
-//                        $result->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$result->media_url;
-//                    }
-//                }
+                //                foreach ($results as $result) {
+                //                    if (isset($result->media_links) && $result->media_links != '') {
+                //                        $result->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$result->media_links;
+                //                    }
+                //                    if (isset($result->media_url) && $result->media_url != '') {
+                //                        $result->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$result->media_url;
+                //                    }
+                //                }
                 foreach ($results as $res) {
                     if (!isset($res->category_id) || $res->category_id == 0) {
                         $res->category_id = '未分配';
@@ -65,16 +65,16 @@ class MediumSource extends Model
             }
         } else {
             if ($total = $this->toBase()->getCountForPagination()) {
-                $results = $this->forPage($page, $perPage)->get($columns);
+                $results = $this->forPage($page, $perPage)->orderBy('updated_at', 'desc')->get($columns);
                 //资源添加域名
-//                foreach ($results as $result) {
-//                    if (isset($result->media_links) && $result->media_links != '') {
-//                        $result->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$result->media_links;
-//                    }
-//                    if (isset($result->media_url) && $result->media_url != '') {
-//                        $result->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$result->media_url;
-//                    }
-//                }
+                //                foreach ($results as $result) {
+                //                    if (isset($result->media_links) && $result->media_links != '') {
+                //                        $result->media_links = HTTP_TEXT.$_SERVER["HTTP_HOST"].$result->media_links;
+                //                    }
+                //                    if (isset($result->media_url) && $result->media_url != '') {
+                //                        $result->media_url = HTTP_TEXT.$_SERVER["HTTP_HOST"].$result->media_url;
+                //                    }
+                //                }
                 foreach ($results as $res) {
                     if (!isset($res->category_id) || $res->category_id == 0) {
                         $res->category_id = '未分配';

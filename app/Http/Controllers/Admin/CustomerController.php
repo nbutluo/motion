@@ -21,13 +21,13 @@ class CustomerController extends Controller
 
     public function getList(Request $request)
     {
-        $users = Users::paginate($request->get('limit',90));
+        $users = Users::orderBy('updated_at', 'desc')->paginate($request->get('limit', 90));
         foreach ($users as $user) {
             if ($user->salesman == 0) {
                 $user->salesman = '未分配';
             } else {
                 $salesman = AdminUser::findOrFail($user->salesman);
-                $user->salesman = $salesman->nickname.'-'.$salesman->email;
+                $user->salesman = $salesman->nickname . '-' . $salesman->email;
             }
         }
         $data = [
@@ -41,8 +41,8 @@ class CustomerController extends Controller
 
     public function create()
     {
-        $adminUsers = AdminUser::select(['id','nickname'])->where('rule_id','like','%3%')->get();
-        return view('admin.customer.create',compact('adminUsers'));
+        $adminUsers = AdminUser::select(['id', 'nickname'])->where('rule_id', 'like', '%3%')->get();
+        return view('admin.customer.create', compact('adminUsers'));
     }
 
     public function add(Request $request)
@@ -59,7 +59,7 @@ class CustomerController extends Controller
             $params['salesman'] = $request->salesman;
             $params['api_token'] = Hash::make(Str::random(60));
             Users::create($params);
-            return Redirect::to(URL::route('admin.customer.index'))->with(['success'=>'添加成功']);
+            return Redirect::to(URL::route('admin.customer.index'))->with(['success' => '添加成功']);
         } catch (\Exception $exception) {
             return Redirect::back()->withErrors($exception->getMessage());
         }
@@ -67,9 +67,9 @@ class CustomerController extends Controller
 
     public function edit($id)
     {
-        $adminUsers = AdminUser::select(['id','nickname'])->where('rule_id','like','%3%')->get();
+        $adminUsers = AdminUser::select(['id', 'nickname'])->where('rule_id', 'like', '%3%')->get();
         $user = Users::findOrFail($id);
-        return view('admin.customer.edit',compact('id','adminUsers','user'));
+        return view('admin.customer.edit', compact('id', 'adminUsers', 'user'));
     }
 
     public function update(Request $request)
@@ -82,7 +82,7 @@ class CustomerController extends Controller
             $user->company_url = (isset($request->company_url)) ? $request->company_url : '';
             $user->salesman = (isset($request->salesman)) ? $request->salesman : '';
             $user->save();
-            return Redirect::to(URL::route('admin.customer.index'))->with(['success'=>'添加成功']);
+            return Redirect::to(URL::route('admin.customer.index'))->with(['success' => '添加成功']);
         } catch (\Exception $exception) {
             return Redirect::back()->withErrors($exception->getMessage());
         }

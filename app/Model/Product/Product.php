@@ -46,7 +46,7 @@ class Product extends Model
             }
         } else {
             if ($total = $this->toBase()->getCountForPagination()) {
-                $results = $this->forPage($page, $perPage)->get($columns);
+                $results = $this->forPage($page, $perPage)->orderBy('updated_at', 'desc')->get($columns);
             } else {
                 $results = [];
             }

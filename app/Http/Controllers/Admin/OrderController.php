@@ -22,7 +22,7 @@ class OrderController extends AdminController
 
     public function getList(Request $request)
     {
-        $orders = SalesOrder::paginate($request->get('limit',30));
+        $orders = SalesOrder::orderBy('updated_at', 'desc')->paginate($request->get('limit', 30));
         foreach ($orders as $order) {
             if (isset($order->salesman) && $order->salesman != 0) {
                 $salesman = AdminUser::findOrFail($order->salesman);
@@ -47,7 +47,7 @@ class OrderController extends AdminController
         $data['customer_email'] = $order->customer_email;
         $data['order_price'] = $order->grand_total;
         $data['salesman'] = $order->salesman;
-        $orderItems = SalesOrderItem::where('order_id',$id)->get();
+        $orderItems = SalesOrderItem::where('order_id', $id)->get();
         foreach ($orderItems as $orderItem) {
             $product = Product::findOrFail($orderItem->product_id);
             $itemData = [];
@@ -60,7 +60,7 @@ class OrderController extends AdminController
             $itemData['product_qty'] = $orderItem->qty_ordered;
             $itemData['item_price'] = $orderItem->price;
             $item = $orderItem->toArray();
-            $product_options = json_decode($item['product_options'],true);
+            $product_options = json_decode($item['product_options'], true);
             foreach ($product_options['options'] as $product_option) {
                 $option = [];
                 if ($product_option['type'] == 1) {
@@ -74,8 +74,8 @@ class OrderController extends AdminController
             }
             $data['items'][] = $itemData;
         }
-        $salesmans = AdminUser::where('rule_id','like','%3%')->get();
-        return view('admin.order.edit',compact('id','data','salesmans'));
+        $salesmans = AdminUser::where('rule_id', 'like', '%3%')->get();
+        return view('admin.order.edit', compact('id', 'data', 'salesmans'));
     }
 
     public function update(Request $request)
@@ -93,16 +93,16 @@ class OrderController extends AdminController
             $order_items = [];
             $data = $request->toArray();
             foreach ($data as $key => $value) {
-                if (strpos($key,'item_price') !== false) {
-                    preg_match('/\d+/',$key,$number);
+                if (strpos($key, 'item_price') !== false) {
+                    preg_match('/\d+/', $key, $number);
                     $order_items[] = $number[0];
                 }
             }
             foreach ($order_items as $order_item) {
                 $item = SalesOrderItem::findOrFail($order_item);
                 $itemDate = [];
-                $itemDate['price'] = $data['item_price_'.$order_item];
-                $itemDate['qty_ordered'] = $data['item_qty_'.$order_item];
+                $itemDate['price'] = $data['item_price_' . $order_item];
+                $itemDate['qty_ordered'] = $data['item_qty_' . $order_item];
                 $item->update($itemDate);
             }
             return Redirect::to(URL::route('admin.order.index'))->with(['success' => '更新成功']);

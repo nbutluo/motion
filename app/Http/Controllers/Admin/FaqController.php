@@ -21,7 +21,7 @@ class FaqController extends Controller
 
     public function data(Request $request)
     {
-        $faq = Question::paginate($request->get('limit',30));
+        $faq = Question::orderBy('updated_at', 'desc')->paginate($request->get('limit', 30));
         $data = [
             'code' => 0,
             'msg' => 'loading....',
@@ -33,19 +33,19 @@ class FaqController extends Controller
 
     public function create()
     {
-        $categories = Category::select(['id','name'])->where('level',1)->where('is_active',1)->get();
-        $products = Product::select(['id','name','sku'])->where('is_active',1)->get();
-        return view('admin.faq.create',compact('categories','products'));
+        $categories = Category::select(['id', 'name'])->where('level', 1)->where('is_active', 1)->get();
+        $products = Product::select(['id', 'name', 'sku'])->where('is_active', 1)->get();
+        return view('admin.faq.create', compact('categories', 'products'));
     }
 
-//    public function getData(Request $request,$type)
-//    {
-//        if ($type == 1) {
-//            $datas = Category::select(['id','name'])->where('level',1)->where('is_active',1)->get();
-//        } elseif ($type == 2) {
-//            $datas = Product::select(['id','name','sku'])->where('is_active',1)->get();
-//        }
-//    }
+    //    public function getData(Request $request,$type)
+    //    {
+    //        if ($type == 1) {
+    //            $datas = Category::select(['id','name'])->where('level',1)->where('is_active',1)->get();
+    //        } elseif ($type == 2) {
+    //            $datas = Product::select(['id','name','sku'])->where('is_active',1)->get();
+    //        }
+    //    }
 
     public function addQuestion(Request $request)
     {
@@ -60,16 +60,16 @@ class FaqController extends Controller
                 'content' => $data['content'],
                 'is_active' => $data['is_active'],
             ]);
-            $new = Question::select(['id'])->where('title',$data['title'])->first();
+            $new = Question::select(['id'])->where('title', $data['title'])->first();
             $siteMap = [
                 'type' => 10,
                 'methed' => 1,
                 'name' => '文章详情',
-                'url' => '/FAQ/'.str_replace(' ','-',$data['title']),
-                'origin' => '/loctek/faq/info/'.$new->id
+                'url' => '/FAQ/' . str_replace(' ', '-', $data['title']),
+                'origin' => '/loctek/faq/info/' . $new->id
             ];
             Sitemap::create($siteMap);
-            return Redirect::to(URL::route('admin.faq.info'))->with(['success'=>'添加成功']);
+            return Redirect::to(URL::route('admin.faq.info'))->with(['success' => '添加成功']);
         } catch (\Exception $exception) {
             return Redirect::back()->withErrors('添加失败');
         }
@@ -88,7 +88,7 @@ class FaqController extends Controller
         } else {
             $product = '';
         }
-        $category = Category::where('is_active',1)->get();
+        $category = Category::where('is_active', 1)->get();
         //分类重新排序
         $categories = [];
         foreach ($category as $cate) {
@@ -101,14 +101,14 @@ class FaqController extends Controller
                 }
             }
         }
-        $products = Product::where('is_active',1)->get();
-        return view('admin.faq.edit',compact('question','category','product','categories','products'));
+        $products = Product::where('is_active', 1)->get();
+        return view('admin.faq.edit', compact('question', 'category', 'product', 'categories', 'products'));
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $question = Question::findOrFail($id);
-        $data = $request->only(['user_id','category_id','product_id','is_active','title','short_content','content']);
+        $data = $request->only(['user_id', 'category_id', 'product_id', 'is_active', 'title', 'short_content', 'content']);
         try {
             $question->update($data);
             return Redirect::to(URL::route('admin.faq.info'))->with(['success' => '更新成功']);
@@ -116,5 +116,4 @@ class FaqController extends Controller
             return Redirect::back()->withErrors('更新失败');
         }
     }
-
 }

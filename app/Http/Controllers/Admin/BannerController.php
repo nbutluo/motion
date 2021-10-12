@@ -20,11 +20,11 @@ class BannerController extends AdminController
 
     public function getList(Request $request)
     {
-        $banner = MediumBanner::paginate($request->get('limit',30));
+        $banner = MediumBanner::orderBy('updated_at', 'desc')->paginate($request->get('limit', 30));
         foreach ($banner as $ban) {
-            $image = explode(';',$ban->media_url);
+            $image = explode(';', $ban->media_url);
             $ban->media_url = $image;
-            $image_mobile = explode(';',$ban->media_url_mobile);
+            $image_mobile = explode(';', $ban->media_url_mobile);
             $ban->media_url_mobile = $image_mobile;
         }
         $data = [
@@ -38,8 +38,8 @@ class BannerController extends AdminController
 
     public function getPageName()
     {
-        $pageNames = ['Index','productList','productDetail','FAQ','News','Infomation','AboutUs','ContactUs','HomeSolution','OfficeSolution'];
-        $categories = Category::select(['id','name','parent_id'])->where('is_active',1)->get();
+        $pageNames = ['Index', 'productList', 'productDetail', 'FAQ', 'News', 'Infomation', 'AboutUs', 'ContactUs', 'HomeSolution', 'OfficeSolution'];
+        $categories = Category::select(['id', 'name', 'parent_id'])->where('is_active', 1)->get();
         foreach ($categories as $category) {
             if ($category->parent_id == 0) {
                 $pageNames[] = $category->name;
@@ -56,7 +56,7 @@ class BannerController extends AdminController
     public function create()
     {
         $pageNames = $this->getPageName();
-        return view('admin.banner.create',compact('pageNames'));
+        return view('admin.banner.create', compact('pageNames'));
     }
 
     public function addBanner(Request $request)
@@ -65,13 +65,13 @@ class BannerController extends AdminController
         $images = '';
         if (!empty($data['media_url'])) {
             foreach ($data['media_url'] as $image) {
-                $images = ($images == '') ? $image : $images.';'.$image;
+                $images = ($images == '') ? $image : $images . ';' . $image;
             }
         }
         $images_mobile = '';
         if (!empty($data['media_url_mobile'])) {
             foreach ($data['media_url_mobile'] as $image_mobile) {
-                $images_mobile = ($images_mobile == '') ? $image_mobile : $images_mobile.';'.$image_mobile;
+                $images_mobile = ($images_mobile == '') ? $image_mobile : $images_mobile . ';' . $image_mobile;
             }
         }
         try {
@@ -84,7 +84,7 @@ class BannerController extends AdminController
                 'is_active' => $data['is_active'],
                 'description' => $data['description'],
             ]);
-            return Redirect::to(URL::route('admin.banner.index'))->with(['success'=>'添加成功']);
+            return Redirect::to(URL::route('admin.banner.index'))->with(['success' => '添加成功']);
         } catch (\Exception $exception) {
             Log::info($exception->getMessage());
             return redirect::back()->withErrors('添加失败: ' . $exception->getMessage());
@@ -96,37 +96,37 @@ class BannerController extends AdminController
         $pageNames = $this->getPageName();
         $banner = MediumBanner::findOrFail($id);
         if (isset($banner->media_url) && $banner->media_url != '') {
-            $image = explode(';',$banner->media_url);
+            $image = explode(';', $banner->media_url);
             $banner->media_url = $image;
         }
         if (isset($banner->media_url) && $banner->media_url != '') {
-            $image_mobile = explode(';',$banner->media_url_mobile);
+            $image_mobile = explode(';', $banner->media_url_mobile);
             $banner->media_url_mobile = $image_mobile;
         }
-        return view('admin.banner.edit',compact('pageNames','id','banner'));
+        return view('admin.banner.edit', compact('pageNames', 'id', 'banner'));
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-        $data = $request->only(['page_name','media_url','is_active','description','banner_alt','media_url_mobile','banner_alt_mobile']);
+        $data = $request->only(['page_name', 'media_url', 'is_active', 'description', 'banner_alt', 'media_url_mobile', 'banner_alt_mobile']);
         $medis_url = '';
         if (!empty($data['media_url'])) {
             foreach ($data['media_url'] as $media) {
-                $medis_url = ($medis_url == '') ? $media : $medis_url.';'.$media;
+                $medis_url = ($medis_url == '') ? $media : $medis_url . ';' . $media;
             }
         }
         $data['media_url'] = $medis_url;
         $medis_url_mobile = '';
         if (!empty($data['media_url_mobile'])) {
             foreach ($data['media_url_mobile'] as $media_mobile) {
-                $medis_url_mobile = ($medis_url_mobile == '') ? $media_mobile : $medis_url_mobile.';'.$media_mobile;
+                $medis_url_mobile = ($medis_url_mobile == '') ? $media_mobile : $medis_url_mobile . ';' . $media_mobile;
             }
         }
         $data['media_url_mobile'] = $medis_url_mobile;
         try {
             $banner = MediumBanner::findOrFail($id);
             $banner->update($data);
-            file_put_contents(storage_path('logs/banner.log'), 'date :  ' .  date('Y-m-d H:i:s') . '  msg: '.$id.'=>'.var_export($data, true). PHP_EOL, FILE_APPEND);
+            file_put_contents(storage_path('logs/banner.log'), 'date :  ' .  date('Y-m-d H:i:s') . '  msg: ' . $id . '=>' . var_export($data, true) . PHP_EOL, FILE_APPEND);
             return Redirect::to(URL::route('admin.banner.index'))->with(['success' => '更新成功']);
         } catch (\Exception $exception) {
             return Redirect::back()->withErrors($exception->getMessage());

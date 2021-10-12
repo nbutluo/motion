@@ -12,7 +12,7 @@ class Contact extends Model
 
     protected $table = 'contact';
     protected $primaryKey = 'id';
-    protected $fillable = ['name','email','customer_id','phone','continent','country','city','identity','remark_option','remark'];
+    protected $fillable = ['name', 'email', 'customer_id', 'phone', 'continent', 'country', 'city', 'identity', 'remark_option', 'remark'];
 
     protected $dates = ['deleted_at'];
 
@@ -31,10 +31,10 @@ class Contact extends Model
                 }
                 $results = $forPageCollection->get($columns);
             } else {
-                $results = $this->forPage($page, $perPage)->get($columns);
+                $results = $this->forPage($page, $perPage)->orderBy('updated_at', 'desc')->get($columns);
             }
         } else {
-//            $results = $this->model->newCollection();
+            //            $results = $this->model->newCollection();
             $results = '';
         }
 
@@ -47,6 +47,4 @@ class Contact extends Model
     {
         return $this->paginate($pageSize, $selects, $page, 'page', $where);
     }
-
-
 }

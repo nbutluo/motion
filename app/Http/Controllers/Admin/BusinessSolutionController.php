@@ -18,7 +18,7 @@ class BusinessSolutionController extends AdminController
 
     public function getList(Request $request)
     {
-        $solutions = Business_solutions::paginate($request->get('limit',90));
+        $solutions = Business_solutions::orderBy('updated_at', 'desc')->paginate($request->get('limit', 90));
         $data = [
             'code' => 0,
             'msg' => 'loading....',
@@ -58,9 +58,9 @@ class BusinessSolutionController extends AdminController
             }
             $params['is_active'] = $data['is_active'];
             $params['media_type'] = $data['media_type'];
-//            var_dump($params);
+            //            var_dump($params);
             Business_solutions::create($params);
-            return Redirect::to(URL::route('admin.solution.index'))->with(['success'=>'添加成功']);
+            return Redirect::to(URL::route('admin.solution.index'))->with(['success' => '添加成功']);
         } catch (\Exception $exception) {
             return redirect::back()->withErrors('添加失败: ' . $exception->getMessage());
         }
@@ -69,7 +69,7 @@ class BusinessSolutionController extends AdminController
     public function edit($id)
     {
         $solution = Business_solutions::findOrFail($id);
-        return view('admin.business-solution.edit',compact('solution','id'));
+        return view('admin.business-solution.edit', compact('solution', 'id'));
     }
 
     public function update(Request $request)
@@ -87,7 +87,7 @@ class BusinessSolutionController extends AdminController
             $params['content'] = (isset($data['content']) && $data['content']) ? $data['content'] : '';
             $solution = Business_solutions::findOrFail($data['id']);
             $solution->update($params);
-            return Redirect::to(URL::route('admin.solution.index'))->with(['success'=>'添加成功']);
+            return Redirect::to(URL::route('admin.solution.index'))->with(['success' => '添加成功']);
         } catch (\Exception $exception) {
             return redirect::back()->withErrors('添加失败: ' . $exception->getMessage());
         }
@@ -99,11 +99,11 @@ class BusinessSolutionController extends AdminController
         if (!is_array($ids) || empty($ids)) {
             return Response::json(['code' => 1, 'msg' => '请选择删项']);
         }
-        try{
+        try {
             Business_solutions::destroy($ids);
-            return Response::json(['code'=>0,'msg'=>'删除成功']);
-        }catch (\Exception $exception){
-            return Response::json(['code'=>1,'msg'=>'删除失败']);
+            return Response::json(['code' => 0, 'msg' => '删除成功']);
+        } catch (\Exception $exception) {
+            return Response::json(['code' => 1, 'msg' => '删除失败']);
         }
     }
 }
