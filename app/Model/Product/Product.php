@@ -4,9 +4,11 @@ namespace App\Model\Product;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+    use SoftDeletes;
     protected $table = 'catalog_product';
     protected $primaryKey = 'id';
     protected $fillable = [

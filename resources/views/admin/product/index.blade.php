@@ -1,54 +1,52 @@
 @extends('admin.base')
 
 @section('content')
-    <div class="layui-card">
-        <div class="layui-card-header layuiadmin-card-header-auto">
-            <div class="layui-btn-group ">
-{{--                @can('information.article.destroy')--}}
-{{--                    <button class="layui-btn layui-btn-sm layui-btn-danger" id="listDelete">删 除</button>--}}
-{{--                @endcan--}}
-                <a class="layui-btn layui-btn-sm" href="{{route('admin.catalog.product.create')}}">添 加</a>
-            </div>
-            <div class="layui-form">
-                <div class="layui-input-inline">
-                    <select name="category_id" lay-verify="required" id="category_id">
-                        <option value="">请选择产品分类</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="layui-input-inline">
-                    <input type="text" name="sku" id="sku" placeholder="请输入SKU" class="layui-input">
-                </div>
-                <button class="layui-btn" id="searchBtn">搜 索</button>
-            </div>
+<div class="layui-card">
+    <div class="layui-card-header layuiadmin-card-header-auto">
+        <div class="layui-btn-group ">
+            {{--                @can('information.article.destroy')--}}
+            {{--                    <button class="layui-btn layui-btn-sm layui-btn-danger" id="listDelete">删 除</button>--}}
+            {{--                @endcan--}}
+            <a class="layui-btn layui-btn-sm" href="{{route('admin.catalog.product.create')}}">添 加</a>
         </div>
-        <div class="layui-card-body">
-            <table id="dataTable" lay-filter="dataTable"></table>
-            <script type="text/html" id="options">
-                <div class="layui-btn-group">
-                        <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
-{{--                    @can('information.article.destroy')--}}
-{{--                        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">禁用</a>--}}
-{{--                    @endcan--}}
-                </div>
-            </script>
-            <script type="text/html" id="thumb">
-                @{{#  if(d.thumb){ }}
-                <a href="@{{d.thumb}}" target="_blank" title="点击查看">
-                    <img src="@{{d.thumb}}" alt="" width="28" height="28">
-                </a>
-                @{{#  } }}
-            </script>
+        <div class="layui-form">
+            <div class="layui-input-inline">
+                <select name="category_id" lay-verify="required" id="category_id">
+                    <option value="">请选择产品分类</option>
+                    @foreach($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <input type="text" name="sku" id="sku" placeholder="请输入SKU" class="layui-input">
+            </div>
+            <button class="layui-btn" id="searchBtn">搜 索</button>
         </div>
     </div>
+    <div class="layui-card-body">
+        <table id="dataTable" lay-filter="dataTable"></table>
+        <script type="text/html" id="options">
+            <div class="layui-btn-group">
+                <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-sm layui-btn-danger" lay-event="del">删除</a>
+            </div>
+        </script>
+        <script type="text/html" id="thumb">
+            @{{#  if(d.thumb){ }}
+            <a href="@{{d.thumb}}" target="_blank" title="点击查看">
+                <img src="@{{d.thumb}}" alt="" width="28" height="28">
+            </a>
+            @{{#  } }}
+        </script>
+    </div>
+</div>
 @endsection
 
 @section('script')
-    @can('catalog.product')
-        <script>
-            layui.use(['layer', 'table', 'form'], function () {
+@can('catalog.product')
+<script>
+    layui.use(['layer', 'table', 'form'], function () {
                 var $ = layui.jquery;
                 var layer = layui.layer;
                 var form = layui.form;
@@ -80,22 +78,23 @@
                     var data = obj.data //获得当前行数据
                         , layEvent = obj.event; //获得 lay-event 对应的值
                     if (layEvent === 'del') {
-                        layer.confirm('确认禁用吗？', function (index) {
+                        layer.confirm('确认删除吗？', function (index) {
                             layer.close(index);
-                            var load = layer.load();
-                            {{--$.post("{{ route('admin.blog.article.disable') }}", {--}}
-                            {{--    _method: 'delete',--}}
-                            {{--    ids: [data.post_id]--}}
-                            {{--}, function (res) {--}}
-                            {{--    layer.close(load);--}}
-                            {{--    if (res.code == 0) {--}}
-                            {{--        layer.msg(res.msg, {icon: 1}, function () {--}}
-                            {{--            // obj.del();--}}
-                            {{--        })--}}
-                            {{--    } else {--}}
-                            {{--        layer.msg(res.msg, {icon: 2})--}}
-                            {{--    }--}}
-                            {{--});--}}
+                            $.ajax({
+                                type: "post",
+                                url: "/admin/product/" + data.id,
+                                dataType: "json",
+                                success: function (res) {
+                                        if (res.code == 1) {
+                                        layer.msg(res.msg, {icon: 1});
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 1000);
+                                    } else {
+                                        layer.alert(res.msg, {icon: 2});
+                                    }
+                                }
+                            });
                         });
                     } else if (layEvent === 'edit') {
                         location.href = '/admin/product/detail/' + data.id + '/edit';
@@ -145,6 +144,6 @@
                     })
                 })
             })
-        </script>
-    @endcan
+</script>
+@endcan
 @endsection

@@ -277,4 +277,24 @@ class ProductController extends AdminController
             return redirect::back()->withErrors('更新失败');
         }
     }
+
+    public function destroy(Product $product)
+    {
+        if ($product->is_active) {
+            return  json_encode([
+                'code' => 0,
+                'msg' => '当前商品为启用状态，无法删除',
+            ], 320);
+            exit();
+        }
+
+        $product->delete();
+
+        if ($product->trashed()) {
+            return  json_encode([
+                'code' => 1,
+                'msg' => '删除成功',
+            ], 320);
+        }
+    }
 }
