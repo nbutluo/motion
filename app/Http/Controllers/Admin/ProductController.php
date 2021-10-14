@@ -270,6 +270,8 @@ class ProductController extends AdminController
 
         $params['is_active'] = $request->input('is_active', 1);
 
+        $params['is_new_arrival'] = $request->input('is_new_arrival');
+
         try {
             $this->productModel->updateProduct($id, $params);
             return redirect::to(URL::route('admin.catalog.product'))->with(['success' => '更新成功']);

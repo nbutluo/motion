@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Model\Product\Product;
 
 class ProductRequest extends FormRequest
 {
@@ -19,6 +20,17 @@ class ProductRequest extends FormRequest
             'category_id' => 'required',
             'image' => 'required',
             'video_url' => 'nullable|url',
+            'is_new_arrival' => [
+                'boolean',
+                function ($attribute, $value, $fail) {
+                    // 新品数量
+                    $new_arrival_nums = count(Product::where('is_new_arrival', true)->get());
+
+                    if (!$this->is_active && $value) {
+                        $fail('新品必须是启用状态');
+                    }
+                },
+            ],
         ];
     }
 

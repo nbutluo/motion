@@ -28,6 +28,8 @@ Route::group(['middleware' => ['auth', 'permission:catalog']], function () {
             Route::post('product/create', 'ProductController@addProduct')->name('admin.blog.article.create.post');
             Route::post('product/relate/list', 'ProductController@RelateProductList')->name('admin.catalog.product.relate.list');
             Route::post('product/{product}', 'ProductController@destroy')->name('admin.product.destroy');
+            Route::get('product/new_arrival/index', 'NewArrivalController@index')->name('admin.new_arrival.index');
+            Route::get('product/new_arrival/json', 'NewArrivalController@newArrival')->name('admin.new_arrival.data');
         });
     });
 

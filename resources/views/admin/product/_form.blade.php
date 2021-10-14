@@ -26,6 +26,18 @@
 </div>
 
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">是否为新品</label>
+    <div class="layui-input-block">
+        <select name="is_new_arrival">
+            <option value="0" @if(isset($product->is_new_arrival)&&$product->is_new_arrival==0)selected @endif>否
+            </option>
+            <option value="1" @if(isset($product->is_new_arrival)&&$product->is_new_arrival==1)selected @endif>是
+            </option>
+        </select>
+    </div>
+</div>
+
+<div class="layui-form-item">
     <label for="" class="layui-form-label">分类</label>
     <div class="layui-input-inline">
         <select name="category_id">
