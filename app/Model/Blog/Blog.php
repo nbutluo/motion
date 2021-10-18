@@ -19,9 +19,9 @@ class Blog extends Model
         $perPage = $perPage ?: $this->model->getPerPage();
 
         if ($total = $this->toBase()->getCountForPagination()) {
-            $results = $this->forPage($page, $perPage)->where($where)->get($columns);
+            $results = $this->forPage($page, $perPage)->where($where)->orderBy('created_at', 'desc')->get($columns);
         } else {
-//            $results = $this->model->newCollection();
+            //            $results = $this->model->newCollection();
             $results = '';
         }
 
@@ -30,9 +30,9 @@ class Blog extends Model
         return $result;
     }
 
-    public function getPageList($page, $pageSize,$where, $selects = ['*'])
+    public function getPageList($page, $pageSize, $where, $selects = ['*'])
     {
-        return $this->paginate($pageSize, $selects, $page, 'page',$where);
+        return $this->paginate($pageSize, $selects, $page, 'page', $where);
     }
 
     public function getCategoryPostList($category_id, $page, $pageSize)
@@ -41,8 +41,8 @@ class Blog extends Model
             'category_id' => $category_id,
             'is_active'   => 1
         ];
-//        $select = ['post_id', 'title', 'identifier', 'content', 'views_count', 'short_content', 'category_id','featured_img','publish_time'];
-        $select = ['post_id', 'title', /*'identifier', 'content', 'views_count','category_id',*/ 'short_content', 'featured_img','publish_time'];
+        //        $select = ['post_id', 'title', 'identifier', 'content', 'views_count', 'short_content', 'category_id','featured_img','publish_time'];
+        $select = ['post_id', 'title', /*'identifier', 'content', 'views_count','category_id',*/ 'short_content', 'featured_img', 'publish_time'];
         return $this->paginate($pageSize, $select, $page, 'page', $where);
     }
 
@@ -58,7 +58,7 @@ class Blog extends Model
     public function getSelectFind($id)
     {
         if ($this->where('post_id', $id)->first()) {
-//            return $this->select('post_id', 'title', 'meta_title', 'meta_keywords', 'meta_description', 'content', 'views_count', 'category_id')
+            //            return $this->select('post_id', 'title', 'meta_title', 'meta_keywords', 'meta_description', 'content', 'views_count', 'category_id')
             return $this->where('post_id', $id)->first()->toArray();
         } else {
             return [];
