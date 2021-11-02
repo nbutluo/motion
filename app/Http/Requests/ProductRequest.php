@@ -19,7 +19,6 @@ class ProductRequest extends FormRequest
             'sku' => 'required|min:3',
             'category_id' => 'required',
             'image' => 'required',
-            'video_url' => 'nullable|url',
             'is_new_arrival' => [
                 'boolean',
                 function ($attribute, $value, $fail) {
@@ -43,7 +42,6 @@ class ProductRequest extends FormRequest
             'sku.min' => 'SKU 不能小于 3 个 字符',
             'category_id.required' => '请选择产品所属分类',
             'image.required' => '产品图片不能为空',
-            'video_url.url' => '请输入正确的 以 http:// 开头的 URL，',
         ];
     }
 }

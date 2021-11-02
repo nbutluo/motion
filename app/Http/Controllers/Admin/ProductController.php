@@ -203,20 +203,28 @@ class ProductController extends AdminController
         return view('admin.product.edit', compact('product', 'categories'));
     }
 
-    public function update($id, ProductRequest $request, Base64ImageHandler $uploader)
+    public function update($id, ProductRequest $request, Base64ImageHandler $uploader, VideoUploadHandler $videoHandler)
     {
-        // -------  start -----
-        $data = $request->all();
-        // dda($data);
-        if (empty($id)) return redirect::back()->withErrors('参数错误，缺少ID');
         $params = [];
+        $data = $request->all();
+        // dd($data);
+
+        // 七牛云存储视频
+        if ($file = $request->video_url) {
+            $params['video_url'] = $videoHandler->video_upload($file);
+        } else {
+            // 删除视频
+            $params['video_url'] = $request->video_url ?: null;
+        }
+
+        if (empty($id)) return redirect::back()->withErrors('参数错误，缺少ID');
+        // 图片上传
         foreach ($data['image'] as $key => $value) {
             if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $value)) {
                 $res = $uploader->base64_image_content($value, 'product');
                 $data['image'][$key] = $res;
             }
         }
-        // -------  end -----
 
         $relate_ids = '';
         if (isset($request->relate_id) && !empty($request->relate_id)) {
@@ -254,6 +262,7 @@ class ProductController extends AdminController
             $params['parameters'] = $parameters;
         }
 
+        // 上传视频封面
         if ($video_poster = $request->input('video_poster')[0]) {
             if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $video_poster)) {
                 $params['video_poster'] = $uploader->base64_image_content($video_poster);
@@ -262,18 +271,12 @@ class ProductController extends AdminController
             $params['video_poster'] = null;
         }
 
-        if ($video_url = $request->input('video_url')) {
-            $params['video_url'] = $video_url;
-        } else {
-            $params['video_url'] = null;
-        }
-
         $params['is_active'] = $request->input('is_active', 1);
 
         $params['is_new_arrival'] = $request->input('is_new_arrival');
 
         try {
-            $this->productModel->updateProduct($id, $params);
+            $res =  $this->productModel->updateProduct($id, $params);
             return redirect::to(URL::route('admin.catalog.product'))->with(['success' => '更新成功']);
         } catch (\Exception $exception) {
             return redirect::back()->withErrors('更新失败');

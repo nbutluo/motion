@@ -3,8 +3,7 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">名称</label>
     <div class="layui-input-block">
-        <input type="text" name="name" value="{{$product->name??old('name')}}" placeholder="请输入产品标题"
-               class="layui-input">
+        <input type="text" name="name" value="{{$product->name??old('name')}}" placeholder="请输入产品标题" class="layui-input">
     </div>
 </div>
 
@@ -59,13 +58,13 @@
 </div>
 
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">视频 URL</label>
+    <label for="" class="layui-form-label">主图label</label>
     <div class="layui-input-block">
-        <input type="text" name="video_url" value="{{ $product->video_url ?? old('video_url') }}" class="layui-input"
-               placeholder="http://xxxx.mp4">
+        <input type="text" name="image_label" value="{{$product->image_label??old('image_label')}}" placeholder="请输入主图标签" class="layui-input">
     </div>
 </div>
 
+@isset($product)
 <div class="layui-form-item">
     <label for="" class="layui-form-label">视频封面</label>
     <div class="layui-input-block">
@@ -74,12 +73,18 @@
 </div>
 
 <div class="layui-form-item">
-    <label for="" class="layui-form-label">主图label</label>
+    <label for="" class="layui-form-label">视频</label>
     <div class="layui-input-block">
-        <input type="text" name="image_label" value="{{$product->image_label??old('image_label')}}"
-               placeholder="请输入主图标签" class="layui-input">
+        @if ($product->video_url)
+        <video src="{!! $product->video_url !!}" controls style="width: 400px"></video>
+        <input type="text" name="video_url" hidden value="{{old('video_url',$product->video_url)}}">
+        <span class="layui-btn layui-btn-sm layui-btn-danger btn-del">删除</span>
+        @else
+        <input type="file" name="video_url">
+        @endif
     </div>
 </div>
+@endisset
 
 <div class="layui-form-item">
     <label for="" class="layui-form-label">产品关联</label>
@@ -91,38 +96,33 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">短描述</label>
     <div class="layui-input-block">
-        <textarea type="text" name="short_description" placeholder="短描述，可为空"
-                  class="layui-textarea">{!! $product->short_description??old('short_description') !!}</textarea>
+        <textarea type="text" name="short_description" placeholder="短描述，可为空" class="layui-textarea">{!! $product->short_description??old('short_description') !!}</textarea>
     </div>
 </div>
 
 <div class="layui-form-item">
     <label for="" class="layui-form-label">产品内容</label>
     <div class="layui-input-block">
-        <textarea name="description" id="container" cols="30"
-                  rows="10">{{$product->description??old('description')}}</textarea>
+        <textarea name="description" id="container" cols="30" rows="10">{{$product->description??old('description')}}</textarea>
     </div>
 </div>
 <div class="layui-form-item">
     <label for="" class="layui-form-label">手机端产品内容</label>
     <div class="layui-input-block">
-        <textarea name="description_mobile" id="container-mobile" cols="30"
-                  rows="10">{{$product->description_mobile??old('description_mobile')}}</textarea>
+        <textarea name="description_mobile" id="container-mobile" cols="30" rows="10">{{$product->description_mobile??old('description_mobile')}}</textarea>
     </div>
 </div>
 <div class="layui-form-item">
     <label for="" class="layui-form-label">产品参数</label>
     <div class="layui-input-block">
-        <textarea name="parameters" id="parameters" cols="30"
-                  rows="10">{{$product->parameters??old('parameters')}}</textarea>
+        <textarea name="parameters" id="parameters" cols="30" rows="10">{{$product->parameters??old('parameters')}}</textarea>
     </div>
 </div>
 
 <div class="layui-form-item">
     <label for="" class="layui-form-label">位置权重</label>
     <div class="layui-input-block">
-        <input type="text" name="position" value="{{$product->position??old('position')}}" placeholder="请输入位置权重值"
-               class="layui-input">
+        <input type="text" name="position" value="{{$product->position??old('position')}}" placeholder="请输入位置权重值" class="layui-input">
     </div>
 </div>
 
@@ -134,22 +134,34 @@
 </div>
 
 <script type="text/javascript">
-    var cupload = new Cupload ({
+    var cupload = new Cupload({
         ele: "#product-image",
-        name:'image',
+        name: 'image',
         num: 5,
         @isset($product)
-        data:"{{ $product->image }}".split(';'),
+        data: "{{ $product->image }}".split(';'),
         @endisset
     });
 </script>
 
 <script type="text/javascript">
-    var cupload = new Cupload ({
+    var cupload = new Cupload({
         ele: "#product_video_poster",
-        name:'video_poster',
-        @isset($product->video_poster)
-        data:"{{ $product->video_poster }}".split(';'),
+        name: 'video_poster',
+        @isset($product - > video_poster)
+        data: "{{ $product->video_poster }}".split(';'),
         @endisset
     });
 </script>
+@isset($product)
+<script type="text/javascript">
+    $(function() {
+        $('.btn-del').click(function(el) {
+            if (confirm('确认删除吗？')) {
+                $input = `<input type="file" name="video_url">`
+                $(this).parent().html($input);
+            }
+        })
+    });
+</script>
+@endisset
