@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use App\Handlers\VideoUploadHandler;
+use Illuminate\Support\Str;
 
 class ProductController extends AdminController
 {
@@ -211,7 +212,8 @@ class ProductController extends AdminController
         // dd($data);
 
         // 七牛云存储视频
-        if ($file = $request->video_url) {
+        $file = $request->video_url;
+        if ($file && !Str::startsWith($file, 'http')) {
             $params['video_url'] = $videoHandler->video_upload($file);
         } else {
             // 删除视频
