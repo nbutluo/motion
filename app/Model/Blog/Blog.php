@@ -100,4 +100,9 @@ class Blog extends Model
     {
         return $this->whereIn('post_id', $ids)->update(['is_active' => $status]);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(BlogCategory::class, 'category_id');
+    }
 }
