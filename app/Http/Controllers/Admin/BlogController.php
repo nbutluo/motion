@@ -24,7 +24,7 @@ class BlogController extends AdminController
         $page = $request->input('page', 1);
         $limit = $request->input('limit', 10);
 
-        $res = app(Blog::class)->getPageList($page, $limit,[],['post_id','title','keywords','is_active','category_id','show_in_home','created_at','updated_at']);
+        $res = app(Blog::class)->getPageList($page, $limit, [], ['post_id', 'title', 'keywords', 'is_active', 'category_id', 'show_in_home', 'created_at', 'updated_at']);
         if (!empty($res['list'])) {
             foreach ($res['list'] as $re) {
                 if (isset($re->category_id) && !empty($re->category_id) && $re->category_id != 0) {
@@ -86,21 +86,21 @@ class BlogController extends AdminController
         if (isset($data['relate_id']) && $relate = $data['relate_id']) {
             $relate_text = '';
             foreach ($relate as $rela) {
-                $relate_text = ($relate_text == '') ? $rela : $relate_text.','.$rela;
+                $relate_text = ($relate_text == '') ? $rela : $relate_text . ',' . $rela;
             }
             $params['relate_id'] = $relate_text;
         }
 
         try {
             app(Blog::class)->addPost($params);
-            $new = Blog::select(['post_id'])->where('title',$title)->first();
+            $new = Blog::select(['post_id'])->where('title', $title)->first();
             //添加siteMap
             $siteMap = [
                 'type' => 10,
                 'methed' => 1,
                 'name' => '文章详情',
-                'url' => '/news/'.str_replace(' ','-',$title),
-                'origin' => '/loctek/blog/'.$new->post_id
+                'url' => '/news/' . str_replace(' ', '-', $title),
+                'origin' => '/loctek/blog/' . $new->post_id
             ];
             Sitemap::create($siteMap);
             return redirect::to(URL::route('admin.blog.article'))->with(['success' => '添加成功']);
@@ -126,7 +126,7 @@ class BlogController extends AdminController
 
         $params = [];
         if ($title = $data['title']) {
-            $params['title'] = $title;
+            $params['title'] = trim($title);
         }
         $params['content'] = isset($data['content']) ? $data['content'] : '';
         if ($short_content = $data['short_content']) {
@@ -144,7 +144,7 @@ class BlogController extends AdminController
         if (isset($data['relate_id']) && $relate = $data['relate_id']) {
             $relate_text = '';
             foreach ($relate as $rela) {
-                $relate_text = ($relate_text == '') ? $rela : $relate_text.','.$rela;
+                $relate_text = ($relate_text == '') ? $rela : $relate_text . ',' . $rela;
             }
             $params['relate_id'] = $relate_text;
         }
@@ -152,6 +152,7 @@ class BlogController extends AdminController
         // 首页显示状态 1、是 2、否
         $params['show_in_home'] = isset($data['show_in_home']) ? $data['show_in_home'] : 1;
         $params['is_active'] = isset($data['is_active']) ? $data['is_active'] : 1;
+
 
         try {
             app(Blog::class)->updatePost($id, $params);
@@ -176,7 +177,8 @@ class BlogController extends AdminController
         }
     }
 
-    public function RataleBlogList(Request $request) {
+    public function RataleBlogList(Request $request)
+    {
         if ($request->blog_id != 0) {
             $blogData = Blog::findOrFail($request->blog_id);
             $relates = [];
@@ -184,19 +186,19 @@ class BlogController extends AdminController
                 $relates = explode(',', $blogData->relate_id);
             }
         }
-            $Blogs = Blog::select(['post_id','title'])->where('is_active',1)->orderBy('position','DESC')->get();
-            foreach ($Blogs as $item) {
-                $item->value = $item->post_id;//赋值给value，title已有，不用重新赋值
-                if (isset($blogData) && !empty($blogData)) {
-                    if ($item->post_id == $request->blog_id) {
-                        $item->disabled = true;
-                    }
-                    if (in_array($item->post_id,$relates)) {
-                        $item->checked = 'checked';
-                    }
+        $Blogs = Blog::select(['post_id', 'title'])->where('is_active', 1)->orderBy('position', 'DESC')->get();
+        foreach ($Blogs as $item) {
+            $item->value = $item->post_id; //赋值给value，title已有，不用重新赋值
+            if (isset($blogData) && !empty($blogData)) {
+                if ($item->post_id == $request->blog_id) {
+                    $item->disabled = true;
                 }
-                unset($item->post_id);
+                if (in_array($item->post_id, $relates)) {
+                    $item->checked = 'checked';
+                }
             }
+            unset($item->post_id);
+        }
         return json_encode($Blogs);
     }
 }
