@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
+use App\Http\Requests\BlogRequest;
 use App\Model\Blog\Blog;
 use App\Model\Blog\BlogCategory;
 use App\Model\Sitemap;
@@ -67,6 +68,8 @@ class BlogController extends AdminController
         $image = isset($data['featured_img']) ? $data['featured_img'] : '';
         $params = [
             'title' => $title,
+            'meta_title' => $title,
+            'meta_description' => make_excerpt($content) ?? '',
             'content' => $content,
             'short_content' => $short_content,
             'publish_time' => date('Y-m-d H:i:s'),
@@ -119,11 +122,12 @@ class BlogController extends AdminController
         return view('admin.blog.edit', compact('post', 'categories'));
     }
 
-    public function update($id, Request $request)
+    public function update($id, BlogRequest $request)
     {
         $data = $request->toArray();
         if (empty($id)) return redirect::back()->withErrors('参数错误，缺少ID');
 
+        // dda($data);
         $params = [];
         if ($title = $data['title']) {
             $params['title'] = trim($title);
@@ -148,6 +152,10 @@ class BlogController extends AdminController
             }
             $params['relate_id'] = $relate_text;
         }
+
+
+        $params['meta_title'] = $request->meta_title;
+        $params['meta_description'] = $request->meta_description;
 
         // 首页显示状态 1、是 2、否
         $params['show_in_home'] = isset($data['show_in_home']) ? $data['show_in_home'] : 1;

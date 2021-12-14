@@ -9,7 +9,11 @@ class Blog extends Model
 {
     protected $table = 'blog_post';
     protected $primaryKey = 'post_id';
-    protected $fillable = ['title'];
+    protected $fillable = [
+        'title', 'keywords', 'meta_title', 'meta_description',
+        'show_in_home', 'relate_id', 'short_content', 'is_active',
+        'content',
+    ];
 
     //考虑到性能问题，通常$columns我们不以*号为值。可传入需要查询的字段替代。这里只做演示。无此要求
     public function paginate($perPage = null, $columns = ['*'], $page = null, $pageName = 'page', $where = [])
