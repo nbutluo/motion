@@ -68,6 +68,20 @@
 
 @isset($product)
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">meta_title</label>
+    <div class="layui-input-block">
+        <input type="text" name="meta_title" value="{{$product->meta_title??old('meta_title')}}" class="layui-input">
+    </div>
+</div>
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">meta_desc</label>
+    <div class="layui-input-block">
+        <input type="text" name="meta_description" value="{{$product->meta_description??old('meta_description')}}"
+               class="layui-input">
+    </div>
+</div>
+
+<div class="layui-form-item">
     <label for="" class="layui-form-label">视频封面</label>
     <div class="layui-input-block">
         <div id="product_video_poster"></div>

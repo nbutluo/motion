@@ -133,6 +133,8 @@ class ProductController extends AdminController
             'small_image' => $request->input('small_image'),
             'small_image_label' => $request->input('small_image_label'),
             'video_url' => $request->input('video_url'),
+            'meta_title' => $request->input('name', ''),
+            'meta_description' => $request->input('short_description', ''),
         ];
 
         if ($video_poster = $request->input('video_poster')) {
@@ -277,6 +279,8 @@ class ProductController extends AdminController
         $params['is_active'] = $request->input('is_active', 1);
 
         $params['is_new_arrival'] = $request->input('is_new_arrival');
+        $params['meta_description'] = $request->input('meta_description');
+        $params['meta_title'] = $request->input('meta_title');
 
         try {
             $res =  $this->productModel->updateProduct($id, $params);
