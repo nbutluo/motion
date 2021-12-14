@@ -31,7 +31,7 @@ class ProductCategoryController extends AdminController
 
     public function create()
     {
-        $categories = Category::where('level', 1)->where('is_active',1)->orderBy('position', 'asc')->get();
+        $categories = Category::where('level', 1)->where('is_active', 1)->orderBy('position', 'asc')->get();
         return view('admin.product-category.create', compact('categories'));
     }
 
@@ -40,7 +40,7 @@ class ProductCategoryController extends AdminController
         $data = $request->all();
         $level = ($data['parent_id'] == 0) ? 1 : 2;
         $categoryData = [];
-        $categories = Category::select(['id','name'])->get();
+        $categories = Category::select(['id', 'name'])->get();
         foreach ($categories as $cate) {
             $categoryData[$cate->id] = $cate->name;
         }
@@ -58,7 +58,7 @@ class ProductCategoryController extends AdminController
                 'type' => 7,
                 'methed' => 1,
                 'name' => '产品分类链接',
-                'url' => ($data['parent_id'] == 0) ? '/'.str_replace(' ','-',$data['name']) : '/'.str_replace(' ','-',$categoryData[$data['parent_id']]).'/'.str_replace(' ','-',$data['name']),
+                'url' => ($data['parent_id'] == 0) ? '/' . str_replace(' ', '-', $data['name']) : '/' . str_replace(' ', '-', $categoryData[$data['parent_id']]) . '/' . str_replace(' ', '-', $data['name']),
                 'origin' => '/loctek/product/list'
             ];
             Sitemap::create($siteMap);
@@ -71,14 +71,14 @@ class ProductCategoryController extends AdminController
     public function edit($id)
     {
         $category = Category::find($id);
-        $categories = Category::where('level',1)->where('is_active',1)->get();
-        return view('admin.product-category.edit',compact('category','categories'));
+        $categories = Category::where('level', 1)->where('is_active', 1)->get();
+        return view('admin.product-category.edit', compact('category', 'categories'));
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $category = Category::findOrFail($id);
-        $data = $request->only(['name','position','parent_id','description','is_active']);
+        $data = $request->only(['name', 'position', 'parent_id', 'description', 'is_active', 'meta_title', 'meta_description']);
         $data['level'] = ($data['parent_id'] != 0) ? 2 : 1;
         try {
             $category->update($data);

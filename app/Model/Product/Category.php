@@ -10,7 +10,7 @@ class Category extends Model
 {
     protected $table = 'catalog_category';
     protected $primaryKey = 'id';
-    protected $fillable = ['name','description','parent_id','is_active','position','level'];
+    protected $fillable = ['name', 'description', 'parent_id', 'is_active', 'position', 'level', 'meta_title', 'meta_description'];
 
     public function getCategoryList()
     {

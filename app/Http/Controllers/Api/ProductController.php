@@ -86,6 +86,9 @@ class ProductController extends ApiController
                 }
             }
 
+            $data['meta_title'] = $categoryData['meta_title'];
+            $data['meta_description'] = $categoryData['meta_description'];
+
             return $this->success('success', $data);
         } catch (Exception $e) {
             return $this->fail($e->getMessage(), 403);
