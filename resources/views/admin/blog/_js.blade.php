@@ -1,4 +1,3 @@
-
 <script>
     layui.use(['upload','layer','element','form','transfer', 'util'],function () {
         var $ = layui.jquery;
@@ -75,16 +74,22 @@
 
     })
 </script>
-{{--<link href="/editor/themes/default/css/umeditor.min.css" type="text/css" rel="stylesheet">--}}
+{{--
+<link href="/editor/themes/default/css/umeditor.min.css" type="text/css" rel="stylesheet">--}}
 {{--<script src="/editor/third-party/jquery.min.js"></script>--}}
-{{--<!-- 配置文件 -->--}}
+{{--
+<!-- 配置文件 -->--}}
 {{--<script type="text/javascript" src="/editor/umeditor.config.js"></script>--}}
-{{--<!-- 编辑器源码文件 -->--}}
+{{--
+<!-- 编辑器源码文件 -->--}}
 {{--<script type="text/javascript" src="/editor/umeditor.min.js"></script>--}}
-{{--<!-- 实例化编辑器 -->--}}
-{{--<script type="text/javascript">--}}
+{{--
+<!-- 实例化编辑器 -->--}}
+{{--<script type="text/javascript">
+    --}}
 {{--    var ue = UM.getEditor('container');--}}
-{{--</script>--}}
+{{--
+</script>--}}
 
 <script>
     layui.extend({
@@ -93,6 +98,8 @@
         var tinymce = layui.tinymce
         var edit = tinymce.render({
             elem: "#container"
+            , plugins:"{{ config('tinymce.plugins') }}"
+            , toolbar:"{{ config('tinymce.toolbar') }}"
             , height: 600
             , width:'100%',
             convert_urls: false,
