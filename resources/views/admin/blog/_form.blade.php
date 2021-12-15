@@ -95,21 +95,7 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">缩略图</label>
     <div class="layui-input-block">
-        <div class="layui-upload">
-            <button type="button" class="layui-btn layui-btn-sm uploadPic"><i
-                   class="layui-icon">&#xe67c;</i>图片上传</button>
-            <div class="layui-upload-list">
-                <ul class="layui-upload-box layui-clear">
-                    @if(isset($post->featured_img) && $post->featured_img != '')
-                    <li><img src="{{ $post->featured_img }}" />
-                        <p>上传成功</p>
-                    </li>
-                    @endif
-                </ul>
-                <input type="hidden" name="featured_img" class="layui-upload-input"
-                       value="{{ $post->featured_img??'' }}">
-            </div>
-        </div>
+        <div id="featured_img"></div>
     </div>
 </div>
 
@@ -128,14 +114,6 @@
     </div>
 </div>
 
-{{--<div class="layui-form-item">--}}
-    {{-- <label for="" class="layui-form-label">内容</label>--}}
-    {{-- <div class="layui-input-block">--}}
-        {{-- <script id="container" name="content" type="text/plain" style="width: 98%">--}}
-{{--            {!! $post->content??old('content') !!}--}}
-{{--        </script>--}}
-        {{-- </div>--}}
-    {{--</div>--}}
 <div class="layui-form-item">
     <label for="" class="layui-form-label">内容</label>
     <div class="layui-input-block">
@@ -156,3 +134,13 @@
         <a class="layui-btn" href="{{route('admin.blog.article')}}">返 回</a>
     </div>
 </div>
+
+<script type="text/javascript">
+    var cupload = new Cupload({
+        ele: "#featured_img",
+        name: 'featured_img',
+        @isset($post->featured_img)
+        data: "{{ $post->featured_img }}".split(';'),
+        @endisset
+    });
+</script>

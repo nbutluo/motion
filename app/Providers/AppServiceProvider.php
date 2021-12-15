@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use App\Model\Blog\Blog;
+use App\Observers\BlogObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +16,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
     }
 
     /**
@@ -24,11 +25,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Blog::observe(BlogObserver::class);
+
         Schema::defaultStringLength(250);
 
         //全局分配当前登录用户
-        view()->composer('*', function ($view)
-        {
+        view()->composer('*', function ($view) {
             $view->with('currentUser', auth()->user());
         });
     }

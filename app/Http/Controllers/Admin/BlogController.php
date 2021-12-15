@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Handlers\Base64ImageHandler;
 use App\Http\Controllers\AdminController;
 use App\Http\Requests\BlogRequest;
 use App\Model\Blog\Blog;
@@ -122,52 +123,21 @@ class BlogController extends AdminController
         return view('admin.blog.edit', compact('post', 'categories'));
     }
 
-    public function update($id, BlogRequest $request)
+    public function update(BlogRequest $request, Blog $blog, Base64ImageHandler $uploader)
     {
-        $data = $request->toArray();
-        if (empty($id)) return redirect::back()->withErrors('参数错误，缺少ID');
+        $blog->fill($request->all());
 
-        // dda($data);
-        $params = [];
-        if ($title = $data['title']) {
-            $params['title'] = trim($title);
-        }
-        $params['content'] = isset($data['content']) ? $data['content'] : '';
-        if ($short_content = $data['short_content']) {
-            $params['short_content'] = $short_content;
-        }
-        if ($category_id = $data['category_id']) {
-            $params['category_id'] = $category_id;
-        }
-        if ($keywords = $data['keywords']) {
-            $params['keywords'] = $keywords;
-        }
-        if ($image = $data['featured_img']) {
-            $params['featured_img'] = $image;
-        }
-        if (isset($data['relate_id']) && $relate = $data['relate_id']) {
-            $relate_text = '';
-            foreach ($relate as $rela) {
-                $relate_text = ($relate_text == '') ? $rela : $relate_text . ',' . $rela;
-            }
-            $params['relate_id'] = $relate_text;
+        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $featured_img = $request->featured_img[0])) {
+            $blog->featured_img = $uploader->base64_image_content($featured_img, 'product');
         }
 
-
-        $params['meta_title'] = $request->meta_title;
-        $params['meta_description'] = $request->meta_description;
-
-        // 首页显示状态 1、是 2、否
-        $params['show_in_home'] = isset($data['show_in_home']) ? $data['show_in_home'] : 1;
-        $params['is_active'] = isset($data['is_active']) ? $data['is_active'] : 1;
-
-
-        try {
-            app(Blog::class)->updatePost($id, $params);
-            return redirect::to(URL::route('admin.blog.article'))->with(['success' => '更新成功']);
-        } catch (\Exception $exception) {
-            return redirect::back()->withErrors('更新失败');
+        if ($request->relate_id) {
+            $blog->relate_id =  implode(',', $request->relate_id);
         }
+
+        $blog->save();
+
+        return redirect()->route('admin.blog.article')->with(['success' => '更新成功']);
     }
 
     public function disable(Request $request)
