@@ -24,7 +24,7 @@
         </select>
     </div>
 </div>
-
+@isset($product)
 <div class="layui-form-item">
     <label for="" class="layui-form-label">是否为新品</label>
     <div class="layui-input-block">
@@ -36,6 +36,7 @@
         </select>
     </div>
 </div>
+@endisset
 
 <div class="layui-form-item">
     <label for="" class="layui-form-label">分类</label>
