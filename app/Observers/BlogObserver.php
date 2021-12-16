@@ -6,7 +6,7 @@ use App\Model\Blog\Blog;
 
 class BlogObserver
 {
-    public function updating(Blog $blog)
+    public function saving(Blog $blog)
     {
         if (empty($blog->meta_title)) {
             $blog->meta_title = $blog->title;

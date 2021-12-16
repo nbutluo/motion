@@ -14,14 +14,14 @@ class BlogRequest extends FormRequest
     public function rules()
     {
         return [
-            'meta_description' => 'max:200'
+            'meta_description' => 'max:500'
         ];
     }
 
     public function messages()
     {
         return [
-            'meta_description.max' => 'meta_description字数不能超过200',
+            'meta_description.max' => 'meta_description字数不能超过500',
         ];
     }
 }

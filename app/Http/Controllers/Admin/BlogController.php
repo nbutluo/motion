@@ -58,7 +58,7 @@ class BlogController extends AdminController
         return $this->success('success', $data);
     }
 
-    public function addPost(Request $request)
+    public function addPost(Request $request, Base64ImageHandler $uploader)
     {
         $data = $request->toArray();
         $content = isset($data['content']) ? $data['content'] : '';
@@ -66,7 +66,11 @@ class BlogController extends AdminController
         $is_active = $data['is_active'] == 1 ? $data['is_active'] : 0;
         $title = isset($data['title']) ? $data['title'] : '';
         if (empty($title)) return redirect::back()->withErrors('添加失败，缺少标题');
-        $image = isset($data['featured_img']) ? $data['featured_img'] : '';
+
+        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $featured_img = $request->featured_img[0])) {
+            $data['featured_img'] = $uploader->base64_image_content($featured_img, 'product') ?? '';
+        }
+
         $params = [
             'title' => $title,
             'meta_title' => $title,
@@ -76,7 +80,7 @@ class BlogController extends AdminController
             'publish_time' => date('Y-m-d H:i:s'),
             'is_active' => $is_active,
             'show_in_home' => $data['show_in_home'],
-            'featured_img' => $image,
+            'featured_img' => $data['featured_img'],
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ];
