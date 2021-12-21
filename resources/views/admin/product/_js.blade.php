@@ -12,12 +12,6 @@
         var transfer = layui.transfer;
         var layer = layui.layer;
         var util = layui.util;
-        // var data1 = [
-        //     {"value": "1", "title": "李白"}
-        //     ,{"value": "2", "title": "杜甫"}
-        //     ,{"value": "4", "title": "李清照",'checked':'checked'}
-        //     ,{"value": "5", "title": "鲁迅", "disabled": true}
-        // ]
         var productData = getProductData();
         function getProductData(){
             var result = '';
@@ -39,6 +33,7 @@
             elem: '#product-list'
             ,data: productData
             ,id: 'beSelect'
+            ,width:400
             ,title: ['产品列表', '已选产品']
             ,showSearch: true,
             parseData :function (productData) {
@@ -50,8 +45,6 @@
                 }
             },
             onchange:function (productData,index) {
-                console.log(productData);
-                console.log(index);
                 $.each(productData,function (i,n) {
                     if (index == 0) {
                         $("#product-list").append('<input type="hidden" id="relate_id_'+n['value']+'" name="relate_id[]" value="'+n['value']+'">');
@@ -61,6 +54,56 @@
                 });
             }
         })
+
+        @isset($product)
+            var setProductData = setProductDataList();
+            // console.log(setProductData);
+            function setProductDataList(){
+                var result = '';
+                $.ajax({
+                    type:"get",
+                    dataType:"json",
+                    url:"{{route('admin.catalog.product.set.list',$product->id)}}",
+                    data:{"_token": "{{ csrf_token() }}",'product_id':{{(isset($product->id)) ? $product->id : 0}} },
+                    cache: false,
+                    async: false,
+                    success:function(data){
+                        result = data;
+                    },
+                });
+                return result;
+            }
+           //系列产品关联
+        transfer.render({
+            elem: '#product-list2'
+            ,data: setProductData
+            ,id: 'beSelect2'
+            // ,value: setProductData.checked
+            ,width:400
+            ,title: ['产品列表', '已选产品']
+            ,showSearch: true,
+            parseData :function (setProductData) {
+                return {
+                    'value':setProductData.value,
+                    'title':setProductData.title,
+                    'checked':setProductData.checked,
+                    'disabled':setProductData.disabled,
+                }
+            },
+            onchange:function (setProductData,index) {
+                // console.log(setProductData);
+                // console.log(index);
+                $.each(setProductData,function (i,n) {
+                    if (index == 0) {
+                        $("#product-list2").append('<input type="hidden" id="set_product_ids_'+n['value']+'" name="set_product_ids[]" value="'+n['value']+'">');
+                    } else {
+                        $("#set_product_ids_"+n['value']).remove();
+                    }
+                });
+            }
+        })
+        @endisset
+
 
 
         //普通图片上传

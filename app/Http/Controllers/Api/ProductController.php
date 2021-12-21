@@ -108,10 +108,11 @@ class ProductController extends ApiController
         try {
             $select = [
                 'id', 'name', 'sku', 'description', 'description_mobile', 'parameters', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label', 'relate_ids', 'category_id', 'video_url', 'video_poster',
-                'meta_title', 'meta_description',
+                'meta_title', 'meta_description', 'set_product_ids',
             ];
 
             $data = $this->productModel->getDetailForApi($id, $select);
+            // dda($data);
             if ($allCateData[$data['category_id']]['parent_id'] == 0) {
                 $data['secondCategory'] = $allCateData[$data['category_id']]['name'];
                 $data['thirdCategory'] = '';
@@ -191,6 +192,29 @@ class ProductController extends ApiController
                         $relateData[] = $relateProduct;
                     }
                     $data['relate'] = $relateData;
+                }
+
+                //获取同系列产品
+                if ($data['set_product_ids'] != '') {
+                    $relates = explode(',', $data['set_product_ids']);
+                    $relateData = [];
+                    foreach ($relates as $relate) {
+                        $relateProduct = Product::select(['id', 'name', 'image'])->findOrFail($relate);
+                        $relate_urlKey = Sitemap::select(['url'])->where('origin', '/loctek/product/info/' . $relate)->first();
+                        $relateProduct->url_key = $relate_urlKey->url;
+                        if (isset($relateProduct->image) && $relateProduct->image != '') {
+                            $relateImages = explode(';', $relateProduct->image);
+                            $relateProduct->image = [];
+                            foreach ($relateImages as &$relateImage) {
+                                $relateImage = HTTP_TEXT . $_SERVER["HTTP_HOST"] . $relateImage;
+                            }
+                            $relateProduct->image = $relateImages;
+                        } else {
+                            $relateProduct->image = [];
+                        }
+                        $relateData[] = $relateProduct;
+                    }
+                    $data['series'] = $relateData;
                 }
             }
             return $this->success('success', $data);

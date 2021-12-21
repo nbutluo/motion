@@ -58,6 +58,32 @@ class ProductController extends AdminController
         return json_encode($products);
     }
 
+    public function SetProductList(Request $request, Product $product)
+    {
+        $set_product_ids = explode(',', $product->set_product_ids);
+
+        // $set_product_list =  Product::whereIn('id', $set_product_ids)
+        //     ->orderByRaw(\DB::raw("FIELD(id, $product->set_product_ids)"))
+        //     ->get();
+
+        $products = Product::select(['id', 'name'])->where('is_active', 1)->orderBy('position', 'asc')->get();
+        foreach ($products as $product) {
+            $product->value = $product->id;
+            $product->title = $product->name;
+
+            if ($product->id == $request->product_id) {
+                $product->disabled = true;
+            }
+            if (in_array($product->id, $set_product_ids)) {
+                $product->checked = 'checked';
+            }
+            unset($product->id);
+            unset($product->name);
+        }
+        $products['checked'] = $set_product_ids;
+        return json_encode($products);
+    }
+
     public function getList(Request $request)
     {
         $page = $request->input('page', 1);
@@ -237,6 +263,14 @@ class ProductController extends AdminController
                 $relate_ids = ($relate_ids == '') ? $relate : $relate_ids . ',' . $relate;
             }
             $params['relate_ids'] = $relate_ids;
+        }
+
+        $set_product_ids = '';
+        if (isset($request->set_product_ids) && !empty($request->set_product_ids)) {
+            foreach ($request->set_product_ids as $set) {
+                $set_product_ids = ($set_product_ids == '') ? $set : $set_product_ids . ',' . $set;
+            }
+            $params['set_product_ids'] = $set_product_ids;
         }
 
         if ($sku = $request->input('sku')) {

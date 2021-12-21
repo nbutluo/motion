@@ -13,12 +13,13 @@ class Product extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'name', 'sku', 'category_id', 'description', 'description_mobile', 'parameters', 'short_description',
-        'relate_ids', 'url_key', 'price', 'position', 'is_active', 'image', 'image_label', 'small_image', 'small_image_label',
-        'video_url', 'video_poster'
+        'meta_title', 'meta_description', 'url_key', 'price', 'relate_ids', 'set_product_ids', 'position', 'is_active',
+        'is_new_arrival', 'image', 'image_label', 'small_image', 'small_image_label', 'video_url', 'video_poster',
     ];
 
     protected $casts = [
         'is_new_arrival' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     //考虑到性能问题，通常$columns我们不以*号为值。可传入需要查询的字段替代。这里只做演示。无此要求

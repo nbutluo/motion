@@ -110,6 +110,15 @@
     </fieldset>
 </div>
 
+@isset($product)
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">同系列产品</label>
+    <div id="product-list2" class="demo-transfer"></div>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    </fieldset>
+</div>
+@endisset
+
 <div class="layui-form-item">
     <label for="" class="layui-form-label">短描述</label>
     <div class="layui-input-block">

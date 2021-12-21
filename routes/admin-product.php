@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth', 'permission:catalog']], function () {
@@ -27,6 +28,7 @@ Route::group(['middleware' => ['auth', 'permission:catalog']], function () {
             Route::get('product/create', 'ProductController@create')->name('admin.catalog.product.create');
             Route::post('product/create', 'ProductController@addProduct')->name('admin.blog.article.create.post');
             Route::post('product/relate/list', 'ProductController@RelateProductList')->name('admin.catalog.product.relate.list');
+            Route::get('product/set/list/{product}', [ProductController::class, 'SetProductList'])->name('admin.catalog.product.set.list');
             Route::post('product/{product}', 'ProductController@destroy')->name('admin.product.destroy');
             Route::get('product/new_arrival/index', 'NewArrivalController@index')->name('admin.new_arrival.index');
             Route::get('product/new_arrival/json', 'NewArrivalController@newArrival')->name('admin.new_arrival.data');
