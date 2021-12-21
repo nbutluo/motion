@@ -26,8 +26,7 @@
 <div class="layui-form-item">
     <label for="" class="layui-form-label">标题</label>
     <div class="layui-input-block">
-        <input type="text" name="title" value="{{$post->title??old('title')}}" lay-verify="required" placeholder="请输入标题"
-               class="layui-input">
+        <input type="text" name="title" value="{{$post->title??old('title')}}" placeholder="请输入标题" class="layui-input">
     </div>
 </div>
 
@@ -91,6 +90,13 @@
     </div>
 </div>
 @endisset
+
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">缩略图Alt</label>
+    <div class="layui-input-block layui-sm">
+        <input type="text" name="featured_img_alt" value="{{$post->featured_img_alt ?? ''}}" class="layui-input">
+    </div>
+</div>
 
 <div class="layui-form-item">
     <label for="" class="layui-form-label">缩略图</label>

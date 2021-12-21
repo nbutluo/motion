@@ -15,5 +15,9 @@ class BlogObserver
         if (empty($blog->meta_description)) {
             $blog->meta_description = make_excerpt($blog->content) ?? '';
         }
+
+        if (empty($blog->featured_img_alt)) {
+            $blog->featured_img_alt = $blog->title;
+        }
     }
 }
