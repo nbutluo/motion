@@ -19,4 +19,11 @@ class SeedNewArrivalData extends Migration
 
         DB::table('permissions')->insert($menu);
     }
+
+    public function down()
+    {
+        $name = 'catalog.new_arrival';
+
+        DB::table('permissions')->where('name', $name)->delete();
+    }
 }
