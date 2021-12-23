@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             ConfigurationTableSeeder::class,
             MenuCategoryTableSeeder::class,
             FooterLinksTableSeeder::class,
+            HomepageBannerSeeder::class
         ]);
     }
 }
