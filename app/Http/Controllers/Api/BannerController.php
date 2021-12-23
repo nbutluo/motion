@@ -36,7 +36,7 @@ class BannerController extends ApiController
                     $data['media_img_alt'] = $ban->banner_alt;
                 }
             }
-            dda($data);
+
             return $this->success('success', $data);
         } catch (\Exception $exception) {
             return $this->fail($exception->getMessage(), 404, []);
