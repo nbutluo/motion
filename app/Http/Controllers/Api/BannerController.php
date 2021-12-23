@@ -67,7 +67,7 @@ class BannerController extends ApiController
     public function getHomepageBanner()
     {
         try {
-            $banners = HomepageBanner::where('is_active', true)->orderBy('order', 'asc')->orderBy('updated_at', 'desc')->get();
+            $banners = HomepageBanner::select(['id', 'media_url_pc', 'media_url_mobile', 'is_active', 'banner_alt', 'order', 'link_url'])->where('is_active', true)->orderBy('order', 'asc')->orderBy('updated_at', 'desc')->get();
 
             foreach ($banners as $banner) {
                 $banner['media_url_pc'] = HTTP_TEXT . $_SERVER["HTTP_HOST"] . $banner['media_url_pc'];
