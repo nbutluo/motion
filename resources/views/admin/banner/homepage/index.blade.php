@@ -44,6 +44,7 @@
                         , {field: 'description', title: '描述'}
                         , {field: 'banner_alt', title: '图片alt'}
                         , {field: 'order', title: '排序',width: 80}
+                        , {field: 'link_url', title: '跳转链接'}
                         , {field: 'is_active', title: '是否启用',width: 100,
                             templet: function (res) {
                                 return (res.is_active == 0) ? "否" : "是";
