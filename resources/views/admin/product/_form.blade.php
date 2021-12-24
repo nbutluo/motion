@@ -150,6 +150,14 @@
 </div>
 
 <div class="layui-form-item">
+    <label for="" class="layui-form-label">手机端产品参数</label>
+    <div class="layui-input-block">
+        <textarea name="parameters_mobile" id="parameters_mobile" cols="40" rows="10"
+                  class="layui-textarea">{{$product->parameters_mobile??old('parameters_mobile')}}</textarea>
+    </div>
+</div>
+
+<div class="layui-form-item">
     <label for="" class="layui-form-label">位置权重</label>
     <div class="layui-input-block">
         <input type="text" name="position" value="{{$product->position??old('position')}}" placeholder="请输入位置权重值"

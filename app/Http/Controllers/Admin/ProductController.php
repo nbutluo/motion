@@ -310,12 +310,15 @@ class ProductController extends AdminController
             $params['video_poster'] = null;
         }
 
+        $params['parameters_mobile'] =  $request->input('parameters_mobile');
+
         $params['is_active'] = $request->input('is_active', 1);
 
         $params['is_new_arrival'] = $request->input('is_new_arrival');
         $params['meta_description'] = $request->input('meta_description');
         $params['meta_title'] = $request->input('meta_title');
 
+        // dda($params);
         try {
             $res =  $this->productModel->updateProduct($id, $params);
             return redirect::to(URL::route('admin.catalog.product'))->with(['success' => '更新成功']);
