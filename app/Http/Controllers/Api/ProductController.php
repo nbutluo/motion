@@ -54,7 +54,7 @@ class ProductController extends ApiController
             }
             $where['is_active'] = 1;
             $select = [
-                'id', 'name', 'sku', 'description', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label'
+                'id', 'name', 'sku', 'description', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label', 'meta_title', 'meta_description',
             ];
 
             $data = $this->productModel->getPageList($page, $pageSize, $where, $select);
@@ -85,9 +85,6 @@ class ProductController extends ApiController
                     $list->small_image = [];
                 }
             }
-
-            $data['meta_title'] = $categoryData['meta_title'];
-            $data['meta_description'] = $categoryData['meta_description'];
 
             return $this->success('success', $data);
         } catch (Exception $e) {
