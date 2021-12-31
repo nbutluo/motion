@@ -19,5 +19,9 @@ class BlogObserver
         if (empty($blog->featured_img_alt)) {
             $blog->featured_img_alt = $blog->title;
         }
+
+        if (empty($blog->meta_keywords)) {
+            $blog->meta_keywords = $blog->keywords;
+        }
     }
 }

@@ -12,7 +12,7 @@ class Blog extends Model
     protected $fillable = [
         'title', 'keywords', 'meta_title', 'meta_description',
         'show_in_home', 'relate_id', 'short_content', 'is_active',
-        'content', 'featured_img_alt',
+        'content', 'featured_img_alt', 'meta_keywords',
     ];
 
     //考虑到性能问题，通常$columns我们不以*号为值。可传入需要查询的字段替代。这里只做演示。无此要求
