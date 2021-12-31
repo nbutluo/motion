@@ -54,7 +54,7 @@ class ProductController extends ApiController
             }
             $where['is_active'] = 1;
             $select = [
-                'id', 'name', 'sku', 'description', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label', 'meta_title', 'meta_description',
+                'id', 'name', 'sku', 'description', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label', 'meta_title', 'meta_description', 'meta_keywords',
             ];
 
             $data = $this->productModel->getPageList($page, $pageSize, $where, $select);
@@ -105,7 +105,7 @@ class ProductController extends ApiController
         try {
             $select = [
                 'id', 'name', 'sku', 'description', 'description_mobile', 'parameters', 'parameters_mobile', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label', 'relate_ids', 'category_id', 'video_url', 'video_poster',
-                'meta_title', 'meta_description', 'set_product_ids',
+                'meta_title', 'meta_description', 'meta_keywords', 'set_product_ids',
             ];
 
             $data = $this->productModel->getDetailForApi($id, $select);

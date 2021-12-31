@@ -81,6 +81,13 @@
                class="layui-input">
     </div>
 </div>
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">meta_keyword</label>
+    <div class="layui-input-block">
+        <input type="text" name="meta_keywords" value="{{$product->meta_keywords??old('meta_keywords')}}"
+               class="layui-input">
+    </div>
+</div>
 
 <div class="layui-form-item">
     <label for="" class="layui-form-label">视频封面</label>

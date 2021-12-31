@@ -317,8 +317,8 @@ class ProductController extends AdminController
         $params['is_new_arrival'] = $request->input('is_new_arrival');
         $params['meta_description'] = $request->input('meta_description');
         $params['meta_title'] = $request->input('meta_title');
+        $params['meta_keywords'] = $request->input('meta_keywords');
 
-        // dda($params);
         try {
             $res =  $this->productModel->updateProduct($id, $params);
             return redirect::to(URL::route('admin.catalog.product'))->with(['success' => '更新成功']);
