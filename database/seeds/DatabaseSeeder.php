@@ -1,14 +1,10 @@
 <?php
 
+use App\Model\BulkOrder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
     public function run()
     {
         $this->call([
@@ -16,7 +12,8 @@ class DatabaseSeeder extends Seeder
             ConfigurationTableSeeder::class,
             MenuCategoryTableSeeder::class,
             FooterLinksTableSeeder::class,
-            HomepageBannerSeeder::class
+            HomepageBannerSeeder::class,
+            BulkOrderSeeder::class,
         ]);
     }
 }

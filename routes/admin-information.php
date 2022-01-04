@@ -54,6 +54,10 @@ Route::group(['middleware' => ['auth', 'permission:information']], function () {
             Route::delete('blog/disable', 'BlogController@disable')->name('admin.blog.article.disable');
             //blog 关联列表
             Route::post('blog/relate/list', 'BlogController@RataleBlogList')->name('admin.blog.relate.list');
+
+            Route::name('admin.')->group(function () {
+                Route::resource('bulk_order', 'BulkOrderController')->only(['index', 'show']);
+            });
         });
     });
 });
