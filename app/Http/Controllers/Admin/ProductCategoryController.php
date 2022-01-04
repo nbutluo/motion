@@ -78,7 +78,7 @@ class ProductCategoryController extends AdminController
     public function update(Request $request, $id)
     {
         $category = Category::findOrFail($id);
-        $data = $request->only(['name', 'position', 'parent_id', 'description', 'is_active', 'meta_title', 'meta_description']);
+        $data = $request->only(['name', 'position', 'parent_id', 'description', 'is_active', 'meta_title', 'meta_description', 'meta_keywords']);
         $data['level'] = ($data['parent_id'] != 0) ? 2 : 1;
         try {
             $category->update($data);

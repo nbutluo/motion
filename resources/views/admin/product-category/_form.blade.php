@@ -64,6 +64,13 @@
                class="layui-input">
     </div>
 </div>
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">meta_keyword</label>
+    <div class="layui-input-block">
+        <input type="text" name="meta_keywords" value="{{$category->meta_keywords??old('meta_keywords')}}"
+               class="layui-input">
+    </div>
+</div>
 @endisset
 
 <div class="layui-form-item">
