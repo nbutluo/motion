@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\BulkOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,7 @@ Route::group(['namespace' => 'Api'], function () {
     Route::get('blog/new-blog', 'BlogController@getNewBlog')->name('blog.new.blog');
     Route::get('blog/lastUpdate-blog', 'BlogController@lastUpdate')->name('blog.lastUpdate.blog');
     Route::get('blog/relate/{title}', 'BlogController@relateBlog')->name('blog.relate');
+    Route::resource('bulk_order', 'BulkOrderController')->only(['store']);
 
     Route::get('product/index', 'ProductController@index')->name('product.index');
     Route::get('product/list', 'ProductController@getList')->name('product.list');
