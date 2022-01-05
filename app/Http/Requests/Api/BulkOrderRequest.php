@@ -17,7 +17,7 @@ class BulkOrderRequest extends FormRequest
             'name' => 'required',
             'email' => 'required|email',
             'company' => 'required|string',
-            'blog_id' => 'required|string',
+            'blog_id' => 'required|integer',
         ];
     }
 }
