@@ -14,7 +14,7 @@ class SiteMapController extends AdminController
     public function index()
     {
         $type = Sitemap::select(['name'])->groupBy('name')->get();
-        return view('admin.siteMap.index',compact('type'));
+        return view('admin.siteMap.index', compact('type'));
     }
 
     public function getList(Request $request)
@@ -23,7 +23,7 @@ class SiteMapController extends AdminController
         if ($name = $request->name) {
             $where['name'] = $name;
         }
-        $siteMap = Sitemap::where($where)->paginate($request->get('limit',90));
+        $siteMap = Sitemap::where($where)->paginate($request->get('limit', 90));
         $data = [
             'code' => 0,
             'msg' => 'loading....',
@@ -36,7 +36,7 @@ class SiteMapController extends AdminController
     public function edit($id)
     {
         $siteMap = Sitemap::findOrFail($id);
-        return view('admin.siteMap.edit',compact('siteMap'));
+        return view('admin.siteMap.edit', compact('siteMap'));
     }
 
     public function update(Request $request)
@@ -61,14 +61,14 @@ class SiteMapController extends AdminController
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 300);
             curl_setopt($ch, CURLOPT_TIMEOUT, 300);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_URL, 'http://52.156.128.157:3000/');
+            curl_setopt($ch, CURLOPT_URL, 'http://localhost:3000/');
             $file_contents = curl_exec($ch);
             curl_close($ch);
 
-            file_put_contents(storage_path('logs/package.log'), 'date :  ' .  date('Y-m-d H:i:s') . '  msg: '.$file_contents. PHP_EOL, FILE_APPEND);
+            file_put_contents(storage_path('logs/package.log'), 'date :  ' .  date('Y-m-d H:i:s') . '  msg: ' . $file_contents . PHP_EOL, FILE_APPEND);
             return $file_contents;
         } catch (\Exception $exception) {
-            file_put_contents(storage_path('logs/package.log'), 'date :  ' .  date('Y-m-d H:i:s') . '  code : 400' .'msg: '.$exception->getMessage() . PHP_EOL, FILE_APPEND);
+            file_put_contents(storage_path('logs/package.log'), 'date :  ' .  date('Y-m-d H:i:s') . '  code : 400' . 'msg: ' . $exception->getMessage() . PHP_EOL, FILE_APPEND);
             return '400';
         }
     }
