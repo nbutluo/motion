@@ -5,7 +5,7 @@
     <div class="layui-card-header layuiadmin-card-header-auto">
         <div class="layui-form">
             <div class="layui-input-inline">
-                <input type="text" name="title" id="title" placeholder="请输入邮箱" class="layui-input">
+                <input type="text" name="email" id="email" placeholder="请输入邮箱" class="layui-input">
             </div>
             <button class="layui-btn" id="searchBtn">搜 索</button>
         </div>
@@ -70,11 +70,10 @@
 
                 //搜索
                 $("#searchBtn").click(function () {
-                    var catId = $("#category_id").val();
-                    var title = $("#title").val();
+                    var email = $("#email").val().trim();
                     dataTable.reload({
-                        where: {category_id: catId, title: title},
-                        page: {curr: 1}
+                        url:"{{route('admin.bulk_order.data',['email'=>'xxxx'])}}".replace(/xxxx/,email)
+                        ,page: {curr: 1}
                     })
                 })
             })
