@@ -12,4 +12,4 @@
 */
 
 Route::redirect('/', '/admin');
-Route::get('admin/bulk_order/list/{email?}', 'Admin\BulkOrderController@getList')->name('admin.bulk_order.data');
+Route::get('admin/bulk_order/list/{item?}', 'Admin\BulkOrderController@getList')->name('admin.bulk_order.data');

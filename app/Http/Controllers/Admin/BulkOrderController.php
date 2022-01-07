@@ -16,9 +16,10 @@ class BulkOrderController extends Controller
 
     public function getList(Request $request)
     {
-        if ($email = $request->email) {
-            $bulk_orders = BulkOrder::where('email', $email)
-                ->orWhere('email', 'like', '%' . $email . '%')
+        if ($query = $request->item) {
+            $bulk_orders = BulkOrder::where('email', $query)
+                ->orWhere('email', 'like', '%' . $query . '%')
+                ->orWhere('company', 'like', '%' . $query . '%')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
         } else {
