@@ -194,6 +194,9 @@ class ProductController extends ApiController
                 //获取同系列产品
                 if ($data['set_product_ids'] != '') {
                     $relates = explode(',', $data['set_product_ids']);
+                    // 将当前ID也返回为系列商品首位
+                    array_unshift($relates, (string) $data['id']);
+
                     $relateData = [];
                     foreach ($relates as $relate) {
                         $relateProduct = Product::select(['id', 'name', 'image'])->findOrFail($relate);
