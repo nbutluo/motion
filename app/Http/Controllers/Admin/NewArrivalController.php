@@ -38,10 +38,14 @@ class NewArrivalController extends Controller
             'new_arrival_order.unique' => '与现有产品顺序冲突，请重新选择',
         ]);
 
-        $product->update([
-            'is_new_arrival' => $request->is_new_arrival,
-            'new_arrival_order' => $request->new_arrival_order,
-        ]);
+        $data = $request->only(['is_new_arrival', 'new_arrival_order']);
+
+        // 如果取消商品作为新品，新品展示顺序设置为 null
+        if ($request->is_new_arrival == 0) {
+            $data['new_arrival_order'] = null;
+        }
+
+        $product->update($data);
 
         return redirect()->route('admin.new_arrival.index')->with('success', '更新成功');
     }
