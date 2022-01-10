@@ -15,7 +15,7 @@ class Product extends Model
         'name', 'sku', 'category_id', 'description', 'description_mobile', 'parameters', 'short_description',
         'meta_title', 'meta_description', 'url_key', 'price', 'relate_ids', 'set_product_ids', 'position', 'is_active',
         'is_new_arrival', 'image', 'image_label', 'small_image', 'small_image_label', 'video_url', 'video_poster', 'parameters_mobile',
-        'meta_keywords',
+        'meta_keywords', 'new_arrival_order',
     ];
 
     protected $casts = [

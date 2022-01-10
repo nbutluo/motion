@@ -24,4 +24,25 @@ class NewArrivalController extends Controller
             'data' => $new_arrivals,
         ]);
     }
+
+    public function edit(Product $product)
+    {
+        return view('admin.new_arrival.edit', compact('product'));
+    }
+
+    public function update(Request $request, Product $product)
+    {
+        $this->validate($request, [
+            'new_arrival_order' => 'nullable|unique:catalog_product,new_arrival_order,' .  $product->id,
+        ], [
+            'new_arrival_order.unique' => '与现有产品顺序冲突，请重新选择',
+        ]);
+
+        $product->update([
+            'is_new_arrival' => $request->is_new_arrival,
+            'new_arrival_order' => $request->new_arrival_order,
+        ]);
+
+        return redirect()->route('admin.new_arrival.index')->with('success', '更新成功');
+    }
 }

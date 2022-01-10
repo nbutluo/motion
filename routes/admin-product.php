@@ -31,6 +31,8 @@ Route::group(['middleware' => ['auth', 'permission:catalog']], function () {
             Route::get('product/set/list/{product}', [ProductController::class, 'SetProductList'])->name('admin.catalog.product.set.list');
             Route::post('product/{product}', 'ProductController@destroy')->name('admin.product.destroy');
             Route::get('product/new_arrival/index', 'NewArrivalController@index')->name('admin.new_arrival.index');
+            Route::get('product/new_arrival/{product}/edit', 'NewArrivalController@edit')->name('admin.new_arrival.edit');
+            Route::patch('product/new_arrival/{product}', 'NewArrivalController@update')->name('admin.new_arrival.update');
             Route::get('product/new_arrival/json', 'NewArrivalController@newArrival')->name('admin.new_arrival.data');
         });
     });
