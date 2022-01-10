@@ -301,6 +301,11 @@ class ProductController extends AdminController
             $params['parameters'] = $parameters;
         }
 
+        // 如果取消商品作为新品，相应的新品顺序设置为 null
+        if ($request->is_new_arrival == 0) {
+            $params['new_arrival_order'] = null;
+        }
+
         // 上传视频封面
         if ($video_poster = $request->input('video_poster')[0]) {
             if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $video_poster)) {
