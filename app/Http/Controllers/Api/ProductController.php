@@ -233,7 +233,8 @@ class ProductController extends ApiController
             }
 
             $relates = Product::select(['id', 'name', 'category_id', 'image', 'is_new_arrival', 'new_arrival_order'])
-                ->where('is_new_arrival', 1)
+                ->where('is_new_arrival', true)
+                ->whereNotNull('new_arrival_order')
                 ->orderBy('new_arrival_order')
                 ->limit(4)
                 ->get();
