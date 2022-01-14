@@ -13,3 +13,4 @@
 
 Route::redirect('/', '/admin');
 Route::get('admin/bulk_order/list/{item?}', 'Admin\BulkOrderController@getList')->name('admin.bulk_order.data');
+Route::post('video_upload', 'Admin\ProductController@video_upload')->name('admin.product.video');

@@ -1,5 +1,8 @@
 @extends('admin.base')
-
+@section('css')
+<link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+@endsection
 @section('content')
 <div class="layui-card">
     <div class="layui-card-header layuiadmin-card-header-auto">
@@ -9,7 +12,7 @@
         <form class="layui-form" action="{{route('admin.catalog.product.update',['id'=>$product->id])}}" method="post"
               enctype="multipart/form-data">
             {{ method_field('post') }}
-            @include('admin.product._form')
+            @include('admin.product._product')
         </form>
     </div>
 </div>

@@ -351,4 +351,12 @@ class ProductController extends AdminController
             ], 320);
         }
     }
+
+    public function video_upload(Request $request, VideoUploadHandler $videoHandler)
+    {
+        if ($request->hasFile('video_url')) {
+            $path = $videoHandler->video_upload($request->video_url);
+            return $path;
+        }
+    }
 }
