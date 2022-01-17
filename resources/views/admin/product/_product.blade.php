@@ -98,13 +98,13 @@
 
 <div class="layui-form-item">
     <label for="" class="layui-form-label">视频</label>
-    <div class="layui-input-block">
+    <div class="layui-input-block" style="width: 30%">
         @if ($product->video_url)
         <video src="{!! $product->video_url !!}" controls style="width: 400px"></video>
         <input type="text" name="video_url" hidden value="{{old('video_url',$product->video_url)}}">
         <span class="layui-btn layui-btn-sm layui-btn-danger btn-del">删除</span>
         @else
-        <input type="file" name="video_url" id="product-video" class="filepond">
+        <input type="file" name="video_url" id="product-video" class="filepond" data-max-files="1">
         @endif
     </div>
 </div>
@@ -214,13 +214,27 @@
 
 <script>
     var inputElement = document.querySelector('input[id="product-video"]')
+      // Register the plugin
+    FilePond.registerPlugin(
+        FilePondPluginFileValidateSize,
+        FilePondPluginFileValidateType
+    );
+
     FilePond.setOptions({
         server: {
             url: "{{ route('admin.product.video') }}",
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             }
-        }
+        },
+        allowFileTypeValidation: true,
+        acceptedFileTypes:['video/mp4'],
+        labelFileTypeNotAllowed:'格式有误',
+        labelIdle: '<span class="filepond--label-action">点击上传视频</span>',
+        allowFileSizeValidation:true,
+        maxFileSize:'20MB',
+        labelMaxFileSizeExceeded:'视频最大不能超过20M',
+        allowMultiple:false
     });
     FilePond.create(inputElement)
 </script>
