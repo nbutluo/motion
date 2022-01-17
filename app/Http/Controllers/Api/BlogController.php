@@ -61,6 +61,7 @@ class BlogController extends ApiController
 
             $category_name = $request->category_name;
             $category_id = $this->getCategoryId($category_name);
+            $blogCategory =  BlogCategory::find($category_id);
             if (!isset($category_id)) {
                 throw new \Exception('category name is wrong!');
             }
@@ -69,6 +70,9 @@ class BlogController extends ApiController
             $data['total'] = 0;
             if (isset($allData) && !empty($data['list'])) {
                 $data['total'] = count($allData);
+                $data['meta_keywords'] =  $blogCategory->meta_keywords;
+                $data['meta_title'] =  $blogCategory->meta_title;
+                $data['meta_description'] =  $blogCategory->meta_description;
                 foreach ($data['list'] as $item) {
                     if (isset($item->featured_img) && !empty($item->featured_img)) {
                         $item->featured_img = HTTP_TEXT . $_SERVER["HTTP_HOST"] . $item->featured_img;

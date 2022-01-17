@@ -9,7 +9,7 @@ class BlogCategory extends Model
 {
     protected $table = 'blog_category';
     protected $primaryKey = 'category_id';
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'meta_title', 'meta_keywords', 'meta_description'];
 
     public function paginate($perPage = null, $columns = ['*'], $page = null, $pageName = 'page')
     {

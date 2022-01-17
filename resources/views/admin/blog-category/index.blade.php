@@ -1,34 +1,34 @@
 @extends('admin.base')
 
 @section('content')
-    <div class="layui-card">
-        <div class="layui-card-header layuiadmin-card-header-auto">
-            <div class="layui-btn-group">
-                @can('information.category.create')
-                    <a class="layui-btn layui-btn-sm" href="{{route('admin.blog.category.create')}}" >添 加</a>
-                @endcan
-            </div>
-        </div>
-        <div class="layui-card-body">
-            <table id="dataTable" lay-filter="dataTable"></table>
-            <script type="text/html" id="options">
-                <div class="layui-btn-group">
-                    @can('information.category.edit')
-                        <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
-                    @endcan
-                    @can('information.category.destroy')
-                        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">禁用</a>
-                    @endcan
-                </div>
-            </script>
+<div class="layui-card">
+    <div class="layui-card-header layuiadmin-card-header-auto">
+        <div class="layui-btn-group">
+            @can('information.category.create')
+            <a class="layui-btn layui-btn-sm" href="{{route('admin.blog.category.create')}}">添 加</a>
+            @endcan
         </div>
     </div>
+    <div class="layui-card-body">
+        <table id="dataTable" lay-filter="dataTable"></table>
+        <script type="text/html" id="options">
+            <div class="layui-btn-group">
+                @can('information.category.edit')
+                <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
+                @endcan
+                @can('information.category.destroy')
+                <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">禁用</a>
+                @endcan
+            </div>
+        </script>
+    </div>
+</div>
 @endsection
 
 @section('script')
-    @can('information.category')
-        <script>
-            layui.use(['layer', 'table', 'form'], function () {
+@can('information.category')
+<script>
+    layui.use(['layer', 'table', 'form'], function () {
                 var $ = layui.jquery;
                 var layer = layui.layer;
                 var form = layui.form;
@@ -85,6 +85,6 @@
                     }
                 });
             })
-        </script>
-    @endcan
+</script>
+@endcan
 @endsection

@@ -57,7 +57,10 @@ class BlogCategoryController extends AdminController
             'keywords' => $request->input('keywords', ''),
             'content' => $request->input('content', ''),
             'is_active' => $request->input('is_active', 0),
-            'position' => $request->input('position', '0')
+            'position' => $request->input('position', '0'),
+            'meta_keywords' => $request->input('meta_keywords', ''),
+            'meta_title' => $request->input('meta_title', ''),
+            'meta_description' => $request->input('meta_description', ''),
         ];
         $siteMap = [
             'type' => 9,
@@ -97,6 +100,11 @@ class BlogCategoryController extends AdminController
 
         $params['include_in_menu'] = $request->input('include_in_menu', 1);
         $params['is_active'] = $request->input('is_active', 1);
+        $params['is_active'] = $request->input('is_active', 1);
+
+        $params['meta_keywords'] = $request->input('meta_keywords', '');
+        $params['meta_title'] = $request->input('meta_title', '');
+        $params['meta_description'] = $request->input('meta_description', '');
 
         try {
             app(BlogCategory::class)->updateCategory($id, $params);
