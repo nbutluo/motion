@@ -86,7 +86,7 @@ class ProductController extends ApiController
                 }
             }
 
-            if ($categoryData) {
+            if (isset($categoryData)) {
                 $data['meta_keywords'] =  $categoryData['meta_keywords'];
                 $data['meta_title'] =  $categoryData['meta_title'];
                 $data['meta_description'] =  $categoryData['meta_description'];
