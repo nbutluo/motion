@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
 use App\Model\Product\Category;
+use App\Model\Product\Product;
 use App\Model\Sitemap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -86,5 +87,40 @@ class ProductCategoryController extends AdminController
         } catch (\Exception $exception) {
             return Redirect::back()->withErrors('更新失败');
         }
+    }
+
+    public function getCategoryData(Request $request, Category $category, Product $product)
+    {
+        $categories = Category::select(['id', 'name', 'parent_id'])->where('is_active', true)->where('level', 2)->get();
+
+        $top_categories = Category::select(['id', 'name'])->where('is_active', true)->where('level', 1)->get();
+
+        $product_category_ids = explode(',', $product->category_id);
+
+        $arr = [];
+        foreach ($top_categories as $key => $top_category) {
+            $filtered = $categories->filter(function ($category) use ($top_category, $product_category_ids) {
+                if ($category->parent_id == $top_category->id) {
+                    $category['selected'] = in_array($category->id, $product_category_ids) ? true : false;
+                    $category['value'] = $category->id;
+                    return $category;
+                }
+            })->toArray();
+
+            // 如果顶级分类下没有子分类，则跳过
+            if (count($filtered) == 0) {
+                continue;
+            }
+
+            $arr[$key]['name'] = $top_category->name;
+            $arr[$key]['children'] = array_values($filtered);
+        }
+
+        $data = [
+            'code' => 1,
+            'data' => $arr,
+        ];
+
+        return Response::json($data);
     }
 }

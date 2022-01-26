@@ -11,10 +11,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
     <link rel="stylesheet" href="/static/admin/layuiadmin/style/admin.css" media="all">
-    {{--    <link rel="stylesheet" href="/static/css/chris.css" media="all">--}}
+    {{--
+    <link rel="stylesheet" href="/static/css/chris.css" media="all">--}}
     @yield('css')
     <script src="/static/js/jquery-3.5.1.min.js"></script>
     <script src="{{ asset('static/js/cupload.js') }}"></script>
+    <script src="/static/js/xm-select.js"></script>
 
 </head>
 

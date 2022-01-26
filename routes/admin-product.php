@@ -15,6 +15,7 @@ Route::group(['middleware' => ['auth', 'permission:catalog']], function () {
             //编辑分类
             Route::get('catalog/category/{id}/edit', 'ProductCategoryController@edit')->name('admin.catalog.category.edit')->middleware('permission:catalog.category.edit');
             Route::post('catalog/category/{id}/update', 'ProductCategoryController@update')->name('admin.catalog.category.update')->middleware('permission:catalog.category.edit');
+            Route::get('product/category/{product?}', 'ProductCategoryController@getCategoryData')->name('admin.catalog.product.category.data');
         });
     });
 

@@ -32,22 +32,22 @@ class Product extends Model
 
         if (!empty($where)) {
             $toBaseCollection = $this->toBase();
-            foreach ($where as $k => $w) {
-                if (is_array($w)) {
-                    $toBaseCollection = $toBaseCollection->whereIn($k, $w);
-                } else {
-                    $toBaseCollection = $toBaseCollection->where($k, $w);
-                }
+
+            if (is_array($where['category_id'])) {
+                $toBaseCollection = $toBaseCollection->where('is_active', 1)->whereIn('category_id', $where['category_id']);
+            } else {
+                $toBaseCollection = $toBaseCollection->where('is_active', 1)->orWhere('category_id', 'like', '%' . $where['category_id'] . '%');
             }
+
             if ($total = $toBaseCollection->getCountForPagination()) {
                 $forPageCollection = $this->forPage($page, $perPage);
-                foreach ($where as $k => $w) {
-                    if (is_array($w)) {
-                        $forPageCollection = $forPageCollection->whereIn($k, $w);
-                    } else {
-                        $forPageCollection = $forPageCollection->where($k, $w);
-                    }
+
+                if (is_array($where['category_id'])) {
+                    $forPageCollection = $forPageCollection->where('is_active', 1)->whereIn('category_id', $where['category_id']);
+                } else {
+                    $forPageCollection = $forPageCollection->where('is_active', 1)->orWhere('category_id', 'like', '%' . $where['category_id'] . '%');
                 }
+
                 $results = $forPageCollection->get($columns);
             } else {
                 $results = [];

@@ -38,7 +38,7 @@
 </div>
 @endisset
 
-<div class="layui-form-item">
+{{-- <div class="layui-form-item">
     <label for="" class="layui-form-label">分类</label>
     <div class="layui-input-inline">
         <select name="category_id">
@@ -50,6 +50,19 @@
             @endforeach
         </select>
     </div>
+</div> --}}
+
+<div class="layui-form-item">
+    <label for="" class="layui-form-label">分类</label>
+    <div class="layui-input-inline" style="width: 400px">
+        <div id="demo1" name="demo1" class="xm-select-demo"></div>
+        <input type="text" hidden id="categoryId" value="{{ $product->category_id }}" name="category_id">
+    </div>
+    <div class="layui-input-inline"
+         style="width: 43%;color: #ca6262;font-style: italic;line-height: 39px;font-size: 13px;">
+        新建的分类此处若不展示，请先确认其是否为启用状态，若为一级分类，请确认是否已创建对应的子分类
+    </div>
+
 </div>
 
 <div class="layui-form-item">
@@ -237,4 +250,50 @@
         allowMultiple:false
     });
     FilePond.create(inputElement)
+</script>
+
+<script>
+    var demo1 = xmSelect.render({
+        el: '#demo1',
+        empty: '呀, 没有数据呢',
+        height:'600px',
+        paging: true,
+        pageSize: 10,
+        filterable: true,
+        autoRow: true,
+        // pageEmptyShow: false,
+        on:function(data) {
+            var arr = data.arr;
+            console.log(arr);
+            let ids = arr.map(item=> item.value)
+            $('#categoryId').attr('value',ids.join(','))
+        },
+        data: [],
+    })
+
+    $.ajax({
+        type: "get",
+        url: "{{ route('admin.catalog.product.category.data',$product->id) }}",
+        // data:{ 'product_id': "{{ $product->id }}" },
+        cache: false,
+        async: true,
+        prop: {
+		name: 'name',
+		value: 'id',
+        parent_id:'parent_id'
+	},
+        dataType: "json",
+        success: function (response) {
+            if (response.code) {
+                console.log(response.data);
+                demo1.update({
+                    data: response.data,
+                })
+            }
+
+        }
+    });
+
+
+
 </script>
