@@ -32,11 +32,52 @@ class Product extends Model
 
         if (!empty($where)) {
             $toBaseCollection = $this->toBase();
+            foreach ($where as $k => $w) {
+                if (is_array($w)) {
+                    $toBaseCollection = $toBaseCollection->whereIn($k, $w);
+                } else {
+                    $toBaseCollection = $toBaseCollection->where($k, $w);
+                }
+            }
+            if ($total = $toBaseCollection->getCountForPagination()) {
+                $forPageCollection = $this->forPage($page, $perPage);
+                foreach ($where as $k => $w) {
+                    if (is_array($w)) {
+                        $forPageCollection = $forPageCollection->whereIn($k, $w);
+                    } else {
+                        $forPageCollection = $forPageCollection->where($k, $w);
+                    }
+                }
+                $results = $forPageCollection->get($columns);
+            } else {
+                $results = [];
+            }
+        } else {
+            if ($total = $this->toBase()->getCountForPagination()) {
+                $results = $this->forPage($page, $perPage)->orderBy('updated_at', 'desc')->get($columns);
+            } else {
+                $results = [];
+            }
+        }
+
+        $pages = ceil($total / $perPage);
+        $result = ['total' => $total, 'current_page' => $page, 'page_size' => $perPage, 'pages' => $pages, 'list' => $results];
+        return $result;
+    }
+
+    public function paginateTwo($perPage = null, $columns = ['*'], $page = null, $pageName = 'page', $where = [])
+    {
+        $page = $page ?: Paginator::resolveCurrentPage($pageName);
+
+        $perPage = $perPage ?: $this->model->getPerPage();
+
+        if (!empty($where)) {
+            $toBaseCollection = $this->toBase();
 
             if (is_array($where['category_id'])) {
                 $toBaseCollection = $toBaseCollection->where('is_active', 1)->whereIn('category_id', $where['category_id']);
             } else {
-                $toBaseCollection = $toBaseCollection->where('is_active', 1)->orWhere('category_id', 'like', '%' . $where['category_id'] . '%');
+                $toBaseCollection = $toBaseCollection->where('is_active', 1)->where('category_id', 'like', '%' . $where['category_id'] . '%');
             }
 
             if ($total = $toBaseCollection->getCountForPagination()) {
@@ -45,10 +86,19 @@ class Product extends Model
                 if (is_array($where['category_id'])) {
                     $forPageCollection = $forPageCollection->where('is_active', 1)->whereIn('category_id', $where['category_id']);
                 } else {
-                    $forPageCollection = $forPageCollection->where('is_active', 1)->orWhere('category_id', 'like', '%' . $where['category_id'] . '%');
+                    $forPageCollection = $forPageCollection->where('is_active', 1)->where('category_id', 'like', '%' . $where['category_id'] . '%');
                 }
 
                 $results = $forPageCollection->get($columns);
+
+                if (!is_array($where['category_id'])) {
+
+                    $results = $results->filter(function ($product, $key) use ($where) {
+
+                        $category_ids = explode(',', $product->category_id);
+                        return in_array($where['category_id'], $category_ids);
+                    });
+                }
             } else {
                 $results = [];
             }
@@ -68,6 +118,11 @@ class Product extends Model
     public function getPageList($page, $pageSize, $where = [], $selects = ['*'])
     {
         return $this->paginate($pageSize, $selects, $page, 'page', $where);
+    }
+
+    public function getPageListTwo($page, $pageSize, $where = [], $selects = ['*'])
+    {
+        return $this->paginateTwo($pageSize, $selects, $page, 'page', $where);
     }
 
     public function getDetailForApi($id, $select)

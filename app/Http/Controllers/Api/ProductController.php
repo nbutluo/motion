@@ -57,7 +57,7 @@ class ProductController extends ApiController
                 'id', 'name', 'sku', 'description', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label', 'meta_title', 'meta_description', 'meta_keywords',
             ];
 
-            $data = $this->productModel->getPageList($page, $pageSize, $where, $select);
+            $data = $this->productModel->getPageListTwo($page, $pageSize, $where, $select);
 
             foreach ($data['list'] as $list) {
                 $url_key = Sitemap::select(['url'])->where('origin', '/loctek/product/info/' . $list->id)->first();
