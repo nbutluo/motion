@@ -54,7 +54,7 @@ class ProductController extends ApiController
             }
             $where['is_active'] = 1;
             $select = [
-                'id', 'name', 'sku', 'description', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label', 'meta_title', 'meta_description', 'meta_keywords',
+                'id', 'name', 'sku', 'category_id', 'description', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label', 'meta_title', 'meta_description', 'meta_keywords',
             ];
 
             $data = $this->productModel->getPageListTwo($page, $pageSize, $where, $select);

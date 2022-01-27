@@ -93,7 +93,7 @@ class Product extends Model
 
                 if (!is_array($where['category_id'])) {
 
-                    $results = $results->filter(function ($product, $key) use ($where) {
+                    $results = $results->filter(function ($product) use ($where) {
 
                         $category_ids = explode(',', $product->category_id);
                         return in_array($where['category_id'], $category_ids);
