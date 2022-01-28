@@ -110,18 +110,19 @@ class ProductController extends ApiController
 
         try {
             $select = [
-                'id', 'name', 'sku', 'description', 'description_mobile', 'parameters', 'parameters_mobile', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label', 'relate_ids', 'category_id', 'video_url', 'video_poster',
+                'id', 'name', 'sku', 'category_id', 'description', 'description_mobile', 'parameters', 'parameters_mobile', 'short_description', 'url_key', 'position', 'image', 'image_label', 'small_image', 'small_image_label', 'relate_ids', 'category_id', 'video_url', 'video_poster',
                 'meta_title', 'meta_description', 'meta_keywords', 'set_product_ids',
             ];
 
             $data = $this->productModel->getDetailForApi($id, $select);
-            // dda($data);
-            if ($allCateData[$data['category_id']]['parent_id'] == 0) {
-                $data['secondCategory'] = $allCateData[$data['category_id']]['name'];
+
+            $product = Product::find($id);
+            if ($allCateData[$product->category->id]['parent_id'] == 0) {
+                $data['secondCategory'] = $allCateData[$product->category->id]['name'];
                 $data['thirdCategory'] = '';
             } else {
-                $data['secondCategory'] = $allCateData[$allCateData[$data['category_id']]['parent_id']]['name'];
-                $data['thirdCategory'] = $allCateData[$data['category_id']]['name'];
+                $data['secondCategory'] = $allCateData[$allCateData[$product->category->id]['parent_id']]['name'];
+                $data['thirdCategory'] = $allCateData[$product->category->id]['name'];
             }
             $data['description'] = str_replace('src="/uploads', 'src="' . HTTP_TEXT . $_SERVER["HTTP_HOST"] . '/uploads', $data['description']);
             $data['description_mobile'] = str_replace('src="/uploads', 'src="' . HTTP_TEXT . $_SERVER["HTTP_HOST"] . '/uploads', $data['description_mobile']);
@@ -244,6 +245,10 @@ class ProductController extends ApiController
                 ->orderBy('new_arrival_order')
                 ->limit(4)
                 ->get();
+
+            $relates = $relates->each(function ($product) {
+                return $product->category_id = $product->category->id;
+            });
 
             foreach ($relates as $relate) {
                 $url_key = Sitemap::select(['url'])->where('origin', '/loctek/product/info/' . $relate->id)->first();

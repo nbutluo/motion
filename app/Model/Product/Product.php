@@ -138,4 +138,9 @@ class Product extends Model
     {
         return Product::where('id', $id)->update($params);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

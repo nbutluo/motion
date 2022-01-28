@@ -25,51 +25,51 @@ class SearchController extends ApiController
                 $blogCategoryData[$blogCategory->category_id] = $blogCategory->title;
             }
             if (isset($request->keywords) && $request->keywords != '') {
-                $allBlogs = Blog::select(['post_id','title','featured_img','short_content','category_id'])
-                    ->where('title',trim($request->keywords))
-                    ->where('is_active',1)
-                    ->orderBy('position','desc')
-                    ->orWhere('title','like','%'.trim($request->keywords).'%')
+                $allBlogs = Blog::select(['post_id', 'title', 'featured_img', 'short_content', 'category_id'])
+                    ->where('title', trim($request->keywords))
+                    ->where('is_active', 1)
+                    ->orderBy('position', 'desc')
+                    ->orWhere('title', 'like', '%' . trim($request->keywords) . '%')
                     ->get();
-                $allProducts = Product::select(['id','name','sku','category_id','short_description','image'])
-                    ->where('name',trim($request->keywords))
-                    ->where('is_active',1)
-                    ->orderBy('position','desc')
-                    ->orWhere('name','like','%'.trim($request->keywords).'%')
+                $allProducts = Product::select(['id', 'name', 'sku', 'category_id', 'short_description', 'image'])
+                    ->where('name', trim($request->keywords))
+                    ->where('is_active', 1)
+                    ->orderBy('position', 'desc')
+                    ->orWhere('name', 'like', '%' . trim($request->keywords) . '%')
                     ->get();
                 if ($request->type == 2) {
-                    $blogs = Blog::select(['post_id','title','featured_img','short_content','category_id'])
-                        ->where('title',trim($request->keywords))
-                        ->where('is_active',1)
-                        ->orWhere('title','like','%'.trim($request->keywords).'%')
-                        ->orderBy('position','desc')
-                        ->offset(($request->page-1)*$request->page_size)
+                    $blogs = Blog::select(['post_id', 'title', 'featured_img', 'short_content', 'category_id'])
+                        ->where('title', trim($request->keywords))
+                        ->where('is_active', 1)
+                        ->orWhere('title', 'like', '%' . trim($request->keywords) . '%')
+                        ->orderBy('position', 'desc')
+                        ->offset(($request->page - 1) * $request->page_size)
                         ->limit($request->page_size)->get();
-                } elseif($request->type == 1) {
-                    $products = Product::select(['id','name','sku','category_id','short_description','image'])
-                        ->where('name',trim($request->keywords))
-                        ->where('is_active',1)
-                        ->orWhere('name','like','%'.trim($request->keywords).'%')
-                        ->orderBy('position','desc')
-                        ->offset(($request->page-1)*$request->page_size)
+                } elseif ($request->type == 1) {
+                    $products = Product::select(['id', 'name', 'sku', 'category_id', 'short_description', 'image'])
+                        ->where('name', trim($request->keywords))
+                        ->where('is_active', 1)
+                        ->orWhere('name', 'like', '%' . trim($request->keywords) . '%')
+                        ->orderBy('position', 'desc')
+                        ->offset(($request->page - 1) * $request->page_size)
                         ->limit($request->page_size)->get();
                 }
             } else {
-                $allBlogs = Blog::select(['post_id','title','featured_img','short_content','category_id'])
-                    ->where('is_active',1)->get();
-                $allProducts = Product::select(['id','name','sku','category_id','short_description','image'])
-                    ->where('is_active',1)->get();
+                $allBlogs = Blog::select(['post_id', 'title', 'featured_img', 'short_content', 'category_id'])
+                    ->where('is_active', 1)->get();
+                $allProducts = Product::select(['id', 'name', 'sku', 'category_id', 'short_description', 'image'])
+                    ->where('is_active', 1)->get();
                 if ($request->type == 2) {
-                    $blogs = Blog::select(['post_id','title','featured_img','short_content','category_id'])
-                        ->where('is_active',1)
-                        ->orderBy('position','desc')
-                        ->offset(($request->page-1)*$request->page_size)
+                    $blogs = Blog::select(['post_id', 'title', 'featured_img', 'short_content', 'category_id'])
+                        ->where('is_active', 1)
+                        ->orderBy('position', 'desc')
+                        ->offset(($request->page - 1) * $request->page_size)
                         ->limit($request->page_size)->get();
                 } elseif ($request->type == 1) {
-                    $products = Product::select(['id','name','sku','category_id','short_description','image'])
-                        ->where('is_active',1)
-                        ->orderBy('position','desc')
-                        ->offset(($request->page-1)*$request->page_size)
+                    $products = Product::select(['id', 'name', 'sku', 'category_id', 'short_description', 'image'])
+                        ->where('is_active', 1)
+                        ->orderBy('position', 'desc')
+                        ->offset(($request->page - 1) * $request->page_size)
                         ->limit($request->page_size)->get();
                 }
             }
@@ -79,11 +79,16 @@ class SearchController extends ApiController
                         $allBlog->category_name = $blogCategoryData[$allBlog->category_id];
                     }
                     if (isset($allBlog->featured_img) && $allBlog->featured_img != '') {
-                        $allBlog->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$allBlog->featured_img;
+                        $allBlog->featured_img = HTTP_TEXT . $_SERVER["HTTP_HOST"] . $allBlog->featured_img;
                     }
                 }
             }
             if (isset($allProducts) && !empty($allProducts)) {
+
+                $allProducts =  $allProducts->each(function ($product) {
+                    return $product->category_id = $product->category->id;
+                });
+
                 foreach ($allProducts as $allProduct) {
                     //添加分类信息
                     if ($allProduct->category_id != 0) {
@@ -101,10 +106,10 @@ class SearchController extends ApiController
                         $allProduct->thirdCategory = '';
                     }
                     if (isset($allProduct->image) && $allProduct->image != '') {
-                        $allImages = explode(';',$allProduct->image);
+                        $allImages = explode(';', $allProduct->image);
                         $allImageArray = [];
                         foreach ($allImages as $allPic) {
-                            $allImageArray[] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$allPic;
+                            $allImageArray[] = HTTP_TEXT . $_SERVER["HTTP_HOST"] . $allPic;
                         }
                         $allProduct->image = $allImageArray;
                     }
@@ -116,7 +121,7 @@ class SearchController extends ApiController
                         $blog->category_name = $blogCategoryData[$blog->category_id];
                     }
                     if (isset($blog->featured_img) && $blog->featured_img != '') {
-                        $blog->featured_img = HTTP_TEXT.$_SERVER["HTTP_HOST"].$blog->featured_img;
+                        $blog->featured_img = HTTP_TEXT . $_SERVER["HTTP_HOST"] . $blog->featured_img;
                     }
                 }
             }
@@ -138,10 +143,10 @@ class SearchController extends ApiController
                         $product->thirdCategory = '';
                     }
                     if (isset($product->image) && $product->image != '') {
-                        $images = explode(';',$product->image);
+                        $images = explode(';', $product->image);
                         $imageArray = [];
                         foreach ($images as $pic) {
-                            $imageArray[] = HTTP_TEXT.$_SERVER["HTTP_HOST"].$pic;
+                            $imageArray[] = HTTP_TEXT . $_SERVER["HTTP_HOST"] . $pic;
                         }
                         $product->image = $imageArray;
                     }
@@ -159,11 +164,11 @@ class SearchController extends ApiController
                 foreach ($allProducts as $key => $value) {
                     $allData[] = $value->toArray();
                 }
-                foreach ($allBlogs as $k =>$v) {
+                foreach ($allBlogs as $k => $v) {
                     $allData[] = $v->toArray();
                 }
                 $giveData = [];
-                for ($i = ($request->page-1)*$request->page_size ; $i < $request->page*$request->page_size; $i++) {
+                for ($i = ($request->page - 1) * $request->page_size; $i < $request->page * $request->page_size; $i++) {
                     if (isset($allData[$i])) {
                         $giveData[] = $allData[$i];
                     } else {
